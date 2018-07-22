@@ -41,7 +41,7 @@ public class ExcelHelper {
         try (OutputStream out = new FileOutputStream(newFile)) {
             create(sheets).write(out);
         } catch (Exception e) {
-            throw new ExcelHelperException("" + e, e);
+            throw new ExcelHelperException("写入文件错误" + e, e);
         }
     }
 
@@ -56,7 +56,7 @@ public class ExcelHelper {
         try {
             create(sheets).write(out);
         } catch (IOException e) {
-            throw new ExcelHelperException("" + e, e);
+            throw new ExcelHelperException("写入文件错误" + e, e);
         }
         return out.toByteArray();
     }

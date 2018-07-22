@@ -13,7 +13,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.junit.Test;
 
 import com.mook.excel.helper.beans.User;
-import com.mook.excel.helper.util.ExcelUtil;
 
 public class HelperTest {
 
@@ -33,13 +32,14 @@ public class HelperTest {
             userSet.add(user);
         }
         
-        HSSFWorkbook workbook = ExcelUtil.create(userList);
+        HSSFWorkbook workbook = ExcelHelper.create(userList);
         File outFile = new File("d:/1.xls");
         OutputStream out = new FileOutputStream(outFile);
         workbook.write(out);
-        ExcelUtil.create(userList);
-        ExcelUtil.create(userList);
-        ExcelUtil.create(userSet);
+        
+        ExcelHelper.exportFile(userList, "d:/2.xls");
+        ExcelHelper.exportFile(userList, new File("d:/3.xls"));
+//        byte[] bs = ExcelHelper.exportByteArray(userList);
         
     }
     

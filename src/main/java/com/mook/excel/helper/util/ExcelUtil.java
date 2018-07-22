@@ -76,10 +76,10 @@ public final class ExcelUtil {
     }
 
     private static void createDataRows(HSSFSheet sheet, List<List<Object>> data) {
-        for (int i=0; i<data.size(); i++) {
+        for (int i = 0; i < data.size(); i++) {
             HSSFRow row = sheet.createRow(i + 1); // 0 row is header, data row from 1.
             List<Object> rowData = data.get(i);
-            for (int j=0; j<rowData.size(); j++) {
+            for (int j = 0; j < rowData.size(); j++) {
                 HSSFCell cell = row.createCell(j);
                 cell.setCellValue(rowData.get(j).toString());
             }
