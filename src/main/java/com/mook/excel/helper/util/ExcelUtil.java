@@ -15,10 +15,9 @@ import com.mook.excel.helper.cache.CacheFactory;
 import com.mook.excel.helper.exception.ExcelHelperException;
 
 /**
- * 导出Excel操作类
+ * Export workbook util
  * 
  * @author 342252328@qq.com
- * @since JDK 1.7
  *
  */
 public final class ExcelUtil {
@@ -26,10 +25,10 @@ public final class ExcelUtil {
     private ExcelUtil() {}
 
     /**
-     * 导出成为一个HSSFWorkbook，可包含多个sheet
+     * export as a HSSFWorkbook, maybe include one or more sheet.
      * 
-     * @param sheets 数组，每个Collection会生成一个sheet
-     * @return 返回一个HSSFWorkbook
+     * @param sheets it's a array, every Collection will create a sheet.
+     * @return return a {@link HSSFWorkbook}
      */
     public static HSSFWorkbook create(Collection<?>... sheets) {
         if (ArrayUtils.isEmpty(sheets))
@@ -38,7 +37,7 @@ public final class ExcelUtil {
         try {
             workbook.close();
         } catch (IOException e) {
-            throw new ExcelHelperException("workbook关闭失败" + e, e);
+            throw new ExcelHelperException("close workbook faild." + e, e);
         }
         return workbook;
     }

@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * sheet相关属性
+ * sheet properties
  * 
  * @author 342252328@qq.com
  *
@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 public @interface Sheet {
 
     /**
-     * sheet名称，必填
+     * sheet's name, must not be empty
      * 
      */
     String name();

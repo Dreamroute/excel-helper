@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 import org.apache.poi.ss.usermodel.CellType;
 
 /**
- * 单元格属性，也就是列属性
+ * cell's properties, means the column's properties
  * 
  * @author 342252328@qq.com
  *
@@ -18,17 +18,18 @@ import org.apache.poi.ss.usermodel.CellType;
 public @interface Cell {
 
     /**
-     * 列名，必填
+     * column name, must not bu empty
      */
     String name();
 
     /**
-     * 单元格列宽（默认：0，自适应宽度，大于0生效，小于等于0无效）
+     * the default width of cell.(default: 0, means auto column width, less than 0.
+     * will be ignore.)
      */
     int width() default 0;
 
     /**
-     * 单元格值的类型，参考：{@link CellType}
+     * the type of cell, see: {@link CellType}
      */
     CellType cellType() default CellType.STRING;
 

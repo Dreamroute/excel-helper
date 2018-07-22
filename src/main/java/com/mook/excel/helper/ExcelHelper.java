@@ -12,11 +12,18 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import com.mook.excel.helper.exception.ExcelHelperException;
 import com.mook.excel.helper.util.ExcelUtil;
 
+/**
+ * the operation class, you'll use it to create or export excel files/{@link HSSFWorkbook}
+ * 
+ * @author 342252328@qq.com
+ * @since JDK 1.7
+ *
+ */
 public class ExcelHelper {
 
     private ExcelHelper() {}
 
-    // 如果不希望使用工具的导出方案，可以获取到workbook进行自定义
+    // if you do not want to export by ExcelHelper, you can only create a workbook, then operate the workbook by your self.
     public static HSSFWorkbook create(Collection<?>... sheets) {
         return ExcelUtil.create(sheets);
     }
@@ -41,7 +48,7 @@ public class ExcelHelper {
         try (OutputStream out = new FileOutputStream(newFile)) {
             create(sheets).write(out);
         } catch (Exception e) {
-            throw new ExcelHelperException("写入文件错误" + e, e);
+            throw new ExcelHelperException("write a file faild." + e, e);
         }
     }
 
@@ -56,7 +63,7 @@ public class ExcelHelper {
         try {
             create(sheets).write(out);
         } catch (IOException e) {
-            throw new ExcelHelperException("写入文件错误" + e, e);
+            throw new ExcelHelperException("write a file faild." + e, e);
         }
         return out.toByteArray();
     }

@@ -16,9 +16,9 @@ import com.mook.excel.helper.util.ClassAssistant;
  *
  */
 public class CacheFactory {
-    
+
     private CacheFactory() {}
-    
+
     private static final ConcurrentHashMap<Class<?>, String> SHEET_NAME_MAP = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<Class<?>, List<Field>> FIELDS_MAP = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<Class<?>, List<String>> HEADER_VALUES = new ConcurrentHashMap<>();
@@ -31,7 +31,7 @@ public class CacheFactory {
         }
         return sheetName;
     }
-    
+
     public static List<Field> findFields(Class<?> cls) {
         List<Field> fields = FIELDS_MAP.get(cls);
         if (CollectionUtils.isEmpty(fields)) {
@@ -40,7 +40,7 @@ public class CacheFactory {
         }
         return fields;
     }
-    
+
     public static List<String> findHeaderValues(Class<?> cls) {
         List<String> headerValues = HEADER_VALUES.get(cls);
         if (CollectionUtils.isEmpty(headerValues)) {
@@ -49,6 +49,5 @@ public class CacheFactory {
         }
         return headerValues;
     }
-    
 
 }

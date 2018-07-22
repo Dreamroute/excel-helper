@@ -1,7 +1,6 @@
 package com.mook.excel.helper.util;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.ReflectPermission;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +14,14 @@ import com.mook.excel.helper.cache.CacheFactory;
 
 /**
  * util class
+ * 
  * @author 342252328@qq.com
  *
  */
 public final class ClassAssistant {
 
     private ClassAssistant() {}
-    
+
     public static String getSheetName(Class<?> cls) {
         String sheetName = ClassUtils.getSimpleName(cls);
         if (cls.isAnnotationPresent(Sheet.class)) {
@@ -43,11 +43,11 @@ public final class ClassAssistant {
         }
         return fields;
     }
-    
+
     public static List<String> getHeaderValues(Class<?> cls) {
         List<Field> fields = CacheFactory.findFields(cls);
         List<String> headerValues = new ArrayList<>();
-        for (int i=0; i<fields.size(); i++)
+        for (int i = 0; i < fields.size(); i++)
             headerValues.add(fields.get(i).getAnnotation(Cell.class).name());
         return headerValues;
     }
@@ -59,14 +59,11 @@ public final class ClassAssistant {
                 try {
                     field.setAccessible(true);
                 } catch (Exception e) {
-                    // Ignored.
+                    // ignored.
                 }
             }
-            if (field.isAccessible() && !fieldList.contains(field)) {
-                int modifiers = field.getModifiers();
-                if (!(Modifier.isFinal(modifiers) && Modifier.isStatic(modifiers)) && field.isAnnotationPresent(Cell.class)) {
-                    fieldList.add(field);
-                }
+            if (field.isAccessible() && !fieldList.contains(field) && field.isAnnotationPresent(Cell.class)) {
+                fieldList.add(field);
             }
         }
     }
