@@ -31,7 +31,7 @@ public final class ExcelHelper {
      * @param sheets 数组，每个Collection会生成一个sheet
      * @return 返回一个HSSFWorkbook
      */
-    public static HSSFWorkbook export(Collection<?>... sheets) {
+    public static HSSFWorkbook create(Collection<?>... sheets) {
         if (ArrayUtils.isEmpty(sheets))
             return new HSSFWorkbook();
         HSSFWorkbook workbook = createWorkbook(sheets);
@@ -57,17 +57,20 @@ public final class ExcelHelper {
         String sheetName = getSheetName(sheetData);
         HSSFSheet sheet = workbook.createSheet(sheetName);
         Class<?> dataCls = sheetData.iterator().next().getClass();
-        List<Field> allFields = CacheFactory.findFields(dataCls);
 
-        // create first row, create data rows
-        createFirstRow(sheet, allFields);
-        creatDataRows(sheet, allFields);
+        // excel content (header + data)
+        List<String> headerValues = CacheFactory.findHeaderValues(dataCls);
+
+        // create header row, create data rows
+        createHeaderRow(sheet, headerValues);
+        // creatDataRows(sheet, allFields);
     }
 
-    private static void createFirstRow(HSSFSheet sheet, List<Field> allFields) {
+    private static void createHeaderRow(HSSFSheet sheet, List<String> headerValues) {
         HSSFRow row = sheet.createRow(0);
-        for (int i=0; i<allFields.size(); i++) {
+        for (int i = 0; i < headerValues.size(); i++) {
             HSSFCell cell = row.createCell(i);
+            cell.setCellValue(headerValues.get(i));
         }
     }
 

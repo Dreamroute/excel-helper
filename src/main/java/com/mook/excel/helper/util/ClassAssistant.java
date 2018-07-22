@@ -9,7 +9,9 @@ import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ClassUtils;
 
+import com.mook.excel.helper.annotation.Cell;
 import com.mook.excel.helper.annotation.Sheet;
+import com.mook.excel.helper.cache.CacheFactory;
 
 /**
  * util class
@@ -40,6 +42,18 @@ public final class ClassAssistant {
             }
         }
         return fields;
+    }
+    
+    public static List<String> getHeaderValues(Class<?> cls) {
+        List<Field> fields = CacheFactory.findFields(cls);
+        List<String> headerValues = new ArrayList<>();
+        for (int i=0; i<fields.size(); i++) {
+            Field field = fields.get(i);
+            if (field.isAnnotationPresent(Cell.class)) {
+                headerValues.add(field.getAnnotation(Cell.class).name());
+            }
+        }
+        return headerValues;
     }
 
     private static void addFields(Class<?> clazz, List<Field> fieldList) {

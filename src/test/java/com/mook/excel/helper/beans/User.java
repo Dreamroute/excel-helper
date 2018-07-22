@@ -2,6 +2,7 @@ package com.mook.excel.helper.beans;
 
 import java.io.Serializable;
 
+import com.mook.excel.helper.annotation.Cell;
 import com.mook.excel.helper.annotation.Sheet;
 
 @Sheet(name = "用户列表")
@@ -12,8 +13,13 @@ public class User extends BaseDomain implements Serializable {
      */
     private static final long serialVersionUID = 2199037777470546108L;
 
+    @Cell(name = "ID")
     private Long id;
+    
+    @Cell(name = "姓名")
     private String name;
+    
+    @Cell(name = "年龄")
     private Integer age;
 
     public Long getId() {
