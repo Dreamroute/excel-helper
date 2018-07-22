@@ -9,18 +9,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.ibatis.reflection.DefaultReflectorFactory;
-import org.apache.ibatis.reflection.Reflector;
-import org.apache.ibatis.reflection.ReflectorFactory;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.junit.Test;
 
 import com.mook.excel.helper.beans.User;
+import com.mook.excel.helper.util.ExcelUtil;
 
 public class HelperTest {
 
     @Test
     public void baseTest() throws Exception {
+        
         List<User> userList = new ArrayList<>();
         Set<User> userSet = new HashSet<>();
         
@@ -34,22 +33,16 @@ public class HelperTest {
             userSet.add(user);
         }
         
-        HSSFWorkbook workbook = ExcelHelper.create(userList);
+        HSSFWorkbook workbook = ExcelUtil.create(userList);
         File outFile = new File("d:/1.xls");
         OutputStream out = new FileOutputStream(outFile);
         workbook.write(out);
-        ExcelHelper.create(userList);
-        ExcelHelper.create(userList);
-        ExcelHelper.create(userSet);
+        ExcelUtil.create(userList);
+        ExcelUtil.create(userList);
+        ExcelUtil.create(userSet);
         
     }
     
-    @Test
-    public void reflectorTest() {
-//        Reflector r = new Reflector(User.class);
-        ReflectorFactory factory = new DefaultReflectorFactory();
-        Reflector r = factory.findForClass(User.class);
-    }
 }
 
 

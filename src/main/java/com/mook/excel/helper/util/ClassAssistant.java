@@ -47,12 +47,8 @@ public final class ClassAssistant {
     public static List<String> getHeaderValues(Class<?> cls) {
         List<Field> fields = CacheFactory.findFields(cls);
         List<String> headerValues = new ArrayList<>();
-        for (int i=0; i<fields.size(); i++) {
-            Field field = fields.get(i);
-            if (field.isAnnotationPresent(Cell.class)) {
-                headerValues.add(field.getAnnotation(Cell.class).name());
-            }
-        }
+        for (int i=0; i<fields.size(); i++)
+            headerValues.add(fields.get(i).getAnnotation(Cell.class).name());
         return headerValues;
     }
 
@@ -68,7 +64,7 @@ public final class ClassAssistant {
             }
             if (field.isAccessible() && !fieldList.contains(field)) {
                 int modifiers = field.getModifiers();
-                if (!(Modifier.isFinal(modifiers) && Modifier.isStatic(modifiers))) {
+                if (!(Modifier.isFinal(modifiers) && Modifier.isStatic(modifiers)) && field.isAnnotationPresent(Cell.class)) {
                     fieldList.add(field);
                 }
             }

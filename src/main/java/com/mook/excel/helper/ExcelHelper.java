@@ -1,87 +1,64 @@
 package com.mook.excel.helper;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Field;
+import java.io.OutputStream;
 import java.util.Collection;
-import java.util.List;
 
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
-import com.mook.excel.helper.cache.CacheFactory;
 import com.mook.excel.helper.exception.ExcelHelperException;
+import com.mook.excel.helper.util.ExcelUtil;
 
-/**
- * 导出Excel操作类
- * 
- * @author 342252328@qq.com
- *
- */
-public final class ExcelHelper {
+public class ExcelHelper {
 
     private ExcelHelper() {}
 
-    /**
-     * 导出成为一个HSSFWorkbook，可包含多个sheet
-     * 
-     * @param sheets 数组，每个Collection会生成一个sheet
-     * @return 返回一个HSSFWorkbook
-     */
+    // 如果不希望使用工具的导出方案，可以获取到workbook进行自定义
     public static HSSFWorkbook create(Collection<?>... sheets) {
-        if (ArrayUtils.isEmpty(sheets))
-            return new HSSFWorkbook();
-        HSSFWorkbook workbook = createWorkbook(sheets);
+        return ExcelUtil.create(sheets);
+    }
+
+    /**
+     * export to file.
+     * 
+     * @param sheets your bussiness data.
+     * @param path file path
+     */
+    public static void exportFile(Collection<?> sheets, String path) {
+        exportFile(sheets, new File(path));
+    }
+
+    /**
+     * export to file.
+     * 
+     * @param sheets sheets your bussiness data.
+     * @param newFile
+     */
+    public static void exportFile(Collection<?> sheets, File newFile) {
+        try (OutputStream out = new FileOutputStream(newFile)) {
+            create(sheets).write(out);
+        } catch (Exception e) {
+            throw new ExcelHelperException("" + e, e);
+        }
+    }
+
+    /**
+     * export to byte array.
+     * 
+     * @param sheets sheets sheets your bussiness data.
+     * @return return a byte array with data.
+     */
+    public static byte[] exportByteArray(Collection<?> sheets) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
-            workbook.close();
+            create(sheets).write(out);
         } catch (IOException e) {
-            throw new ExcelHelperException("workbook关闭失败" + e, e);
+            throw new ExcelHelperException("" + e, e);
         }
-        return workbook;
-    }
-
-    private static HSSFWorkbook createWorkbook(Collection<?>... sheets) {
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        for (Collection<?> sheet : sheets) {
-            if (CollectionUtils.isNotEmpty(sheet)) {
-                createSheet(workbook, sheet);
-            }
-        }
-        return workbook;
-    }
-
-    private static void createSheet(HSSFWorkbook workbook, Collection<?> sheetData) {
-        String sheetName = getSheetName(sheetData);
-        HSSFSheet sheet = workbook.createSheet(sheetName);
-        Class<?> dataCls = sheetData.iterator().next().getClass();
-
-        // excel content (header + data)
-        List<String> headerValues = CacheFactory.findHeaderValues(dataCls);
-
-        // create header row, create data rows
-        createHeaderRow(sheet, headerValues);
-        // creatDataRows(sheet, allFields);
-    }
-
-    private static void createHeaderRow(HSSFSheet sheet, List<String> headerValues) {
-        HSSFRow row = sheet.createRow(0);
-        for (int i = 0; i < headerValues.size(); i++) {
-            HSSFCell cell = row.createCell(i);
-            cell.setCellValue(headerValues.get(i));
-        }
-    }
-
-    private static void creatDataRows(HSSFSheet sheet, List<Field> allFields) {
-        // TODO Auto-generated method stub
-
-    }
-
-    private static String getSheetName(Collection<?> sheetData) {
-        Class<?> dataClass = sheetData.iterator().next().getClass();
-        return CacheFactory.findSheetName(dataClass);
+        return out.toByteArray();
     }
 
 }

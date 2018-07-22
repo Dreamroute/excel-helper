@@ -19,11 +19,8 @@ public class CacheFactory {
     
     private CacheFactory() {}
     
-    // sheetName cache
     private static final ConcurrentHashMap<Class<?>, String> SHEET_NAME_MAP = new ConcurrentHashMap<>();
-    // fields cache
     private static final ConcurrentHashMap<Class<?>, List<Field>> FIELDS_MAP = new ConcurrentHashMap<>();
-    // header values
     private static final ConcurrentHashMap<Class<?>, List<String>> HEADER_VALUES = new ConcurrentHashMap<>();
 
     public static String findSheetName(Class<?> cls) {
