@@ -1,9 +1,11 @@
 package com.mook.excel.helper.beans;
 
 import java.io.Serializable;
-import java.util.Date;
 
-public class User implements Serializable {
+import com.mook.excel.helper.annotation.Sheet;
+
+@Sheet(name = "用户列表")
+public class User extends BaseDomain implements Serializable {
 
     /**
      * 
@@ -13,7 +15,6 @@ public class User implements Serializable {
     private Long id;
     private String name;
     private Integer age;
-    private Date birthday;
 
     public Long getId() {
         return id;
@@ -37,14 +38,6 @@ public class User implements Serializable {
 
     public void setAge(Integer age) {
         this.age = age;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
     }
 
 }

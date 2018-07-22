@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * sheet相关属性
  * 
- * @author w.dehai
+ * @author 342252328@qq.com
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -16,9 +16,9 @@ import java.lang.annotation.Target;
 public @interface Sheet {
 
     /**
-     * sheet名称
+     * sheet名称，必填
      * 
      */
-    String name() default "";
+    String name();
 
 }

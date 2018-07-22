@@ -1,21 +1,24 @@
 package com.mook.excel.helper;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.ClassUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
-import com.mook.excel.helper.annotation.Sheet;
+import com.mook.excel.helper.cache.CacheFactory;
 import com.mook.excel.helper.exception.ExcelHelperException;
 
 /**
  * 导出Excel操作类
  * 
- * @author w.dehai
+ * @author 342252328@qq.com
  *
  */
 public final class ExcelHelper {
@@ -35,7 +38,7 @@ public final class ExcelHelper {
         try {
             workbook.close();
         } catch (IOException e) {
-            throw new ExcelHelperException(e);
+            throw new ExcelHelperException("workbook关闭失败" + e, e);
         }
         return workbook;
     }
@@ -53,16 +56,29 @@ public final class ExcelHelper {
     private static void createSheet(HSSFWorkbook workbook, Collection<?> sheetData) {
         String sheetName = getSheetName(sheetData);
         HSSFSheet sheet = workbook.createSheet(sheetName);
+        Class<?> dataCls = sheetData.iterator().next().getClass();
+        List<Field> allFields = CacheFactory.findFields(dataCls);
+
+        // create first row, create data rows
+        createFirstRow(sheet, allFields);
+        creatDataRows(sheet, allFields);
+    }
+
+    private static void createFirstRow(HSSFSheet sheet, List<Field> allFields) {
+        HSSFRow row = sheet.createRow(0);
+        for (int i=0; i<allFields.size(); i++) {
+            HSSFCell cell = row.createCell(i);
+        }
+    }
+
+    private static void creatDataRows(HSSFSheet sheet, List<Field> allFields) {
+        // TODO Auto-generated method stub
+
     }
 
     private static String getSheetName(Collection<?> sheetData) {
-        Class<?> dataClass = sheetData.stream().findFirst().get().getClass();
-        String sheetName = ClassUtils.getSimpleName(dataClass);
-        if (dataClass.isAnnotationPresent(Sheet.class)) {
-            Sheet sheetAnno = dataClass.getAnnotation(Sheet.class);
-            sheetName = sheetAnno.name();
-        }
-        return sheetName;
+        Class<?> dataClass = sheetData.iterator().next().getClass();
+        return CacheFactory.findSheetName(dataClass);
     }
 
 }
