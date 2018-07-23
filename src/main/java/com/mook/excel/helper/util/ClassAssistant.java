@@ -30,6 +30,14 @@ public final class ClassAssistant {
         }
         return sheetName;
     }
+    
+    public static List<String> getHeaderValues(Class<?> cls) {
+        List<Field> fields = CacheFactory.findFields(cls);
+        List<String> headerValues = new ArrayList<>();
+        for (int i = 0; i < fields.size(); i++)
+            headerValues.add(fields.get(i).getAnnotation(Cell.class).name());
+        return headerValues;
+    }
 
     public static List<Field> getAllFields(Class<?> dataCls) {
         List<Class<?>> superClsList = ClassUtils.getAllSuperclasses(dataCls);
@@ -37,19 +45,10 @@ public final class ClassAssistant {
         List<Field> fields = null;
         if (CollectionUtils.isNotEmpty(superClsList)) {
             fields = new ArrayList<>();
-            for (Class<?> superCls : superClsList) {
+            for (Class<?> superCls : superClsList)
                 addFields(superCls, fields);
-            }
         }
         return fields;
-    }
-
-    public static List<String> getHeaderValues(Class<?> cls) {
-        List<Field> fields = CacheFactory.findFields(cls);
-        List<String> headerValues = new ArrayList<>();
-        for (int i = 0; i < fields.size(); i++)
-            headerValues.add(fields.get(i).getAnnotation(Cell.class).name());
-        return headerValues;
     }
 
     private static void addFields(Class<?> clazz, List<Field> fieldList) {

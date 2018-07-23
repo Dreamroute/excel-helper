@@ -39,8 +39,11 @@ public class HelperTest {
         
         ExcelHelper.exportFile(userList, "d:/2.xls");
         ExcelHelper.exportFile(userList, new File("d:/3.xls"));
-//        byte[] bs = ExcelHelper.exportByteArray(userList);
-        
+        byte[] bs = ExcelHelper.exportByteArray(userList);
+        File file4 = new File("d:/4.xls");
+        OutputStream os = new FileOutputStream(file4);
+        os.write(bs);
+        os.close();
     }
     
 }

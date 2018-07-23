@@ -23,7 +23,7 @@ public @interface Cell {
     String name();
 
     /**
-     * the default width of cell.(default: 0, means auto column width, less than 0.
+     * the default width of cell.(default: 0, means auto column width, less than 0
      * will be ignore.)
      */
     int width() default 0;
