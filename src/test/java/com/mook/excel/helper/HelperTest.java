@@ -14,6 +14,7 @@ import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.format.CellFormatType;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
@@ -63,6 +64,7 @@ public class HelperTest {
         cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
         HSSFFont font = workbook.createFont();
         font.setColor(Font.COLOR_RED);
+        workbook.createDataFormat().getFormat();
     }
     
 }

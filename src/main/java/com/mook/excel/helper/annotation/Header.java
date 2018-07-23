@@ -5,6 +5,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+
 /**
  * sheet header's properties
  * 
@@ -15,6 +18,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Header {
 
+    /** Horizontal Aign **/
+    HorizontalAlignment horizontal() default HorizontalAlignment.CENTER;
     
-
+    /** Vertical Align **/
+    VerticalAlignment vertical() default VerticalAlignment.CENTER;
+    
 }

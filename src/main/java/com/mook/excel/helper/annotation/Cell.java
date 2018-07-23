@@ -19,6 +19,5 @@ public @interface Cell {
 
     CellType cellType() default CellType.STRING;
     
-    
 
 }
