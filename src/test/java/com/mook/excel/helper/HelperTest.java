@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.hssf.usermodel.HSSFDataFormatter;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.format.CellFormatType;
@@ -56,15 +58,21 @@ public class HelperTest {
     
     @Test
     public void styleTest() {
-        CellFormatType formatType = CellFormatType.DATE;
-        CellType cellType = CellType.NUMERIC;
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFCellStyle cellStyle = workbook.createCellStyle();
-        cellStyle.setAlignment(HorizontalAlignment.CENTER);
-        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-        HSSFFont font = workbook.createFont();
-        font.setColor(Font.COLOR_RED);
-        workbook.createDataFormat().getFormat();
+//        CellFormatType formatType = CellFormatType.DATE;
+//        CellType cellType = CellType.NUMERIC;
+//        HSSFWorkbook workbook = new HSSFWorkbook();
+//        HSSFCellStyle cellStyle = workbook.createCellStyle();
+//        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+//        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+//        HSSFFont font = workbook.createFont();
+//        font.setColor(Font.COLOR_RED);
+//        HSSFDataFormat format = workbook.createDataFormat();
+//        HSSFDataFormatter f = new HSSFDataFormatter();
+//        
+//        //dataformat
+//        HSSFDataFormat dataFormat = workbook.createDataFormat();
+        List<String> formatList = HSSFDataFormat.getBuiltinFormats();
+        System.err.println(formatList);
     }
     
 }
