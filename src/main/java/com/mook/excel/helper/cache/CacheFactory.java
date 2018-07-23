@@ -22,6 +22,7 @@ public class CacheFactory {
     private static final ConcurrentHashMap<Class<?>, String> SHEET_NAME_MAP = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<Class<?>, List<Field>> FIELDS_MAP = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<Class<?>, List<String>> HEADER_VALUES = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Class<?>, Integer[]> COLUMN_WIDTH = new ConcurrentHashMap<>();
 
     public static String findSheetName(Class<?> cls) {
         String sheetName = SHEET_NAME_MAP.get(cls);
@@ -48,6 +49,15 @@ public class CacheFactory {
             HEADER_VALUES.put(cls, headerValues);
         }
         return headerValues;
+    }
+
+    public static Integer[] findColumnWidth(Class<?> cls) {
+        Integer[] columnWidth = COLUMN_WIDTH.get(cls);
+        if (columnWidth == null || columnWidth.length == 0) {
+            columnWidth = ClassAssistant.getColumnWidth(cls);
+            COLUMN_WIDTH.put(cls, columnWidth);
+        }
+        return columnWidth;
     }
 
 }

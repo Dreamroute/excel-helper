@@ -8,7 +8,7 @@ import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ClassUtils;
 
-import com.mook.excel.helper.annotation.Cell;
+import com.mook.excel.helper.annotation.Column;
 import com.mook.excel.helper.annotation.Sheet;
 import com.mook.excel.helper.cache.CacheFactory;
 
@@ -35,7 +35,7 @@ public final class ClassAssistant {
         List<Field> fields = CacheFactory.findFields(cls);
         List<String> headerValues = new ArrayList<>();
         for (int i = 0; i < fields.size(); i++)
-            headerValues.add(fields.get(i).getAnnotation(Cell.class).name());
+            headerValues.add(fields.get(i).getAnnotation(Column.class).name());
         return headerValues;
     }
 
@@ -61,7 +61,7 @@ public final class ClassAssistant {
                     // ignored.
                 }
             }
-            if (field.isAccessible() && !fieldList.contains(field) && field.isAnnotationPresent(Cell.class)) {
+            if (field.isAccessible() && !fieldList.contains(field) && field.isAnnotationPresent(Column.class)) {
                 fieldList.add(field);
             }
         }
@@ -79,4 +79,13 @@ public final class ClassAssistant {
         return true;
     }
 
+    public static Integer[] getColumnWidth(Class<?> cls) {
+        List<Field> fields = CacheFactory.findFields(cls);
+        Integer[] columnWidth = new Integer[fields.size()];
+        for (int i=0; i<fields.size(); i++) {
+            int width = fields.get(i).getAnnotation(Column.class).width();
+            columnWidth[i] = width > 0 ? width : 0; 
+        }
+        return columnWidth;
+    }
 }

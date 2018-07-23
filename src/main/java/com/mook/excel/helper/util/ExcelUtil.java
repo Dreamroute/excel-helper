@@ -60,10 +60,12 @@ public final class ExcelUtil {
         // excel content (header + data)
         List<String> headerValues = CacheFactory.findHeaderValues(dataCls);
         List<List<Object>> data = DataAssistant.createData(sheetData);
-
-        // create header row, create data rows
+        Integer[] columnWith = CacheFactory.findColumnWidth(dataCls);
+        
+        // create header row, create data rows, set column width
         createHeaderRow(sheet, headerValues);
         createDataRows(sheet, data);
+        setColumnWidth(sheet, columnWith);
     }
 
     private static void createHeaderRow(HSSFSheet sheet, List<String> headerValues) {
@@ -82,6 +84,14 @@ public final class ExcelUtil {
                 HSSFCell cell = row.createCell(j);
                 cell.setCellValue(rowData.get(j).toString());
             }
+        }
+    }
+
+    private static void setColumnWidth(HSSFSheet sheet, Integer[] columnWith) {
+        for (int i = 0; i < columnWith.length; i++) {
+            sheet.autoSizeColumn(i);
+            int width = columnWith[i] > 0 ? columnWith[i] : sheet.getColumnWidth(i) * 13 / 10; // 1.3 times
+            sheet.setColumnWidth(i, width);
         }
     }
 

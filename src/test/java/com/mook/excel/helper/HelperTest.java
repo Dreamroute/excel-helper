@@ -9,7 +9,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.format.CellFormatType;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.junit.Test;
 
 import com.mook.excel.helper.beans.User;
@@ -44,6 +51,18 @@ public class HelperTest {
         OutputStream os = new FileOutputStream(file4);
         os.write(bs);
         os.close();
+    }
+    
+    @Test
+    public void styleTest() {
+        CellFormatType formatType = CellFormatType.DATE;
+        CellType cellType = CellType.NUMERIC;
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFCellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        HSSFFont font = workbook.createFont();
+        font.setColor(Font.COLOR_RED);
     }
     
 }

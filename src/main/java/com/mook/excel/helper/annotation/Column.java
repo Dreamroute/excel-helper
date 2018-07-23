@@ -5,20 +5,24 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.apache.poi.ss.usermodel.CellType;
-
 /**
- * sheet cell's properties
+ * the column's properties
  * 
  * @author 342252328@qq.com
  *
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Cell {
+public @interface Column {
 
-    CellType cellType() default CellType.STRING;
-    
-    
+    /**
+     * column name, must not bu empty
+     */
+    String name();
+
+    /**
+     * the default width of header/cell.(default: 0, means auto column width, less than 0 will be ignore, recomend 0.)
+     */
+    int width() default 0;
 
 }
