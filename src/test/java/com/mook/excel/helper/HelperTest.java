@@ -71,6 +71,7 @@ public class HelperTest {
             short format = workbook.createDataFormat().getFormat("¥#,##0");
             cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("_ * #,##0_ ;_ * -#,##0_ ;_ * \"-\"_ ;_ @_ "));
             cellStyle.setFillBackgroundColor();
+            System.err.println();
             HSSFCell cell = workbook.createSheet("test").createRow(0).createCell(0);
             cell.setCellStyle(cellStyle);
             cell.setCellValue("123.456023");
