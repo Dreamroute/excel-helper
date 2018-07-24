@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.CellType;
 
 import com.mook.excel.helper.util.ClassAssistant;
 
@@ -23,6 +24,7 @@ public class CacheFactory {
     private static final ConcurrentHashMap<Class<?>, List<Field>> FIELDS_MAP = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<Class<?>, List<String>> HEADER_VALUES = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<Class<?>, Integer[]> COLUMN_WIDTH = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Class<?>, CellType[]> CELL_TYPE = new ConcurrentHashMap<>();
 
     public static String findSheetName(Class<?> cls) {
         String sheetName = SHEET_NAME_MAP.get(cls);
@@ -58,6 +60,15 @@ public class CacheFactory {
             COLUMN_WIDTH.put(cls, columnWidth);
         }
         return columnWidth;
+    }
+
+    public static CellType[] findCellType(Class<?> cls) {
+        CellType[] cellType = CELL_TYPE.get(cls);
+        if (cellType == null || cellType.length == 0) {
+            cellType = ClassAssistant.getCellType(cls);
+            CELL_TYPE.put(cls, cellType);
+        }
+        return cellType;
     }
 
 }

@@ -5,7 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 
 /**
  * sheet cell's properties
@@ -17,7 +18,10 @@ import org.apache.poi.ss.usermodel.CellType;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Cell {
 
-    CellType cellType() default CellType.STRING;
-    
+    /** Horizontal Aign **/
+    HorizontalAlignment horizontal() default HorizontalAlignment.CENTER;
+
+    /** Vertical Align **/
+    VerticalAlignment vertical() default VerticalAlignment.CENTER;
 
 }

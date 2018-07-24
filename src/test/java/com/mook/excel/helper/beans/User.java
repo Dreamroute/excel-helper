@@ -2,6 +2,8 @@ package com.mook.excel.helper.beans;
 
 import java.io.Serializable;
 
+import org.apache.poi.ss.usermodel.CellType;
+
 import com.mook.excel.helper.annotation.Column;
 import com.mook.excel.helper.annotation.Sheet;
 
@@ -19,7 +21,7 @@ public class User extends BaseDomain implements Serializable {
     @Column(name = "姓名")
     private String name;
     
-    @Column(name = "年龄")
+    @Column(name = "年龄", cellType = CellType.NUMERIC)
     private Integer age;
 
     public Long getId() {

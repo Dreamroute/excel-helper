@@ -29,7 +29,7 @@ public class HelperTest {
             User user = new User();
             user.setId(100L + i);
             user.setName("w.dehai" + i);
-            user.setAge(30);
+            user.setAge(300000000);
             user.setCreateTime(new Date());
             userList.add(user);
             userSet.add(user);
@@ -70,7 +70,6 @@ public class HelperTest {
             HSSFCellStyle cellStyle = workbook.createCellStyle();
             short format = workbook.createDataFormat().getFormat("¥#,##0");
             cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("_ * #,##0_ ;_ * -#,##0_ ;_ * \"-\"_ ;_ @_ "));
-            cellStyle.setFillBackgroundColor();
             System.err.println();
             HSSFCell cell = workbook.createSheet("test").createRow(0).createCell(0);
             cell.setCellStyle(cellStyle);

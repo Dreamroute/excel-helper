@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ClassUtils;
+import org.apache.poi.ss.usermodel.CellType;
 
 import com.mook.excel.helper.annotation.Column;
 import com.mook.excel.helper.annotation.Sheet;
@@ -87,5 +88,13 @@ public final class ClassAssistant {
             columnWidth[i] = width > 0 ? width : 0; 
         }
         return columnWidth;
+    }
+
+    public static CellType[] getCellType(Class<?> cls) {
+        List<Field> fields = CacheFactory.findFields(cls);
+        CellType[] cellType = new CellType[fields.size()];
+        for (int i=0; i<fields.size(); i++)
+            cellType[i] = fields.get(i).getAnnotation(Column.class).cellType();
+        return cellType;
     }
 }

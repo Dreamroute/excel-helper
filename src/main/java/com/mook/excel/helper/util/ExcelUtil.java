@@ -10,7 +10,9 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellType;
 
+import com.mook.excel.helper.annotation.HeaderProps;
 import com.mook.excel.helper.cache.CacheFactory;
 import com.mook.excel.helper.exception.ExcelHelperException;
 
@@ -60,11 +62,14 @@ public final class ExcelUtil {
         // excel content (header + data)
         List<String> headerValues = CacheFactory.findHeaderValues(dataCls);
         List<List<Object>> data = DataAssistant.createData(sheetData);
+        CellType[] cellType = CacheFactory.findCellType(dataCls);
         Integer[] columnWith = CacheFactory.findColumnWidth(dataCls);
-        
+        HeaderProps[] hps = CacheFactory.findHeaderProps(dataCls);
+        CellProp[] cps = CacheFactory.findCellProps(dataCls);
+
         // create header row, create data rows, set column width
         createHeaderRow(sheet, headerValues);
-        createDataRows(sheet, data);
+        createDataRows(sheet, data, cellType);
         setColumnWidth(sheet, columnWith);
     }
 
@@ -76,13 +81,20 @@ public final class ExcelUtil {
         }
     }
 
-    private static void createDataRows(HSSFSheet sheet, List<List<Object>> data) {
+    private static void createDataRows(HSSFSheet sheet, List<List<Object>> data, CellType[] cellType) {
         for (int i = 0; i < data.size(); i++) {
             HSSFRow row = sheet.createRow(i + 1); // 0 row is header, data row from 1.
             List<Object> rowData = data.get(i);
             for (int j = 0; j < rowData.size(); j++) {
                 HSSFCell cell = row.createCell(j);
-                cell.setCellValue(rowData.get(j).toString());
+                cell.setCellType(cellType[j]);
+                if (cellType[j] == CellType.NUMERIC) {
+                    cell.setCellValue(Double.parseDouble(rowData.get(j).toString()));
+                } else if (cellType[j] == CellType.BOOLEAN) {
+                    cell.setCellValue(Boolean.parseBoolean(rowData.get(j).toString()));
+                } else {
+                    cell.setCellValue(rowData.get(j).toString());
+                }
             }
         }
     }
@@ -90,7 +102,7 @@ public final class ExcelUtil {
     private static void setColumnWidth(HSSFSheet sheet, Integer[] columnWith) {
         for (int i = 0; i < columnWith.length; i++) {
             sheet.autoSizeColumn(i);
-            int width = columnWith[i] > 0 ? columnWith[i] : sheet.getColumnWidth(i) * 13 / 10; // 1.3 times
+            int width = columnWith[i] > 0 ? columnWith[i] : sheet.getColumnWidth(i);
             sheet.setColumnWidth(i, width);
         }
     }
