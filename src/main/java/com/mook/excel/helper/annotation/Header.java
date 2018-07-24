@@ -14,7 +14,7 @@ import org.apache.poi.ss.usermodel.VerticalAlignment;
  * @author 342252328@qq.com
  *
  */
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Header {
 
@@ -23,5 +23,7 @@ public @interface Header {
     
     /** Vertical Align **/
     VerticalAlignment vertical() default VerticalAlignment.CENTER;
+    
+    
     
 }
