@@ -1,4 +1,4 @@
-package com.mook.excel.helper.annotation;
+package com.github.dreamroute.excel.helper.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,19 +9,21 @@ import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 
 /**
- * sheet cell's properties
+ * sheet header's properties
  * 
  * @author 342252328@qq.com
  *
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Cell {
+public @interface Header {
 
     /** Horizontal Aign **/
     HorizontalAlignment horizontal() default HorizontalAlignment.CENTER;
-
+    
     /** Vertical Align **/
     VerticalAlignment vertical() default VerticalAlignment.CENTER;
-
+    
+    
+    
 }

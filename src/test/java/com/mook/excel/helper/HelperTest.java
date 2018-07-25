@@ -16,6 +16,7 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.junit.Test;
 
+import com.github.dreamroute.excel.helper.ExcelHelper;
 import com.mook.excel.helper.beans.User;
 
 public class HelperTest {

@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 import org.apache.poi.ss.usermodel.CellType;
 
-import com.mook.excel.helper.annotation.Column;
-import com.mook.excel.helper.annotation.Sheet;
+import com.github.dreamroute.excel.helper.annotation.Column;
+import com.github.dreamroute.excel.helper.annotation.Sheet;
 
 @Sheet(name = "用户列表")
 public class User extends BaseDomain implements Serializable {

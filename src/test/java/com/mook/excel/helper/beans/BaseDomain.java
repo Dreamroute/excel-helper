@@ -2,7 +2,7 @@ package com.mook.excel.helper.beans;
 
 import java.io.Serializable;
 
-import com.mook.excel.helper.annotation.Column;
+import com.github.dreamroute.excel.helper.annotation.Column;
 
 public class BaseDomain implements Serializable {
 

@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mook.excel.helper.annotation.Sheet;
-import com.mook.excel.helper.util.ClassAssistant;
+import com.github.dreamroute.excel.helper.annotation.Sheet;
+import com.github.dreamroute.excel.helper.util.ClassAssistant;
 
 public class ClassAssistantTest {
 
