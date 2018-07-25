@@ -33,4 +33,17 @@
 			</plugin>
 		</plugins>
 	</build>
+	<distributionManagement>
+		<repository>
+			<id>release</id>
+			<name>Nexus Release Repository</name>
+			<url>http://10.82.12.29:8081/repository/cenpur-release/</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>Nexus Snapshot Repository</name>
+			<url>http://10.82.12.29:8081/repository/cenpur-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 </project>
