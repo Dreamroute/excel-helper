@@ -1,7 +1,6 @@
 package com.mook.excel.helper.beans;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import com.mook.excel.helper.annotation.Column;
 
@@ -13,13 +12,13 @@ public class BaseDomain implements Serializable {
     private static final long serialVersionUID = 1172774186134308106L;
 
     @Column(name = "创建时间")
-    private Date createTime;
+    private String createTime;
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 

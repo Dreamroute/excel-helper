@@ -17,12 +17,15 @@ public class User extends BaseDomain implements Serializable {
 
     @Column(name = "ID")
     private Long id;
-    
+
     @Column(name = "姓名")
     private String name;
-    
+
     @Column(name = "年龄", cellType = CellType.NUMERIC)
     private Integer age;
+
+    @Column(name = "中国人", cellType = CellType.BOOLEAN)
+    private boolean chinese;
 
     public Long getId() {
         return id;
@@ -46,6 +49,14 @@ public class User extends BaseDomain implements Serializable {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public boolean isChinese() {
+        return chinese;
+    }
+
+    public void setChinese(boolean chinese) {
+        this.chinese = chinese;
     }
 
 }

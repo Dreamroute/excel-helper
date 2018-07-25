@@ -70,7 +70,7 @@ public final class ExcelUtil {
         HeaderProps[] hps = CacheFactory.findHeaderProps(dataCls);
         CellProps[] cps = CacheFactory.findCellProps(dataCls);
 
-        // create header row, create data rows, set column width
+        // create header row, create data rows
         createHeaderRow(sheet, headerValues, hps, workbook);
         createDataRows(sheet, data, cellType, cps, workbook);
         setColumnWidth(sheet, columnWith);
@@ -111,7 +111,7 @@ public final class ExcelUtil {
             }
         }
     }
-    
+
     // @Header and @Cell common props.
     private static void processCellStyle(HSSFCellStyle hcs, BaseProps baseProps) {
         hcs.setAlignment(baseProps.getHorizontal());
@@ -121,7 +121,7 @@ public final class ExcelUtil {
     private static void setColumnWidth(HSSFSheet sheet, Integer[] columnWith) {
         for (int i = 0; i < columnWith.length; i++) {
             sheet.autoSizeColumn(i);
-            int width = columnWith[i] > 0 ? columnWith[i] : sheet.getColumnWidth(i);
+            int width = columnWith[i] > 0 ? columnWith[i] : sheet.getColumnWidth(i); // 1.1 times
             sheet.setColumnWidth(i, width);
         }
     }

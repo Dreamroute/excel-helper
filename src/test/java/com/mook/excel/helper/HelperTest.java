@@ -4,15 +4,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.junit.Test;
 
 import com.mook.excel.helper.beans.User;
@@ -30,7 +31,8 @@ public class HelperTest {
             user.setId(100L + i);
             user.setName("w.dehai" + i);
             user.setAge(300000000);
-            user.setCreateTime(new Date());
+            user.setChinese(true);
+            user.setCreateTime("2018-07-25 14:32:28");
             userList.add(user);
             userSet.add(user);
         }
@@ -51,28 +53,15 @@ public class HelperTest {
 
     @Test
     public void styleTest() {
-        // CellFormatType formatType = CellFormatType.DATE;
-        // CellType cellType = CellType.NUMERIC;
-        // HSSFWorkbook workbook = new HSSFWorkbook();
-        // HSSFCellStyle cellStyle = workbook.createCellStyle();
-        // cellStyle.setAlignment(HorizontalAlignment.CENTER);
-        // cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-        // HSSFFont font = workbook.createFont();
-        // font.setColor(Font.COLOR_RED);
-        // HSSFDataFormat format = workbook.createDataFormat();
-        // HSSFDataFormatter f = new HSSFDataFormatter();
-        //
-        // //dataformat
-        // HSSFDataFormat dataFormat = workbook.createDataFormat();
-         HSSFDataFormat.getBuiltinFormats().forEach(System.out::println);
-        System.err.println(HSSFDataFormat.getBuiltinFormat((short) 49));
         try (HSSFWorkbook workbook = new HSSFWorkbook()) {
-            HSSFCellStyle cellStyle = workbook.createCellStyle();
-            cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("_ * #,##0_ ;_ * -#,##0_ ;_ * \"-\"_ ;_ @_ "));
-            System.err.println();
+            HSSFCellStyle cs = workbook.createCellStyle();
+            cs.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            cs.setFillBackgroundColor(HSSFColor.HSSFColorPredefined.LIGHT_GREEN.getIndex());
+            cs.setFillForegroundColor(HSSFColor.HSSFColorPredefined.LIGHT_GREEN.getIndex());
             HSSFCell cell = workbook.createSheet("test").createRow(0).createCell(0);
-            cell.setCellStyle(cellStyle);
-            cell.setCellValue("123.456023");
+            cell.setCellStyle(cs);
+            cell.setCellType(CellType.STRING);
+            cell.setCellValue("wangdehai");
             File file = new File("d:/1.xls");
             OutputStream out = new FileOutputStream(file);
             workbook.write(out);
