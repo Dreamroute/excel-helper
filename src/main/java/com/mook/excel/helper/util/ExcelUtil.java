@@ -121,7 +121,7 @@ public final class ExcelUtil {
     private static void setColumnWidth(HSSFSheet sheet, Integer[] columnWith) {
         for (int i = 0; i < columnWith.length; i++) {
             sheet.autoSizeColumn(i);
-            int width = columnWith[i] > 0 ? columnWith[i] : sheet.getColumnWidth(i); // 1.1 times
+            int width = columnWith[i] > 0 ? columnWith[i] : sheet.getColumnWidth(i) * 13 / 10; // 1.3 times
             sheet.setColumnWidth(i, width);
         }
     }

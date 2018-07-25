@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mook</groupId>
 	<artifactId>excel-helper</artifactId>
-	<version>1.0.0-RELEASE</version>
+	<version>1.0.2-RELEASE</version>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
