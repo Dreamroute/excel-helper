@@ -42,7 +42,7 @@ public class ExcelHelper {
      * export as a file.
      * 
      * @param sheets sheets your bussiness data.
-     * @param newFile
+     * @param newFile which file you'll write to.
      */
     public static void exportFile(Collection<?> sheets, File newFile) {
         try (OutputStream out = new FileOutputStream(newFile)) {

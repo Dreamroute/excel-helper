@@ -18,12 +18,18 @@ import org.apache.poi.ss.usermodel.VerticalAlignment;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Header {
 
-    /** Horizontal Aign **/
+    /**
+     * Horizontal Aign
+     * 
+     * @return return horizontal align
+     */
     HorizontalAlignment horizontal() default HorizontalAlignment.CENTER;
-    
-    /** Vertical Align **/
+
+    /**
+     * Vertical Align
+     * 
+     * @return return vertical align
+     */
     VerticalAlignment vertical() default VerticalAlignment.CENTER;
-    
-    
-    
+
 }
