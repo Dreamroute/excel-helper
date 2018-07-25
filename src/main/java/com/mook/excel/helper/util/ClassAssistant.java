@@ -9,7 +9,12 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.poi.ss.usermodel.CellType;
 
+import com.mook.excel.helper.annotation.Cell;
+import com.mook.excel.helper.annotation.CellProps;
 import com.mook.excel.helper.annotation.Column;
+import com.mook.excel.helper.annotation.Header;
+import com.mook.excel.helper.annotation.HeaderProps;
+import com.mook.excel.helper.annotation.PropsAnno;
 import com.mook.excel.helper.annotation.Sheet;
 import com.mook.excel.helper.cache.CacheFactory;
 
@@ -31,7 +36,7 @@ public final class ClassAssistant {
         }
         return sheetName;
     }
-    
+
     public static List<String> getHeaderValues(Class<?> cls) {
         List<Field> fields = CacheFactory.findFields(cls);
         List<String> headerValues = new ArrayList<>();
@@ -83,9 +88,9 @@ public final class ClassAssistant {
     public static Integer[] getColumnWidth(Class<?> cls) {
         List<Field> fields = CacheFactory.findFields(cls);
         Integer[] columnWidth = new Integer[fields.size()];
-        for (int i=0; i<fields.size(); i++) {
+        for (int i = 0; i < fields.size(); i++) {
             int width = fields.get(i).getAnnotation(Column.class).width();
-            columnWidth[i] = width > 0 ? width : 0; 
+            columnWidth[i] = width > 0 ? width : 0;
         }
         return columnWidth;
     }
@@ -93,8 +98,44 @@ public final class ClassAssistant {
     public static CellType[] getCellType(Class<?> cls) {
         List<Field> fields = CacheFactory.findFields(cls);
         CellType[] cellType = new CellType[fields.size()];
-        for (int i=0; i<fields.size(); i++)
+        for (int i = 0; i < fields.size(); i++)
             cellType[i] = fields.get(i).getAnnotation(Column.class).cellType();
         return cellType;
+    }
+
+    public static HeaderProps[] getHeaderProps(Class<?> cls) {
+        List<Field> fields = CacheFactory.findFields(cls);
+        HeaderProps[] hps = new HeaderProps[fields.size()];
+        for (int i = 0; i < fields.size(); i++) {
+            Header anno = fields.get(i).getAnnotation(Header.class);
+            HeaderProps hp = new HeaderProps();
+            try {
+                anno = anno == null ? PropsAnno.class.getDeclaredField("props").getAnnotation(Header.class) : anno;
+                hp.setHorizontal(anno.horizontal());
+                hp.setVertical(anno.vertical());
+                hps[i] = hp;
+            } catch (NoSuchFieldException | SecurityException e) {
+                // ignore.
+            }
+        }
+        return hps;
+    }
+
+    public static CellProps[] getCellProps(Class<?> cls) {
+        List<Field> fields = CacheFactory.findFields(cls);
+        CellProps[] hps = new CellProps[fields.size()];
+        for (int i = 0; i < fields.size(); i++) {
+            Cell anno = fields.get(i).getAnnotation(Cell.class);
+            CellProps cp = new CellProps();
+            try {
+                anno = anno == null ? PropsAnno.class.getDeclaredField("props").getAnnotation(Cell.class) : anno;
+                cp.setHorizontal(anno.horizontal());
+                cp.setVertical(anno.vertical());
+                hps[i] = cp;
+            } catch (NoSuchFieldException | SecurityException e) {
+                // ignore.
+            }
+        }
+        return hps;
     }
 }

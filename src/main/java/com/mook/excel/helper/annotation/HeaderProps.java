@@ -1,5 +1,3 @@
 package com.mook.excel.helper.annotation;
 
-public class HeaderProps {
-
-}
+public class HeaderProps extends BaseProps {}

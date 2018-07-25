@@ -14,7 +14,7 @@ import org.apache.poi.ss.usermodel.VerticalAlignment;
  * @author 342252328@qq.com
  *
  */
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Header {
 

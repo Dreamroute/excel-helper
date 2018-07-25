@@ -7,11 +7,14 @@ import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellType;
 
+import com.mook.excel.helper.annotation.BaseProps;
+import com.mook.excel.helper.annotation.CellProps;
 import com.mook.excel.helper.annotation.HeaderProps;
 import com.mook.excel.helper.cache.CacheFactory;
 import com.mook.excel.helper.exception.ExcelHelperException;
@@ -65,23 +68,28 @@ public final class ExcelUtil {
         CellType[] cellType = CacheFactory.findCellType(dataCls);
         Integer[] columnWith = CacheFactory.findColumnWidth(dataCls);
         HeaderProps[] hps = CacheFactory.findHeaderProps(dataCls);
-        CellProp[] cps = CacheFactory.findCellProps(dataCls);
+        CellProps[] cps = CacheFactory.findCellProps(dataCls);
 
         // create header row, create data rows, set column width
-        createHeaderRow(sheet, headerValues);
-        createDataRows(sheet, data, cellType);
+        createHeaderRow(sheet, headerValues, hps, workbook);
+        createDataRows(sheet, data, cellType, cps, workbook);
         setColumnWidth(sheet, columnWith);
     }
 
-    private static void createHeaderRow(HSSFSheet sheet, List<String> headerValues) {
+    private static void createHeaderRow(HSSFSheet sheet, List<String> headerValues, HeaderProps[] hps, HSSFWorkbook workbook) {
         HSSFRow row = sheet.createRow(0);
         for (int i = 0; i < headerValues.size(); i++) {
             HSSFCell cell = row.createCell(i);
             cell.setCellValue(headerValues.get(i));
+
+            // cell style
+            HSSFCellStyle hcs = workbook.createCellStyle();
+            processCellStyle(hcs, hps[i]);
+            cell.setCellStyle(hcs);
         }
     }
 
-    private static void createDataRows(HSSFSheet sheet, List<List<Object>> data, CellType[] cellType) {
+    private static void createDataRows(HSSFSheet sheet, List<List<Object>> data, CellType[] cellType, CellProps[] cps, HSSFWorkbook workbook) {
         for (int i = 0; i < data.size(); i++) {
             HSSFRow row = sheet.createRow(i + 1); // 0 row is header, data row from 1.
             List<Object> rowData = data.get(i);
@@ -95,8 +103,19 @@ public final class ExcelUtil {
                 } else {
                     cell.setCellValue(rowData.get(j).toString());
                 }
+
+                // cell style
+                HSSFCellStyle hcs = workbook.createCellStyle();
+                processCellStyle(hcs, cps[j]);
+                cell.setCellStyle(hcs);
             }
         }
+    }
+    
+    // @Header and @Cell common props.
+    private static void processCellStyle(HSSFCellStyle hcs, BaseProps baseProps) {
+        hcs.setAlignment(baseProps.getHorizontal());
+        hcs.setVerticalAlignment(baseProps.getVertical());
     }
 
     private static void setColumnWidth(HSSFSheet sheet, Integer[] columnWith) {

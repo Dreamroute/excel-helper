@@ -68,7 +68,6 @@ public class HelperTest {
         System.err.println(HSSFDataFormat.getBuiltinFormat((short) 49));
         try (HSSFWorkbook workbook = new HSSFWorkbook()) {
             HSSFCellStyle cellStyle = workbook.createCellStyle();
-            short format = workbook.createDataFormat().getFormat("¥#,##0");
             cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("_ * #,##0_ ;_ * -#,##0_ ;_ * \"-\"_ ;_ @_ "));
             System.err.println();
             HSSFCell cell = workbook.createSheet("test").createRow(0).createCell(0);

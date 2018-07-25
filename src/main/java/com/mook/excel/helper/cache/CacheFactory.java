@@ -8,6 +8,8 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.CellType;
 
+import com.mook.excel.helper.annotation.CellProps;
+import com.mook.excel.helper.annotation.HeaderProps;
 import com.mook.excel.helper.util.ClassAssistant;
 
 /**
@@ -25,6 +27,8 @@ public class CacheFactory {
     private static final ConcurrentHashMap<Class<?>, List<String>> HEADER_VALUES = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<Class<?>, Integer[]> COLUMN_WIDTH = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<Class<?>, CellType[]> CELL_TYPE = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Class<?>, HeaderProps[]> HEADER_PROPS = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Class<?>, CellProps[]> CELL_PROPS = new ConcurrentHashMap<>();
 
     public static String findSheetName(Class<?> cls) {
         String sheetName = SHEET_NAME_MAP.get(cls);
@@ -71,4 +75,29 @@ public class CacheFactory {
         return cellType;
     }
 
+    public static HeaderProps[] findHeaderProps(Class<?> cls) {
+        HeaderProps[] hps = HEADER_PROPS.get(cls);
+        if (hps == null || hps.length == 0) {
+            hps = ClassAssistant.getHeaderProps(cls);
+            HEADER_PROPS.put(cls, hps);
+        }
+        return hps;
+    }
+
+    public static CellProps[] findCellProps(Class<?> cls) {
+        CellProps[] cps = CELL_PROPS.get(cls);
+        if (cps == null || cps.length == 0) {
+            cps = ClassAssistant.getCellProps(cls);
+            CELL_PROPS.put(cls, cps);
+        }
+        return cps;
+    }
+
 }
+
+
+
+
+
+
+

@@ -29,7 +29,7 @@ public class ExcelHelper {
     }
 
     /**
-     * export to file.
+     * export as a file.
      * 
      * @param sheets your bussiness data.
      * @param path file path
@@ -39,7 +39,7 @@ public class ExcelHelper {
     }
 
     /**
-     * export to file.
+     * export as a file.
      * 
      * @param sheets sheets your bussiness data.
      * @param newFile
