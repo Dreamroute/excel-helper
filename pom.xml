@@ -5,6 +5,8 @@
 	<artifactId>excel-helper</artifactId>
 	<version>1.0.0-RELEASE</version>
 
+	<!-- <parent> <groupId>org.sonatype.oss</groupId> <artifactId>oss-parent</artifactId> <version>7</version> </parent> -->
+
 	<name>excel-helper</name>
 	<url>https://github.com/Dreamroute/excel-helper</url>
 	<description>excel export base on apache poi 3.17</description>
@@ -29,69 +31,16 @@
 		<url>https://github.com/Dreamroute/excel-helper</url>
 	</scm>
 
-	<profiles>
-		<profile>
-			<id>release</id>
-			<build>
-				<pluginManagement>
-					<plugins>
-						<!-- Source -->
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-source-plugin</artifactId>
-							<version>2.2.1</version>
-							<executions>
-								<execution>
-									<phase>package</phase>
-									<goals>
-										<goal>jar-no-fork</goal>
-									</goals>
-								</execution>
-							</executions>
-						</plugin>
-						<!-- Javadoc -->
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-javadoc-plugin</artifactId>
-							<version>2.9.1</version>
-							<executions>
-								<execution>
-									<phase>package</phase>
-									<goals>
-										<goal>jar</goal>
-									</goals>
-								</execution>
-							</executions>
-						</plugin>
-						<!-- GPG -->
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-gpg-plugin</artifactId>
-							<version>1.5</version>
-							<executions>
-								<execution>
-									<phase>verify</phase>
-									<goals>
-										<goal>sign</goal>
-									</goals>
-								</execution>
-							</executions>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-			</build>
-			<distributionManagement>
-				<snapshotRepository>
-					<id>oss</id>
-					<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-				</snapshotRepository>
-				<repository>
-					<id>oss</id>
-					<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-				</repository>
-			</distributionManagement>
-		</profile>
-	</profiles>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+		</snapshotRepository>
+		<repository>
+			<id>sonatype-nexus-staging</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
 	<build>
 		<plugins>
@@ -102,6 +51,33 @@
 					<skipTests>true</skipTests>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.2</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<!--配置生成源码包 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-gpg-plugin</artifactId> <version>1.5</version> 
+				<executions> <execution> <id>sign-artifacts</id> <phase>verify</phase> <goals> <goal>sign</goal> </goals> <configuration> 
+				<executable>gpg</executable> <homedir>${gpg.homedir}</homedir> <keyname>${gpg.keyname}</keyname> <passphrase>${gpg.passphrase}</passphrase> 
+				</configuration> </execution> </executions> </plugin> -->
 		</plugins>
 	</build>
 
