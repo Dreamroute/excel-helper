@@ -2,6 +2,6 @@
 ``` javascript
 <dependency>
     <groupId>com.github.dreamroute</groupId>
-    <artifactId>locker</artifactId>
+    <artifactId>excel-helper</artifactId>
     <version>newest version</version>
 </dependency>
