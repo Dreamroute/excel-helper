@@ -86,8 +86,13 @@ public class HelperTest {
     public void xlsxTest() {
         String path = "d:/1.xls";
         ExcelType type = ExcelType.XLS;
-        List<User> users = ExcelHelper.importFromPath(type, path);
+        List<User> users = ExcelHelper.importFromPath(type, path, User.class);
         System.err.println(users);
+    }
+    
+    @Test
+    public void sortListTest() {
+        
     }
 
 }

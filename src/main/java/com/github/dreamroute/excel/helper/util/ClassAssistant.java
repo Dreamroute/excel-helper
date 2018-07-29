@@ -3,6 +3,7 @@ package com.github.dreamroute.excel.helper.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.ReflectPermission;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -54,6 +55,7 @@ public final class ClassAssistant {
             for (Class<?> superCls : superClsList)
                 addFields(superCls, fields);
         }
+        
         return fields;
     }
 
@@ -71,6 +73,22 @@ public final class ClassAssistant {
                 fieldList.add(field);
             }
         }
+        
+        sortFields(fieldList);
+    }
+    
+    private static void sortFields(List<Field> fields) {
+        Column col = fields.get(0).getAnnotation(Column.class);
+        col.order();
+        fields.sort(new Comparator<Field>() {
+            @Override
+            public int compare(Field o1, Field o2) {
+                int order1 = o1.getAnnotation(Column.class).order();
+                int order2 = o2.getAnnotation(Column.class).order();
+                int lessThan = order1 == order2 ? 0 : -1;
+                return order1 > order2 ? 1 : lessThan;
+            }
+        });
     }
 
     private static boolean canAccessPrivateMethods() {

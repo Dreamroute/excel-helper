@@ -15,13 +15,13 @@ public class User extends BaseDomain implements Serializable {
      */
     private static final long serialVersionUID = 2199037777470546108L;
 
-    @Column(name = "ID")
+    @Column(name = "ID", order = -10)
     private Long id;
 
-    @Column(name = "姓名")
+    @Column(name = "姓名", order = -9)
     private String name;
 
-    @Column(name = "年龄", cellType = CellType.NUMERIC)
+    @Column(name = "年龄", cellType = CellType.NUMERIC, order = 1)
     private Integer age;
 
     @Column(name = "中国人", cellType = CellType.BOOLEAN)

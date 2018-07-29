@@ -67,7 +67,11 @@ public class DataAssistant {
             Row row = rows.next();
             Iterator<Cell> cells = row.cellIterator();
             while (cells.hasNext()) {
-                System.err.println(cells.next().getvalue);
+                Cell cell = cells.next();
+//                String value = cell.getStringCellValue();
+                int colIndex = cell.getColumnIndex();
+                
+                
             }
         }
         return data;
