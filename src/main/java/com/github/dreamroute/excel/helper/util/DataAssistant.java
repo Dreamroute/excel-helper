@@ -74,7 +74,7 @@ public class DataAssistant {
             try {
                 c = cls.getDeclaredConstructor();
             } catch (NoSuchMethodException | SecurityException e) {
-                throw new ExcelHelperException("Domain: " + cls.getSimpleName() + "has no default constructor.");
+                throw new ExcelHelperException("Domain: " + cls.getSimpleName() + " has no default constructor.");
             }
             T domain;
             try {
