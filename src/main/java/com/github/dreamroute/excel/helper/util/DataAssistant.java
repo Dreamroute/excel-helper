@@ -7,7 +7,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 
 import com.github.dreamroute.excel.helper.annotation.Column;
 import com.github.dreamroute.excel.helper.cache.CacheFactory;
@@ -49,6 +52,30 @@ public class DataAssistant {
             result.add(rowData);
         }
         return result;
+    }
+
+    public static <T> List<T> createDataFromSheet(Sheet sheet, Class<T> cls) {
+        Iterator<Row> rows = sheet.rowIterator();
+        // ignore the first row
+        removeFirstRow(rows);
+        return createDateFromSheet(rows, cls);
+    }
+    
+    private static <T> List<T> createDateFromSheet(Iterator<Row> rows, Class<T> cls) {
+        List<T> data = new ArrayList<>();
+        while (rows.hasNext()) {
+            Row row = rows.next();
+            Iterator<Cell> cells = row.cellIterator();
+            while (cells.hasNext()) {
+                System.err.println(cells.next().getvalue);
+            }
+        }
+        return data;
+    }
+
+    public static void removeFirstRow(Iterator<Row> rows) {
+        if (rows.hasNext())
+            rows.next();
     }
 
 }

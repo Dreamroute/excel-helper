@@ -2,14 +2,22 @@ package com.github.dreamroute.excel.helper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.github.dreamroute.excel.helper.exception.ExcelHelperException;
+import com.github.dreamroute.excel.helper.util.DataAssistant;
 import com.github.dreamroute.excel.helper.util.ExcelType;
 import com.github.dreamroute.excel.helper.util.ExcelUtil;
 
@@ -27,6 +35,16 @@ public class ExcelHelper {
     // if you do not want to export by ExcelHelper, you can only create a workbook, then operate the workbook by yourself.
     public static Workbook create(ExcelType type, Collection<?>... sheets) {
         return ExcelUtil.create(type, sheets);
+    }
+
+    /**
+     * export as a file, default: xlsx.
+     * 
+     * @param sheets your bussiness data.
+     * @param path file path
+     */
+    public static void exportFile(Collection<?> sheets, String path) {
+        exportFile(ExcelType.XLSX, sheets, new File(path));
     }
 
     /**
@@ -67,6 +85,28 @@ public class ExcelHelper {
             throw new ExcelHelperException("write to file faild." + e, e);
         }
         return out.toByteArray();
+    }
+
+    /**
+     * import from path.
+     * 
+     * @param type {@link ExcelType}
+     * @param path
+     * @return return a {@link List}
+     */
+    public static <T> List<T> importFromPath(ExcelType type, String path, Class<T> cls) {
+        File importFile = new File(path);
+        if (!importFile.exists()) {
+            throw new ExcelHelperException("the file " + path + " does not exist.");
+        }
+        List<T> data = new ArrayList<>();
+        try (InputStream in = new FileInputStream(importFile); Workbook workbook = type == ExcelType.XLS ? new HSSFWorkbook(in) : new XSSFWorkbook(in)) {
+            Sheet sheet = workbook.getSheetAt(0);
+            data = DataAssistant.createDataFromSheet(sheet, cls);
+        } catch (IOException e) {
+            throw new ExcelHelperException(e);
+        }
+        return data;
     }
 
 }

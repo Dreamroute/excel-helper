@@ -84,6 +84,10 @@ public class HelperTest {
     
     @Test
     public void xlsxTest() {
+        String path = "d:/1.xls";
+        ExcelType type = ExcelType.XLS;
+        List<User> users = ExcelHelper.importFromPath(type, path);
+        System.err.println(users);
     }
 
 }
