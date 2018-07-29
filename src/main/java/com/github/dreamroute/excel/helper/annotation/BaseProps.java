@@ -3,6 +3,11 @@ package com.github.dreamroute.excel.helper.annotation;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 
+/**
+ * 
+ * @author 342252328@qq.com
+ *
+ */
 public class BaseProps {
     private HorizontalAlignment horizontal;
 

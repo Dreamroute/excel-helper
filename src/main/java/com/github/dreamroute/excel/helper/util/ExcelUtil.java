@@ -1,23 +1,24 @@
 package com.github.dreamroute.excel.helper.util;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import com.github.dreamroute.excel.helper.annotation.BaseProps;
 import com.github.dreamroute.excel.helper.annotation.CellProps;
 import com.github.dreamroute.excel.helper.annotation.HeaderProps;
 import com.github.dreamroute.excel.helper.cache.CacheFactory;
-import com.github.dreamroute.excel.helper.exception.ExcelHelperException;
 
 /**
  * Export workbook util
@@ -30,25 +31,19 @@ public final class ExcelUtil {
     private ExcelUtil() {}
 
     /**
-     * export as a HSSFWorkbook, maybe include one or more sheet.
+     * export as a {@link Workbook}, maybe include one or more sheet.
      * 
      * @param sheets it's a array, every Collection will create a sheet.
-     * @return return a {@link HSSFWorkbook}
+     * @return return a {@link Workbook}
      */
-    public static HSSFWorkbook create(Collection<?>... sheets) {
+    public static Workbook create(ExcelType type, Collection<?>... sheets) {
         if (ArrayUtils.isEmpty(sheets))
-            return new HSSFWorkbook();
-        HSSFWorkbook workbook = createWorkbook(sheets);
-        try {
-            workbook.close();
-        } catch (IOException e) {
-            throw new ExcelHelperException("close workbook faild." + e, e);
-        }
-        return workbook;
+            return type == ExcelType.XLS ? new HSSFWorkbook() : new SXSSFWorkbook();
+        return createWorkbook(type, sheets);
     }
 
-    private static HSSFWorkbook createWorkbook(Collection<?>... sheets) {
-        HSSFWorkbook workbook = new HSSFWorkbook();
+    private static Workbook createWorkbook(ExcelType type, Collection<?>... sheets) {
+        Workbook workbook = type == ExcelType.XLS ? new HSSFWorkbook() : new SXSSFWorkbook();
         for (Collection<?> sheet : sheets) {
             if (CollectionUtils.isNotEmpty(sheet)) {
                 createSheet(workbook, sheet);
@@ -57,9 +52,9 @@ public final class ExcelUtil {
         return workbook;
     }
 
-    private static void createSheet(HSSFWorkbook workbook, Collection<?> sheetData) {
+    private static void createSheet(Workbook workbook, Collection<?> sheetData) {
         String sheetName = getSheetName(sheetData);
-        HSSFSheet sheet = workbook.createSheet(sheetName);
+        Sheet sheet = workbook.createSheet(sheetName);
         Class<?> dataCls = sheetData.iterator().next().getClass();
 
         // excel content (header + data)
@@ -76,25 +71,25 @@ public final class ExcelUtil {
         setColumnWidth(sheet, columnWith);
     }
 
-    private static void createHeaderRow(HSSFSheet sheet, List<String> headerValues, HeaderProps[] hps, HSSFWorkbook workbook) {
-        HSSFRow row = sheet.createRow(0);
+    private static void createHeaderRow(Sheet sheet, List<String> headerValues, HeaderProps[] hps, Workbook workbook) {
+        Row row = sheet.createRow(0);
         for (int i = 0; i < headerValues.size(); i++) {
-            HSSFCell cell = row.createCell(i);
+            Cell cell = row.createCell(i);
             cell.setCellValue(headerValues.get(i));
 
             // cell style
-            HSSFCellStyle hcs = workbook.createCellStyle();
+            CellStyle hcs = workbook.createCellStyle();
             processCellStyle(hcs, hps[i]);
             cell.setCellStyle(hcs);
         }
     }
 
-    private static void createDataRows(HSSFSheet sheet, List<List<Object>> data, CellType[] cellType, CellProps[] cps, HSSFWorkbook workbook) {
+    private static void createDataRows(Sheet sheet, List<List<Object>> data, CellType[] cellType, CellProps[] cps, Workbook workbook) {
         for (int i = 0; i < data.size(); i++) {
-            HSSFRow row = sheet.createRow(i + 1); // 0 row is header, data row from 1.
+            Row row = sheet.createRow(i + 1); // 0 row is header, data row from 1.
             List<Object> rowData = data.get(i);
             for (int j = 0; j < rowData.size(); j++) {
-                HSSFCell cell = row.createCell(j);
+                Cell cell = row.createCell(j);
                 cell.setCellType(cellType[j]);
                 if (cellType[j] == CellType.NUMERIC) {
                     cell.setCellValue(Double.parseDouble(rowData.get(j).toString()));
@@ -105,7 +100,7 @@ public final class ExcelUtil {
                 }
 
                 // cell style
-                HSSFCellStyle hcs = workbook.createCellStyle();
+                CellStyle hcs = workbook.createCellStyle();
                 processCellStyle(hcs, cps[j]);
                 cell.setCellStyle(hcs);
             }
@@ -113,13 +108,19 @@ public final class ExcelUtil {
     }
 
     // @Header and @Cell common props.
-    private static void processCellStyle(HSSFCellStyle hcs, BaseProps baseProps) {
+    private static void processCellStyle(CellStyle hcs, BaseProps baseProps) {
         hcs.setAlignment(baseProps.getHorizontal());
         hcs.setVerticalAlignment(baseProps.getVertical());
     }
 
-    private static void setColumnWidth(HSSFSheet sheet, Integer[] columnWith) {
+    private static void setColumnWidth(Sheet sheet, Integer[] columnWith) {
         for (int i = 0; i < columnWith.length; i++) {
+            // for xlsx, before autoSizeColumn() method, must invoke trackAllColumnsForAutoSizing, otherwise every column's with will be the same.
+            if (SXSSFSheet.class.isAssignableFrom(sheet.getClass())) {
+                SXSSFSheet st = (SXSSFSheet) sheet;
+                st.trackAllColumnsForAutoSizing();
+            }
+
             sheet.autoSizeColumn(i);
             int width = columnWith[i] > 0 ? columnWith[i] : sheet.getColumnWidth(i) * 13 / 10; // 1.3 times
             sheet.setColumnWidth(i, width);

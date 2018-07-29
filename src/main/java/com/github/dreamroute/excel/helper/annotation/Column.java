@@ -32,7 +32,7 @@ public @interface Column {
     int width() default 0;
 
     /**
-     * cell type, you can define it with <code>CellType</code> by yourself, support <code>CellType.STRING</code>, <code>CellType.NUMERIC</code> and <code>CellType.BOOLEAN</code>, default:
+     * cell type, you can define it with {@link CellType} by yourself, support <code>CellType.STRING</code>, <code>CellType.NUMERIC</code> and <code>CellType.BOOLEAN</code>, default:
      * <code>CellType.STRING</code>
      * 
      * @return return cellType.

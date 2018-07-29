@@ -14,15 +14,19 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
 
 import com.github.dreamroute.excel.helper.ExcelHelper;
+import com.github.dreamroute.excel.helper.util.ExcelType;
 import com.mook.excel.helper.beans.User;
 
 public class HelperTest {
 
     @Test
     public void baseTest() throws Exception {
+        
+        ExcelType type = ExcelType.XLSX;
 
         List<User> userList = new ArrayList<>();
         Set<User> userSet = new HashSet<>();
@@ -38,15 +42,21 @@ public class HelperTest {
             userSet.add(user);
         }
 
-        HSSFWorkbook workbook = ExcelHelper.create(userList);
-        File outFile = new File("d:/1.xls");
+        Workbook workbook = ExcelHelper.create(type, userList);
+        String path1 = type == ExcelType.XLS ? "d:/1.xls" : "d:/1.xlsx";
+        File outFile = new File(path1);
         OutputStream out = new FileOutputStream(outFile);
         workbook.write(out);
 
-        ExcelHelper.exportFile(userList, "d:/2.xls");
-        ExcelHelper.exportFile(userList, new File("d:/3.xls"));
-        byte[] bs = ExcelHelper.exportByteArray(userList);
-        File file4 = new File("d:/4.xls");
+        String path2 = type == ExcelType.XLS ? "d:/2.xls" : "d:/2.xlsx";
+        ExcelHelper.exportFile(type, userList, path2);
+        
+        String path3 = type == ExcelType.XLS ? "d:/3.xls" : "d:/3.xlsx";
+        ExcelHelper.exportFile(type, userList, new File(path3));
+        byte[] bs = ExcelHelper.exportByteArray(type, userList);
+        
+        String path4 = type == ExcelType.XLS ? "d:/4.xls" : "d:/4.xlsx";
+        File file4 = new File(path4);
         OutputStream os = new FileOutputStream(file4);
         os.write(bs);
         os.close();
@@ -70,7 +80,10 @@ public class HelperTest {
             //
             e.printStackTrace();
         }
-
+    }
+    
+    @Test
+    public void xlsxTest() {
     }
 
 }

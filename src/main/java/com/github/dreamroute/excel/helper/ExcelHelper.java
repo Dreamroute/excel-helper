@@ -7,13 +7,14 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import com.github.dreamroute.excel.helper.exception.ExcelHelperException;
+import com.github.dreamroute.excel.helper.util.ExcelType;
 import com.github.dreamroute.excel.helper.util.ExcelUtil;
 
 /**
- * the operation class, you'll use it to create or export excel files/{@link HSSFWorkbook}
+ * the root operation class, you'll use it to create or export excel files/{@link Workbook}
  * 
  * @author 342252328@qq.com
  * @since JDK 1.7
@@ -23,9 +24,9 @@ public class ExcelHelper {
 
     private ExcelHelper() {}
 
-    // if you do not want to export by ExcelHelper, you can only create a workbook, then operate the workbook by your self.
-    public static HSSFWorkbook create(Collection<?>... sheets) {
-        return ExcelUtil.create(sheets);
+    // if you do not want to export by ExcelHelper, you can only create a workbook, then operate the workbook by yourself.
+    public static Workbook create(ExcelType type, Collection<?>... sheets) {
+        return ExcelUtil.create(type, sheets);
     }
 
     /**
@@ -34,8 +35,8 @@ public class ExcelHelper {
      * @param sheets your bussiness data.
      * @param path file path
      */
-    public static void exportFile(Collection<?> sheets, String path) {
-        exportFile(sheets, new File(path));
+    public static void exportFile(ExcelType type, Collection<?> sheets, String path) {
+        exportFile(type, sheets, new File(path));
     }
 
     /**
@@ -44,9 +45,9 @@ public class ExcelHelper {
      * @param sheets sheets your bussiness data.
      * @param newFile which file you'll write to.
      */
-    public static void exportFile(Collection<?> sheets, File newFile) {
+    public static void exportFile(ExcelType type, Collection<?> sheets, File newFile) {
         try (OutputStream out = new FileOutputStream(newFile)) {
-            create(sheets).write(out);
+            create(type, sheets).write(out);
         } catch (Exception e) {
             throw new ExcelHelperException("write to file faild." + e, e);
         }
@@ -58,10 +59,10 @@ public class ExcelHelper {
      * @param sheets sheets sheets your bussiness data.
      * @return return a byte array with data.
      */
-    public static byte[] exportByteArray(Collection<?> sheets) {
+    public static byte[] exportByteArray(ExcelType type, Collection<?> sheets) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
-            create(sheets).write(out);
+            create(type, sheets).write(out);
         } catch (IOException e) {
             throw new ExcelHelperException("write to file faild." + e, e);
         }
