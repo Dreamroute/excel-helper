@@ -3,6 +3,7 @@ package com.github.dreamroute.excel.helper;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -91,7 +92,8 @@ public class ExcelHelper {
      * import from path.
      * 
      * @param type {@link ExcelType}
-     * @param path
+     * @param path the file path
+     * @param cls target Class<T>
      * @return return a {@link List}
      */
     public static <T> List<T> importFromPath(ExcelType type, String path, Class<T> cls) {
@@ -99,8 +101,40 @@ public class ExcelHelper {
         if (!importFile.exists()) {
             throw new ExcelHelperException("the file " + path + " does not exist.");
         }
+        return importFromFile(type, importFile, cls);
+    }
+
+    /**
+     * import from file.
+     * 
+     * @param type {@link ExcelType}
+     * @param importFile the file path
+     * @param cls target Class<T>
+     * @return return a {@link List}
+     */
+    public static <T> List<T> importFromFile(ExcelType type, File importFile, Class<T> cls) {
+        if (!importFile.exists()) {
+            throw new ExcelHelperException("the file " + importFile.getName() + " does not exist.");
+        }
+        InputStream in = null;
+        try {
+            in = new FileInputStream(importFile);
+        } catch (FileNotFoundException e) {
+            throw new ExcelHelperException(e);
+        }
+        return importFromInputStream(type, in, cls);
+    }
+
+    /**
+     * import from {@link InputStream}
+     * @param type {@link ExcelType}
+     * @param inputStream {@link InputStream}
+     * @param cls target Class<T>
+     * @return return a {@link List}
+     */
+    public static <T> List<T> importFromInputStream(ExcelType type, InputStream inputStream, Class<T> cls) {
         List<T> data = new ArrayList<>();
-        try (InputStream in = new FileInputStream(importFile); Workbook workbook = type == ExcelType.XLS ? new HSSFWorkbook(in) : new XSSFWorkbook(in)) {
+        try (Workbook workbook = type == ExcelType.XLS ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream)) {
             Sheet sheet = workbook.getSheetAt(0);
             data = DataAssistant.createDataFromSheet(sheet, cls);
         } catch (IOException e) {

@@ -4,11 +4,16 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ReflectPermission;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
 
 import com.github.dreamroute.excel.helper.annotation.Cell;
 import com.github.dreamroute.excel.helper.annotation.CellProps;
@@ -18,6 +23,7 @@ import com.github.dreamroute.excel.helper.annotation.HeaderProps;
 import com.github.dreamroute.excel.helper.annotation.PropsAnno;
 import com.github.dreamroute.excel.helper.annotation.Sheet;
 import com.github.dreamroute.excel.helper.cache.CacheFactory;
+import com.github.dreamroute.excel.helper.exception.ExcelHelperException;
 
 /**
  * util class
@@ -55,7 +61,7 @@ public final class ClassAssistant {
             for (Class<?> superCls : superClsList)
                 addFields(superCls, fields);
         }
-        
+
         return fields;
     }
 
@@ -73,10 +79,10 @@ public final class ClassAssistant {
                 fieldList.add(field);
             }
         }
-        
+
         sortFields(fieldList);
     }
-    
+
     private static void sortFields(List<Field> fields) {
         Column col = fields.get(0).getAnnotation(Column.class);
         col.order();
@@ -133,7 +139,7 @@ public final class ClassAssistant {
                 hp.setVertical(anno.vertical());
                 hps[i] = hp;
             } catch (NoSuchFieldException | SecurityException e) {
-                // ignore.
+                throw new ExcelHelperException(e);
             }
         }
         return hps;
@@ -151,9 +157,30 @@ public final class ClassAssistant {
                 cp.setVertical(anno.vertical());
                 hps[i] = cp;
             } catch (NoSuchFieldException | SecurityException e) {
-                // ignore.
+                throw new ExcelHelperException(e);
             }
         }
         return hps;
     }
+
+    public static Map<Integer, HeaderInfo> getHeaderInfo(Class<?> cls, Row header) {
+        Iterator<org.apache.poi.ss.usermodel.Cell> cellIterator = header.cellIterator();
+        List<Field> fields = ClassAssistant.getAllFields(cls);
+        Map<Integer, HeaderInfo> headerInfo = new HashMap<>();
+        while (cellIterator.hasNext()) {
+            org.apache.poi.ss.usermodel.Cell cell = cellIterator.next();
+            String headerName = cell.getStringCellValue();
+            for (Field field : fields) {
+                Column col = field.getAnnotation(Column.class);
+                String name = col.name();
+                if (Objects.equals(headerName, name)) {
+                    HeaderInfo hi = new HeaderInfo(col.cellType(), field);
+                    headerInfo.put(cell.getColumnIndex(), hi);
+                    break;
+                }
+            }
+        }
+        return headerInfo;
+    }
+
 }

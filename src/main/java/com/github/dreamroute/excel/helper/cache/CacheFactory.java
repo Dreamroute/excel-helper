@@ -2,15 +2,19 @@ package com.github.dreamroute.excel.helper.cache;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
 
 import com.github.dreamroute.excel.helper.annotation.CellProps;
 import com.github.dreamroute.excel.helper.annotation.HeaderProps;
 import com.github.dreamroute.excel.helper.util.ClassAssistant;
+import com.github.dreamroute.excel.helper.util.HeaderInfo;
 
 /**
  * use to cache pojo's props
@@ -29,6 +33,7 @@ public class CacheFactory {
     private static final ConcurrentHashMap<Class<?>, CellType[]> CELL_TYPE = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<Class<?>, HeaderProps[]> HEADER_PROPS = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<Class<?>, CellProps[]> CELL_PROPS = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Class<?>, Map<Integer, HeaderInfo>> HEADER_INFO = new ConcurrentHashMap<>();
 
     public static String findSheetName(Class<?> cls) {
         String sheetName = SHEET_NAME_MAP.get(cls);
@@ -91,6 +96,15 @@ public class CacheFactory {
             CELL_PROPS.put(cls, cps);
         }
         return cps;
+    }
+
+    public static Map<Integer, HeaderInfo> findHeaderInfo(Class<?> cls, Row header) {
+        Map<Integer, HeaderInfo> headerInfo = HEADER_INFO.get(cls);
+        if (MapUtils.isEmpty(headerInfo)) {
+            headerInfo = ClassAssistant.getHeaderInfo(cls, header);
+            HEADER_INFO.put(cls, headerInfo);
+        }
+        return headerInfo;
     }
 
 }

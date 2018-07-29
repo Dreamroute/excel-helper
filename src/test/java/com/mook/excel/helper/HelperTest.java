@@ -25,7 +25,7 @@ public class HelperTest {
 
     @Test
     public void baseTest() throws Exception {
-        
+
         ExcelType type = ExcelType.XLSX;
 
         List<User> userList = new ArrayList<>();
@@ -34,10 +34,32 @@ public class HelperTest {
         for (int i = 0; i < 3; i++) {
             User user = new User();
             user.setId(100L + i);
+            user.setLongTest(15l);
+
+            user.setIntegerTest(new Integer(2));
+            user.setIntTest(3);
+
             user.setName("w.dehai" + i);
+
+            user.setCharacterTest(new Character('A'));
+            user.setCtest('a');
+
+            user.setShortTestUpper(new Short("6"));
+            user.setShortTestLower((short) 66);
+
+            user.setFloatTestUpper(new Float(1.23));
+            user.setFloatTestLower(3.14f);
+
+            user.setDoubleTestUpper(new Double("333"));
+            user.setDoubleTestLower(12.222);
+
             user.setAge(300000000);
+
+            user.setBooleanTestUpper(Boolean.FALSE);
             user.setChinese(true);
+
             user.setCreateTime("2018-07-25 14:32:28");
+
             userList.add(user);
             userSet.add(user);
         }
@@ -50,11 +72,11 @@ public class HelperTest {
 
         String path2 = type == ExcelType.XLS ? "d:/2.xls" : "d:/2.xlsx";
         ExcelHelper.exportFile(type, userList, path2);
-        
+
         String path3 = type == ExcelType.XLS ? "d:/3.xls" : "d:/3.xlsx";
         ExcelHelper.exportFile(type, userList, new File(path3));
         byte[] bs = ExcelHelper.exportByteArray(type, userList);
-        
+
         String path4 = type == ExcelType.XLS ? "d:/4.xls" : "d:/4.xlsx";
         File file4 = new File(path4);
         OutputStream os = new FileOutputStream(file4);
@@ -81,18 +103,18 @@ public class HelperTest {
             e.printStackTrace();
         }
     }
-    
+
     @Test
-    public void xlsxTest() {
-        String path = "d:/1.xls";
-        ExcelType type = ExcelType.XLS;
+    public void importTest() {
+        String path = "d:/1.xlsx";
+        ExcelType type = ExcelType.XLSX;
         List<User> users = ExcelHelper.importFromPath(type, path, User.class);
         System.err.println(users);
     }
-    
+
     @Test
     public void sortListTest() {
-        
+
     }
 
 }
