@@ -114,22 +114,25 @@ public class DataAssistant {
     private static Object getCellValue(Object cellValue, Class<?> type) {
         String cv = cellValue.toString();
         Object value = null;
-        if (Objects.equals(type, String.class))
+        if (Objects.equals(type, String.class)) {
             value = cv;
-        else if (Objects.equals(type, Integer.class) || Objects.equals(type, int.class))
+        } else if (Objects.equals(type, Integer.class) || Objects.equals(type, int.class)) {
             value = Integer.valueOf(new BigDecimal(cv).toPlainString());
-        else if (Objects.equals(type, Float.class) || Objects.equals(type, float.class))
+        } else if (Objects.equals(type, Float.class) || Objects.equals(type, float.class)) {
             value = Float.valueOf(new BigDecimal(cv).toPlainString());
-        else if (Objects.equals(type, Long.class) || Objects.equals(type, long.class))
+        } else if (Objects.equals(type, Long.class) || Objects.equals(type, long.class)) {
             value = Long.valueOf(new BigDecimal(cv).toPlainString());
-        else if (Objects.equals(type, Short.class) || Objects.equals(type, short.class))
+        } else if (Objects.equals(type, Short.class) || Objects.equals(type, short.class)) {
             value = Short.valueOf(new BigDecimal(cv).toPlainString());
-        else if (Objects.equals(type, Character.class) || Objects.equals(type, char.class))
+        } else if (Objects.equals(type, Character.class) || Objects.equals(type, char.class)) {
             value = Character.valueOf(cv.toCharArray()[0]);
-        else if (Objects.equals(type, Double.class) || Objects.equals(type, double.class))
+        } else if (Objects.equals(type, Double.class) || Objects.equals(type, double.class)) {
             value = Double.valueOf(new BigDecimal(cv).toPlainString());
-        else if (Objects.equals(type, Boolean.class) || Objects.equals(type, boolean.class))
+        } else if (Objects.equals(type, Boolean.class) || Objects.equals(type, boolean.class)) {
             value = Boolean.valueOf(cv);
+        } else if (Objects.equals(type, BigDecimal.class)) {
+            value = new BigDecimal(cv);
+        }
         return value;
     }
 
