@@ -29,3 +29,4 @@
 2. 1.1-RELEASE: 优化一些细节；
 3. 1.2-RELEASE: 支持xlsx(excel-2007)导出；
 4. 1.3-RELEASE: 支持xls和xlsx的导入功能；
+5. 1.4-RELEASE: 支持BigDecimal格式导入；
