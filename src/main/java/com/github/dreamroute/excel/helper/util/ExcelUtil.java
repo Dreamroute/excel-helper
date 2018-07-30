@@ -92,7 +92,13 @@ public final class ExcelUtil {
                 Cell cell = row.createCell(j);
                 cell.setCellType(cellType[j]);
                 if (cellType[j] == CellType.NUMERIC) {
-                    cell.setCellValue(Double.parseDouble(rowData.get(j).toString()));
+                    String v = rowData.get(j).toString();
+                    try {
+                        cell.setCellValue(Double.parseDouble(v));
+                    } catch (NumberFormatException e) {
+                        cell.setCellType(CellType.STRING);
+                        cell.setCellValue(v);
+                    }
                 } else if (cellType[j] == CellType.BOOLEAN) {
                     cell.setCellValue(Boolean.parseBoolean(rowData.get(j).toString()));
                 } else {
@@ -106,7 +112,7 @@ public final class ExcelUtil {
             }
         }
     }
-
+    
     // @Header and @Cell common props.
     private static void processCellStyle(CellStyle hcs, BaseProps baseProps) {
         hcs.setAlignment(baseProps.getHorizontal());
