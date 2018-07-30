@@ -3,6 +3,7 @@ package com.mook.excel.helper;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -18,6 +19,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
 
 import com.github.dreamroute.excel.helper.ExcelHelper;
+import com.github.dreamroute.excel.helper.annotation.Column;
+import com.github.dreamroute.excel.helper.annotation.Sheet;
 import com.github.dreamroute.excel.helper.util.ExcelType;
 import com.mook.excel.helper.beans.User;
 
@@ -114,6 +117,38 @@ public class HelperTest {
 
     @Test
     public void sortListTest() {
+        List<Demo> demoList = new ArrayList<>();
+        for (int i=0; i<10; i++) {
+            Demo demo = new Demo();
+            demo.name = "w.dehai";
+            demo.height = new BigDecimal("1.80342");
+            demoList.add(demo);
+        }
+        ExcelHelper.exportFile(demoList, "d:/DemoList.xls");
+    }
+
+    @Sheet(name = "DemoList")
+    static class Demo {
+        @Column(name = "姓名")
+        private String name;
+        @Column(name = "身高", cellType = CellType.NUMERIC)
+        private BigDecimal height;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public BigDecimal getHeight() {
+            return height;
+        }
+
+        public void setHeight(BigDecimal height) {
+            this.height = height;
+        }
 
     }
 

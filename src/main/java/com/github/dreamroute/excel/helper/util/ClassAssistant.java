@@ -59,7 +59,8 @@ public final class ClassAssistant {
         if (CollectionUtils.isNotEmpty(superClsList)) {
             fields = new ArrayList<>();
             for (Class<?> superCls : superClsList)
-                addFields(superCls, fields);
+                if (!Objects.equals(superCls, Object.class))
+                    addFields(superCls, fields);
         }
         sortFields(fields);
         return fields;
