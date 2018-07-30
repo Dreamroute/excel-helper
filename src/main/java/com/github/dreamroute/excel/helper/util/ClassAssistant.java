@@ -55,13 +55,13 @@ public final class ClassAssistant {
     public static List<Field> getAllFields(Class<?> dataCls) {
         List<Class<?>> superClsList = ClassUtils.getAllSuperclasses(dataCls);
         superClsList.add(dataCls); // add myself
-        List<Field> fields = null;
+        List<Field> fields = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(superClsList)) {
             fields = new ArrayList<>();
             for (Class<?> superCls : superClsList)
                 addFields(superCls, fields);
         }
-
+        sortFields(fields);
         return fields;
     }
 
@@ -79,8 +79,6 @@ public final class ClassAssistant {
                 fieldList.add(field);
             }
         }
-
-        sortFields(fieldList);
     }
 
     private static void sortFields(List<Field> fields) {
