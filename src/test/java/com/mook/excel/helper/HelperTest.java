@@ -124,7 +124,7 @@ public class HelperTest {
             demo.height = new BigDecimal("1.80342");
             demoList.add(demo);
         }
-        ExcelHelper.exportFile(demoList, "d:/DemoList.xls");
+        ExcelHelper.exportFile(ExcelType.XLS, demoList, "d:/DemoList.xls");
     }
 
     @Sheet(name = "DemoList")

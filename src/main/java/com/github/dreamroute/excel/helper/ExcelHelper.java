@@ -1,5 +1,6 @@
 package com.github.dreamroute.excel.helper;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -23,7 +25,8 @@ import com.github.dreamroute.excel.helper.util.ExcelType;
 import com.github.dreamroute.excel.helper.util.ExcelUtil;
 
 /**
- * the root operation class, you'll use it to create or export excel files/{@link Workbook}
+ * the root operation class, you'll use it to create or export excel
+ * files/{@link Workbook}
  * 
  * @author 342252328@qq.com
  * @since JDK 1.7
@@ -36,16 +39,6 @@ public class ExcelHelper {
     // if you do not want to export by ExcelHelper, you can only create a workbook, then operate the workbook by yourself.
     public static Workbook create(ExcelType type, Collection<?>... sheets) {
         return ExcelUtil.create(type, sheets);
-    }
-
-    /**
-     * export as a file, default: xlsx.
-     * 
-     * @param sheets your bussiness data.
-     * @param path file path
-     */
-    public static void exportFile(Collection<?> sheets, String path) {
-        exportFile(ExcelType.XLSX, sheets, new File(path));
     }
 
     /**
@@ -126,7 +119,23 @@ public class ExcelHelper {
     }
 
     /**
+     * import from ByteArray
+     * 
+     * @param type {@link ExcelType}
+     * @param byteArr byte array to import.
+     * @param cls target Class<T>
+     * @return return a {@link List}
+     */
+    public static <T> List<T> importFromByteArray(ExcelType type, byte[] byteArr, Class<T> cls) {
+        if (ArrayUtils.isEmpty(byteArr))
+            return new ArrayList<>();
+        InputStream in = new ByteArrayInputStream(byteArr);
+        return importFromInputStream(type, in, cls);
+    }
+
+    /**
      * import from {@link InputStream}
+     * 
      * @param type {@link ExcelType}
      * @param inputStream {@link InputStream}
      * @param cls target Class<T>
