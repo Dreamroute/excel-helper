@@ -96,6 +96,7 @@ public final class ExcelUtil {
                     try {
                         cell.setCellValue(Double.parseDouble(v));
                     } catch (NumberFormatException e) {
+                        // 这里处理比较极端，转换成Double类型失败时，不抛出异常，而是将String类型写入
                         cell.setCellType(CellType.STRING);
                         cell.setCellValue(v);
                     }
