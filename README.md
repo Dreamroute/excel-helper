@@ -18,33 +18,41 @@
 1. 导出
    1. 定义实体类
     ```
-
     @Sheet(name = "DemoList")
     public class Demo {
         @Column(name = "姓名")
         private String name;
         @Column(name = "身高", cellType = CellType.NUMERIC)
         private BigDecimal height;
-    
         public String getName() {
             return name;
         }
-    
         public void setName(String name) {
             this.name = name;
         }
-    
         public BigDecimal getHeight() {
             return height;
         }
-    
         public void setHeight(BigDecimal height) {
             this.height = height;
         }
     }
     ```
     
-   2. b111
+   2. 导出
+   ```
+       @Test
+        public void sortListTest() {
+            List<Demo> demoList = new ArrayList<>();
+            for (int i=0; i<10; i++) {
+                Demo demo = new Demo();
+                demo.name = "w.dehai";
+                demo.height = new BigDecimal("1.80342");
+                demoList.add(demo);
+            }
+            ExcelHelper.exportFile(ExcelType.XLS, demoList, "d:/DemoList.xls");
+        }
+   ```
 1. 导入
    1. a
    2. b
