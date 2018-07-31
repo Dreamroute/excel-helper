@@ -83,11 +83,18 @@
 > 1. ExcelHelper.importFromByteArray
 > 1. ExcelHelper.importFromInputStream
 
+6. 相关注解说明：
+
+> @Sheet：导出时候为sheet名称；
+> @Column：定义列的相关属性；
+> @Header：定义Header，也就是首行属性；
+> @Cell：定义数据行属性；
+
 
 ### 更新日志：
-1. 1.0-RELEASE: 支持基础导出功能(仅支持xls导出，也就是excel-2003)；
-1. 1.1-RELEASE: 优化一些细节；
-1. 1.2-RELEASE: 支持xlsx(excel-2007)导出；
-1. 1.3-RELEASE: 支持xls和xlsx的导入功能；
-1. 1.4-RELEASE: 支持BigDecimal格式导入；
-1. 1.7-RELEASE: 处理个别小bug；
+>1. 1.0-RELEASE: 支持基础导出功能(仅支持xls导出，也就是excel-2003)；
+>1. 1.1-RELEASE: 优化一些细节；
+>1. 1.2-RELEASE: 支持xlsx(excel-2007)导出；
+>1. 1.3-RELEASE: 支持xls和xlsx的导入功能；
+>1. 1.4-RELEASE: 支持BigDecimal格式导入；
+>1. 1.7-RELEASE: 处理个别小bug；
