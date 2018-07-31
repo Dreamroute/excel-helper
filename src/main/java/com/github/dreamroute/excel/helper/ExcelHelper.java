@@ -41,9 +41,9 @@ public class ExcelHelper {
      * <p>
      * if you do not want to export by ExcelHelper, you can only create a workbook, then operate the workbook by yourself.
      * 
-     * @param type
-     * @param sheets
-     * @return
+     * @param type {@link ExcelType}
+     * @param sheets your bussiness data.
+     * @return return {@link Workbook}
      */
     public static Workbook exportWorkbook(ExcelType type, Collection<?>... sheets) {
         return ExcelUtil.create(type, sheets);
