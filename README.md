@@ -18,8 +18,9 @@
 1. 导出
    1. 定义实体类
     ```
+    
     @Sheet(name = "DemoList")
-    static class Demo {
+    public class Demo {
         @Column(name = "姓名")
         private String name;
         @Column(name = "身高", cellType = CellType.NUMERIC)
@@ -42,6 +43,7 @@
         }
     
     }
+    
     ```
    2. b111
 1. 导入
