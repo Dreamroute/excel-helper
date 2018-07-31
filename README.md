@@ -18,30 +18,30 @@
 1. 导出
    1. 定义实体类
 ```
-    @Sheet(name = "DemoList")
-    static class Demo {
-        @Column(name = "姓名")
-        private String name;
-        @Column(name = "身高", cellType = CellType.NUMERIC)
-        private BigDecimal height;
+@Sheet(name = "DemoList")
+static class Demo {
+    @Column(name = "姓名")
+    private String name;
+    @Column(name = "身高", cellType = CellType.NUMERIC)
+    private BigDecimal height;
 
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public BigDecimal getHeight() {
-            return height;
-        }
-
-        public void setHeight(BigDecimal height) {
-            this.height = height;
-        }
-
+    public String getName() {
+        return name;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public BigDecimal getHeight() {
+        return height;
+    }
+
+    public void setHeight(BigDecimal height) {
+        this.height = height;
+    }
+
+}
 ```
    2. b111
 1. 导入
