@@ -17,9 +17,8 @@
 ### 2、使用方式：
 1. 导出
    1. 定义实体类
-       ```
-       
-    // name为导出excel文件的sheet名称
+    ```
+
     @Sheet(name = "DemoList")
     public class Demo {
         @Column(name = "姓名")
@@ -42,10 +41,9 @@
         public void setHeight(BigDecimal height) {
             this.height = height;
         }
-    
     }
-    
     ```
+    
    2. b111
 1. 导入
    1. a
