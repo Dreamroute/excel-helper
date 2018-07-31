@@ -75,12 +75,16 @@
     ```
 1. 导出一共有3类：
 
-> 1. 参数： ExcelType(可选：ExcelType.XLS和ExcelType.XLSX，对应excel-2003和2007)
 > 1. ExcelHelper.exportFile()            // 导出到文件
 > 1. ExcelHelper.exportByteArray()   // 导出到byte[]
 > 1. ExcelHelper.exportWorkbook()   // 导出成为一个poi原生的Workbook
 
-1. 
+1. 导入一共有4类：
+
+> 1. ExcelHelper.importFromPath
+> 1. ExcelHelper.importFromFile
+> 1. ExcelHelper.importFromByteArray
+> 1. ExcelHelper.importFromInputStream
 
 ### 更新日志：
 1. 1.0-RELEASE: 支持基础导出功能(仅支持xls导出，也就是excel-2003)；
