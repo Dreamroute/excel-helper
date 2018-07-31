@@ -85,10 +85,10 @@
 
 6. 相关注解说明：
 
-> @Sheet：导出时候为sheet名称；
-> @Column：定义列的相关属性；
-> @Header：定义Header，也就是首行属性；
-> @Cell：定义数据行属性；
+> 1. @Sheet：导出时候为sheet名称；
+> 1. @Column：定义列的相关属性；
+> 1. @Header：定义Header，也就是首行属性；
+> 1. @Cell：定义数据行属性；
 
 
 ### 更新日志：
