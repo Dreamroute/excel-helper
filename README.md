@@ -13,7 +13,7 @@
 1. 性能：工具内部大面积使用缓存，性能强大；
 1. 质量：与互联网上其他同类型工具类相比，代码较优雅；
 1. 方式：推荐使用xlsx方式，使用xls方式行数超过65535行可能造成OOM；
-1. 更新：由于作者所在项目组许多地方使用文件导入导出，工具更新迅速；
+1. 更新：更新迅速，只要有人反馈哪里需要调整修改，合情合理的情况下立马修改，发布；
 
 ### 2、使用方式：
 1. 定义实体类
@@ -73,7 +73,14 @@
     }
     
     ```
+1. 导出一共有3类：
 
+> 1. 参数： ExcelType(可选：ExcelType.XLS和ExcelType.XLSX，对应excel-2003和2007)
+> 1. ExcelHelper.exportFile()            // 导出到文件
+> 1. ExcelHelper.exportByteArray()   // 导出到byte[]
+> 1. ExcelHelper.exportWorkbook()   // 导出成为一个poi原生的Workbook
+
+1. 
 
 ### 更新日志：
 1. 1.0-RELEASE: 支持基础导出功能(仅支持xls导出，也就是excel-2003)；
