@@ -17,8 +17,8 @@
 
 ### 2、使用方式：
 1. 定义实体类
-    ```
 
+    ```
     @Sheet(name = "DemoList")
     public class Demo {
         @Column(name = "姓名")
@@ -42,7 +42,6 @@
             this.height = height;
         }
     }
-    
     ```
 1. 导出
 
@@ -60,10 +59,9 @@
         }
         
     ```
-   
 1. 导入
-    ```
 
+    ```
     @Test
     public void importTest() {
         String path = "d:/1.xlsx";
@@ -71,7 +69,6 @@
         List<User> users = ExcelHelper.importFromPath(ExcelType.XLS, path, User.class);
         System.err.println(users);
     }
-    
     ```
 1. 导出一共有3类：
 
