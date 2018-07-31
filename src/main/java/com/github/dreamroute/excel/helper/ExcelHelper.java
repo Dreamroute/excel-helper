@@ -25,8 +25,7 @@ import com.github.dreamroute.excel.helper.util.ExcelType;
 import com.github.dreamroute.excel.helper.util.ExcelUtil;
 
 /**
- * the root operation class, you'll use it to create or export excel
- * files/{@link Workbook}
+ * the root operation class, you'll use it to create or export excel files/{@link Workbook}
  * 
  * @author 342252328@qq.com
  * @since JDK 1.7
@@ -36,14 +35,24 @@ public class ExcelHelper {
 
     private ExcelHelper() {}
 
-    // if you do not want to export by ExcelHelper, you can only create a workbook, then operate the workbook by yourself.
-    public static Workbook create(ExcelType type, Collection<?>... sheets) {
+    /**
+     * <p>
+     * export as {@link Workbook}.
+     * <p>
+     * if you do not want to export by ExcelHelper, you can only create a workbook, then operate the workbook by yourself.
+     * 
+     * @param type
+     * @param sheets
+     * @return
+     */
+    public static Workbook exportWorkbook(ExcelType type, Collection<?>... sheets) {
         return ExcelUtil.create(type, sheets);
     }
 
     /**
      * export as a file.
      * 
+     * @param type {@link ExcelType}
      * @param sheets your bussiness data.
      * @param path file path
      */
@@ -54,12 +63,13 @@ public class ExcelHelper {
     /**
      * export as a file.
      * 
+     * @param type {@link ExcelType}
      * @param sheets sheets your bussiness data.
      * @param newFile which file you'll write to.
      */
     public static void exportFile(ExcelType type, Collection<?> sheets, File newFile) {
         try (OutputStream out = new FileOutputStream(newFile)) {
-            create(type, sheets).write(out);
+            exportWorkbook(type, sheets).write(out);
         } catch (Exception e) {
             throw new ExcelHelperException("write to file faild." + e, e);
         }
@@ -68,13 +78,14 @@ public class ExcelHelper {
     /**
      * export to byte array.
      * 
+     * @param type {@link ExcelType}
      * @param sheets sheets sheets your bussiness data.
      * @return return a byte array with data.
      */
     public static byte[] exportByteArray(ExcelType type, Collection<?> sheets) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
-            create(type, sheets).write(out);
+            exportWorkbook(type, sheets).write(out);
         } catch (IOException e) {
             throw new ExcelHelperException("write to file faild." + e, e);
         }

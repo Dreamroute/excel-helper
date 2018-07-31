@@ -67,7 +67,7 @@ public class HelperTest {
             userSet.add(user);
         }
 
-        Workbook workbook = ExcelHelper.create(type, userList);
+        Workbook workbook = ExcelHelper.exportWorkbook(type, userList);
         String path1 = type == ExcelType.XLS ? "d:/1.xls" : "d:/1.xlsx";
         File outFile = new File(path1);
         OutputStream out = new FileOutputStream(outFile);

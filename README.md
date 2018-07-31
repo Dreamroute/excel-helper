@@ -9,38 +9,44 @@
 
 ### 1、比较：
 1. 简单：满足日常80%功能，不支持单元格合并、公式等特性；
+1. 多样：可导出excel-2003/2007，提供文件、byte数组导出，也可直接创建Workbook之后自行操作；
 1. 性能：工具内部大面积使用缓存，性能强大；
 1. 质量：与互联网上其他同类型工具类相比，代码较优雅；
 1. 方式：推荐使用xlsx方式，使用xls方式行数超过65535行可能造成OOM；
 1. 更新：由于作者所在项目组许多地方使用文件导入导出，工具更新迅速；
 
 ### 2、使用方式：
-1. 导出
-   1. 定义实体类
+1. 定义实体类
     ```
+
     @Sheet(name = "DemoList")
     public class Demo {
         @Column(name = "姓名")
         private String name;
         @Column(name = "身高", cellType = CellType.NUMERIC)
         private BigDecimal height;
+    
         public String getName() {
             return name;
         }
+    
         public void setName(String name) {
             this.name = name;
         }
+    
         public BigDecimal getHeight() {
             return height;
         }
+    
         public void setHeight(BigDecimal height) {
             this.height = height;
         }
     }
-    ```
     
-   2. 导出
-   ```
+    ```
+1. 导出
+
+    ```
        @Test
         public void sortListTest() {
             List<Demo> demoList = new ArrayList<>();
@@ -52,10 +58,21 @@
             }
             ExcelHelper.exportFile(ExcelType.XLS, demoList, "d:/DemoList.xls");
         }
-   ```
+        
+    ```
+   
 1. 导入
-   1. a
-   2. b
+    ```
+
+    @Test
+    public void importTest() {
+        String path = "d:/1.xlsx";
+        ExcelType type = ExcelType.XLSX;
+        List<User> users = ExcelHelper.importFromPath(ExcelType.XLS, path, User.class);
+        System.err.println(users);
+    }
+    
+    ```
 
 
 ### 更新日志：
