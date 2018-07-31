@@ -34,7 +34,7 @@ public @interface Cell {
     VerticalAlignment vertical() default VerticalAlignment.CENTER;
 
     /***
-     * 暂时为使用此属性
+     * 暂时未使用此属性
      *
      * import fomat when meet {@link Date}
      */

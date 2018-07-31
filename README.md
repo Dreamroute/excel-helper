@@ -76,12 +76,13 @@
 > 1. ExcelHelper.exportByteArray()   // 导出到byte[]
 > 1. ExcelHelper.exportWorkbook()   // 导出成为一个poi原生的Workbook
 
-1. 导入一共有4类：
+5. 导入一共有4类：
 
 > 1. ExcelHelper.importFromPath
 > 1. ExcelHelper.importFromFile
 > 1. ExcelHelper.importFromByteArray
 > 1. ExcelHelper.importFromInputStream
+
 
 ### 更新日志：
 1. 1.0-RELEASE: 支持基础导出功能(仅支持xls导出，也就是excel-2003)；
@@ -89,3 +90,4 @@
 1. 1.2-RELEASE: 支持xlsx(excel-2007)导出；
 1. 1.3-RELEASE: 支持xls和xlsx的导入功能；
 1. 1.4-RELEASE: 支持BigDecimal格式导入；
+1. 1.7-RELEASE: 处理个别小bug；
