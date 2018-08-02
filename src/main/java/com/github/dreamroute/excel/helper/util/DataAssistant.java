@@ -120,9 +120,7 @@ public class DataAssistant {
     private static Object getCellValue(Object cellValue, Class<?> type) {
         String cv = cellValue.toString();
         Object value = null;
-        if (Objects.equals(type, String.class)) {
-            value = cv;
-        } else if (Objects.equals(type, Integer.class) || Objects.equals(type, int.class)) {
+        if (Objects.equals(type, Integer.class) || Objects.equals(type, int.class)) {
             value = Integer.valueOf(new BigDecimal(cv).toPlainString());
         } else if (Objects.equals(type, Float.class) || Objects.equals(type, float.class)) {
             value = Float.valueOf(new BigDecimal(cv).toPlainString());
