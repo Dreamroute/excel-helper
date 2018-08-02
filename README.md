@@ -77,23 +77,23 @@ public void importTest() {
 
 1. 导出一共有3类：
 
-    > 1. ExcelHelper.exportFile()
-    > 1. ExcelHelper.exportByteArray()
-    > 1. ExcelHelper.exportWorkbook()
+> 1. ExcelHelper.exportFile()
+> 1. ExcelHelper.exportByteArray()
+> 1. ExcelHelper.exportWorkbook()
 
 1. 导入一共有4类：
 
-    > 1. ExcelHelper.importFromPath
-    > 1. ExcelHelper.importFromFile
-    > 1. ExcelHelper.importFromByteArray
-    > 1. ExcelHelper.importFromInputStream
+> 1. ExcelHelper.importFromPath
+> 1. ExcelHelper.importFromFile
+> 1. ExcelHelper.importFromByteArray
+> 1. ExcelHelper.importFromInputStream
 
 1. 相关注解说明：
 
-    > 1. @Sheet：导出时候为sheet名称；
-    > 1. @Column：定义列的相关属性；
-    > 1. @Header：定义Header，也就是首行属性；
-    > 1. @Cell：定义数据行属性；
+> 1. @Sheet：导出时候为sheet名称；
+> 1. @Column：定义列的相关属性；
+> 1. @Header：定义Header，也就是首行属性；
+> 1. @Cell：定义数据行属性；
 
 ### 3. 更新日志：
 
