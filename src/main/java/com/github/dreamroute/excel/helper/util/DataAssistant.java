@@ -21,6 +21,11 @@ import com.github.dreamroute.excel.helper.annotation.Column;
 import com.github.dreamroute.excel.helper.cache.CacheFactory;
 import com.github.dreamroute.excel.helper.exception.ExcelHelperException;
 
+/**
+ * 
+ * @author 342252328@qq.com
+ *
+ */
 public class DataAssistant {
 
     private DataAssistant() {}
@@ -102,12 +107,13 @@ public class DataAssistant {
         Object cellValue = null;
         Class<?> type = field.getType();
         // 由于通过cell.getCellTypeEnum()获取的类型和实体定义的类型可能不一致，所以这里以实体类型为准而不能以cell.getCellTypeEnum()为准，进行强转，否则调用field.set()时候报类型错误
-        if (cellType == CellType.STRING)
+        if (cellType == CellType.STRING) {
             cellValue = getCellValue(cell.getStringCellValue(), type);
-        else if (cellType == CellType.NUMERIC)
+        } else if (cellType == CellType.NUMERIC) {
             cellValue = getCellValue(cell.getNumericCellValue(), type);
-        else if (cellType == CellType.BOOLEAN)
+        } else if (cellType == CellType.BOOLEAN) {
             cellValue = getCellValue(cell.getBooleanCellValue(), type);
+        }
         return cellValue;
     }
 
@@ -141,7 +147,7 @@ public class DataAssistant {
             Row header = rows.next();
             return CacheFactory.findHeaderInfo(cls, header);
         }
-        return new HashMap<>();
+        return new HashMap<>(0);
     }
-
+    
 }

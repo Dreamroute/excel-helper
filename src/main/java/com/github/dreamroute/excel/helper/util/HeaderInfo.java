@@ -4,6 +4,11 @@ import java.lang.reflect.Field;
 
 import org.apache.poi.ss.usermodel.CellType;
 
+/**
+ * 
+ * @author 342252328@qq.com
+ *
+ */
 public class HeaderInfo {
     private CellType cellType;
     private Field field;

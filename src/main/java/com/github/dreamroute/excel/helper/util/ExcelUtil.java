@@ -37,8 +37,9 @@ public final class ExcelUtil {
      * @return return a {@link Workbook}
      */
     public static Workbook create(ExcelType type, Collection<?>... sheets) {
-        if (ArrayUtils.isEmpty(sheets))
+        if (ArrayUtils.isEmpty(sheets)) {
             return type == ExcelType.XLS ? new HSSFWorkbook() : new SXSSFWorkbook();
+        }
         return createWorkbook(type, sheets);
     }
 
@@ -86,7 +87,8 @@ public final class ExcelUtil {
 
     private static void createDataRows(Sheet sheet, List<List<Object>> data, CellType[] cellType, CellProps[] cps, Workbook workbook) {
         for (int i = 0; i < data.size(); i++) {
-            Row row = sheet.createRow(i + 1); // 0 row is header, data row from 1.
+            // 0 row is header, data row from 1.
+            Row row = sheet.createRow(i + 1);
             List<Object> rowData = data.get(i);
             for (int j = 0; j < rowData.size(); j++) {
                 Cell cell = row.createCell(j);
@@ -113,8 +115,13 @@ public final class ExcelUtil {
             }
         }
     }
-    
-    // @Header and @Cell common props.
+
+    /**
+     * process style, @Header and @Cell common props.
+     * 
+     * @param hcs
+     * @param baseProps
+     */
     private static void processCellStyle(CellStyle hcs, BaseProps baseProps) {
         hcs.setAlignment(baseProps.getHorizontal());
         hcs.setVerticalAlignment(baseProps.getVertical());
@@ -129,7 +136,8 @@ public final class ExcelUtil {
             }
 
             sheet.autoSizeColumn(i);
-            int width = columnWith[i] > 0 ? columnWith[i] : sheet.getColumnWidth(i) * 13 / 10; // 1.3 times
+            // 1.3 times
+            int width = columnWith[i] > 0 ? columnWith[i] : sheet.getColumnWidth(i) * 13 / 10;
             sheet.setColumnWidth(i, width);
         }
     }

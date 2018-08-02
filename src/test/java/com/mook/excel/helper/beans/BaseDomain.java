@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 import com.github.dreamroute.excel.helper.annotation.Column;
 
+/**
+ * 
+ * @author 342252328@qq.com
+ *
+ */
 public class BaseDomain implements Serializable {
 
     /**

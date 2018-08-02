@@ -47,20 +47,24 @@ public final class ClassAssistant {
     public static List<String> getHeaderValues(Class<?> cls) {
         List<Field> fields = CacheFactory.findFields(cls);
         List<String> headerValues = new ArrayList<>();
-        for (int i = 0; i < fields.size(); i++)
+        for (int i = 0; i < fields.size(); i++) {
             headerValues.add(fields.get(i).getAnnotation(Column.class).name());
+        }
         return headerValues;
     }
 
     public static List<Field> getAllFields(Class<?> dataCls) {
         List<Class<?>> superClsList = ClassUtils.getAllSuperclasses(dataCls);
-        superClsList.add(dataCls); // add myself
+        // add myself
+        superClsList.add(dataCls);
         List<Field> fields = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(superClsList)) {
             fields = new ArrayList<>();
-            for (Class<?> superCls : superClsList)
-                if (!Objects.equals(superCls, Object.class))
+            for (Class<?> superCls : superClsList) {
+                if (!Objects.equals(superCls, Object.class)) {
                     addFields(superCls, fields);
+                }
+            }
         }
         sortFields(fields);
         return fields;
@@ -121,8 +125,9 @@ public final class ClassAssistant {
     public static CellType[] getCellType(Class<?> cls) {
         List<Field> fields = CacheFactory.findFields(cls);
         CellType[] cellType = new CellType[fields.size()];
-        for (int i = 0; i < fields.size(); i++)
+        for (int i = 0; i < fields.size(); i++) {
             cellType[i] = fields.get(i).getAnnotation(Column.class).cellType();
+        }
         return cellType;
     }
 
@@ -165,7 +170,7 @@ public final class ClassAssistant {
     public static Map<Integer, HeaderInfo> getHeaderInfo(Class<?> cls, Row header) {
         Iterator<org.apache.poi.ss.usermodel.Cell> cellIterator = header.cellIterator();
         List<Field> fields = ClassAssistant.getAllFields(cls);
-        Map<Integer, HeaderInfo> headerInfo = new HashMap<>();
+        Map<Integer, HeaderInfo> headerInfo = new HashMap<>(fields.size());
         while (cellIterator.hasNext()) {
             org.apache.poi.ss.usermodel.Cell cell = cellIterator.next();
             String headerName = cell.getStringCellValue();

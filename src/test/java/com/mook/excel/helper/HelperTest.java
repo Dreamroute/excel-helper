@@ -24,6 +24,11 @@ import com.github.dreamroute.excel.helper.annotation.Sheet;
 import com.github.dreamroute.excel.helper.util.ExcelType;
 import com.mook.excel.helper.beans.User;
 
+/**
+ * 
+ * @author 342252328@qq.com
+ *
+ */
 public class HelperTest {
 
     @Test
@@ -37,7 +42,7 @@ public class HelperTest {
         for (int i = 0; i < 3; i++) {
             User user = new User();
             user.setId(100L + i);
-            user.setLongTest(15l);
+            user.setLongTest(15L);
 
             user.setIntegerTest(new Integer(2));
             user.setIntTest(3);

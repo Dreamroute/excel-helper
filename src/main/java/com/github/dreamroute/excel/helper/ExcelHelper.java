@@ -138,8 +138,9 @@ public class ExcelHelper {
      * @return return a {@link List}
      */
     public static <T> List<T> importFromByteArray(ExcelType type, byte[] byteArr, Class<T> cls) {
-        if (ArrayUtils.isEmpty(byteArr))
+        if (ArrayUtils.isEmpty(byteArr)) {
             return new ArrayList<>();
+        }
         InputStream in = new ByteArrayInputStream(byteArr);
         return importFromInputStream(type, in, cls);
     }

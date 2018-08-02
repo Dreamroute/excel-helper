@@ -1,5 +1,10 @@
 package com.github.dreamroute.excel.helper.exception;
 
+/**
+ * 
+ * @author 342252328@qq.com
+ *
+ */
 public class ExcelHelperException extends RuntimeException {
 
     /**
