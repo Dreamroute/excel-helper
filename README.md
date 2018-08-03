@@ -103,3 +103,4 @@
 > 1. 1.3-RELEASE: 支持xls和xlsx的导入功能；
 > 1. 1.4-RELEASE: 支持BigDecimal格式导入；
 > 1. 1.7-RELEASE: 处理个别小bug；
+> 1. 1.8-RELEASE: 优化一些小地方；
