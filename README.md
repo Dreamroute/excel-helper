@@ -1,10 +1,17 @@
 ### 0. 起步
 
 ```
+jdk7:
 <dependency>
     <groupId>com.github.dreamroute</groupId>
     <artifactId>excel-helper</artifactId>
-    <version>newest version</version>
+    <version>1.8-RELEASE</version>
+</dependency>
+如果你是大于等于jdk8，也可以引入下方依赖，这2个依赖没有本质区别，仅仅是部分功能使用了jdk8特性:
+<dependency>
+    <groupId>com.github.dreamroute</groupId>
+    <artifactId>excel-helper-jdk1.8</artifactId>
+    <version>1.0-RELEASE</version>
 </dependency>
 ```
 
