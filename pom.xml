@@ -2,10 +2,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.dreamroute</groupId>
-	<artifactId>excel-helper</artifactId>
-	<version>1.8-RELEASE</version>
+	<artifactId>excel-helper-jdk1.8</artifactId>
+	<version>1.0-RELEASE</version>
 
-	<name>excel-helper</name>
+	<name>excel-helper-for-java8</name>
 	<url>https://github.com/Dreamroute/excel-helper</url>
 	<description>excel export base on apache poi 3.17</description>
 
