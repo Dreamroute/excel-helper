@@ -2,6 +2,7 @@ package com.github.dreamroute.excel.helper.util;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -37,20 +38,19 @@ public final class ExcelUtil {
      * @return return a {@link Workbook}
      */
     public static Workbook create(ExcelType type, Collection<?>... sheets) {
-        if (ArrayUtils.isEmpty(sheets)) {
-            return type == ExcelType.XLS ? new HSSFWorkbook() : new SXSSFWorkbook();
+        Workbook workbook = type == ExcelType.XLS ? new HSSFWorkbook() : new SXSSFWorkbook();
+        if (!ArrayUtils.isEmpty(sheets)) {
+            createWorkbook(workbook, sheets);
         }
-        return createWorkbook(type, sheets);
+        return workbook;
     }
 
-    private static Workbook createWorkbook(ExcelType type, Collection<?>... sheets) {
-        Workbook workbook = type == ExcelType.XLS ? new HSSFWorkbook() : new SXSSFWorkbook();
-        for (Collection<?> sheet : sheets) {
+    private static void createWorkbook(Workbook workbook, Collection<?>... sheets) {
+        Stream.of(sheets).forEachOrdered(sheet -> {
             if (CollectionUtils.isNotEmpty(sheet)) {
                 createSheet(workbook, sheet);
             }
-        }
-        return workbook;
+        });
     }
 
     private static void createSheet(Workbook workbook, Collection<?> sheetData) {
