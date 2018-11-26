@@ -4,7 +4,7 @@
 <dependency>
     <groupId>com.github.dreamroute</groupId>
     <artifactId>excel-helper</artifactId>
-    <version>1.8-RELEASE</version>
+    <version>latest version</version>
 </dependency>
 ```
 
