@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.dreamroute</groupId>
 	<artifactId>excel-helper</artifactId>
-	<version>1.8-RELEASE</version>
+	<version>1.9-RELEASE</version>
 
 	<name>excel-helper</name>
 	<url>https://github.com/Dreamroute/excel-helper</url>

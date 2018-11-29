@@ -110,6 +110,7 @@ public final class ExcelUtil {
 
                 // cell style
                 CellStyle hcs = workbook.createCellStyle();
+                hcs.setWrapText(true);
                 processCellStyle(hcs, cps[j]);
                 cell.setCellStyle(hcs);
             }
