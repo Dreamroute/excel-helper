@@ -104,3 +104,4 @@
 > 1. 1.4-RELEASE: 支持BigDecimal格式导入；
 > 1. 1.7-RELEASE: 处理个别小bug；
 > 1. 1.8-RELEASE: 优化一些小地方；
+> 1. 1.9-RELEASE: 内容含有\r\n可以实现自动换行；
