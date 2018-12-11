@@ -34,6 +34,7 @@ public class CacheFactory {
     private static final ConcurrentHashMap<Class<?>, HeaderProps[]> HEADER_PROPS = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<Class<?>, CellProps[]> CELL_PROPS = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<Class<?>, Map<Integer, HeaderInfo>> HEADER_INFO = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Class<?>, List<String>> FORMULA_VALUES = new ConcurrentHashMap<>();
 
     public static String findSheetName(Class<?> cls) {
         String sheetName = SHEET_NAME_MAP.get(cls);
@@ -105,6 +106,14 @@ public class CacheFactory {
             HEADER_INFO.put(cls, headerInfo);
         }
         return headerInfo;
+    }
+    public static List<String> findFormulaValues(Class<?> cls) {
+        List<String> formulaValues = FORMULA_VALUES.get(cls);
+        if (CollectionUtils.isEmpty(formulaValues)) {
+            formulaValues = ClassAssistant.getFormulaValues(cls);
+            FORMULA_VALUES.put(cls, formulaValues);
+        }
+        return formulaValues;
     }
 
 }

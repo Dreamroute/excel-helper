@@ -25,9 +25,7 @@ import com.github.dreamroute.excel.helper.util.ExcelType;
 import com.mook.excel.helper.beans.User;
 
 /**
- * 
  * @author 342252328@qq.com
- *
  */
 public class HelperTest {
 
@@ -44,8 +42,7 @@ public class HelperTest {
             user.setId(100L + i);
             user.setLongTest(15L);
 
-            user.setIntegerTest(new Integer(2));
-            user.setIntTest(3);
+            user.setIntegerTest(new Integer(2 + i));
 
             user.setName("w.dehai" + i);
 
@@ -77,6 +74,7 @@ public class HelperTest {
         File outFile = new File(path1);
         OutputStream out = new FileOutputStream(outFile);
         workbook.write(out);
+        out.close();
 
         String path2 = type == ExcelType.XLS ? "d:/2.xls" : "d:/2.xlsx";
         ExcelHelper.exportFile(type, userList, path2);
@@ -90,6 +88,7 @@ public class HelperTest {
         OutputStream os = new FileOutputStream(file4);
         os.write(bs);
         os.close();
+        System.out.println("OK");
     }
 
     @Test
@@ -123,7 +122,7 @@ public class HelperTest {
     @Test
     public void sortListTest() {
         List<Demo> demoList = new ArrayList<>();
-        for (int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             Demo demo = new Demo();
             demo.name = "w.dehai";
             demo.height = new BigDecimal("1.80342");

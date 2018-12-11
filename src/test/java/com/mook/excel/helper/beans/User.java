@@ -29,7 +29,7 @@ public class User extends BaseDomain implements Serializable {
     // Integer, int
     @Column(name = "integerTest")
     private Integer integerTest;
-    @Column(name = "intTest")
+    @Column(name = "intTest",formula = "D?+E?")
     private int intTest;
 
     // String
