@@ -1,10 +1,12 @@
 package com.github.dreamroute.excel.helper.util;
 
-import java.util.Collection;
-import java.util.List;
-
+import com.github.dreamroute.excel.helper.annotation.BaseProps;
+import com.github.dreamroute.excel.helper.annotation.CellProps;
+import com.github.dreamroute.excel.helper.annotation.HeaderProps;
+import com.github.dreamroute.excel.helper.cache.CacheFactory;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -15,10 +17,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
-import com.github.dreamroute.excel.helper.annotation.BaseProps;
-import com.github.dreamroute.excel.helper.annotation.CellProps;
-import com.github.dreamroute.excel.helper.annotation.HeaderProps;
-import com.github.dreamroute.excel.helper.cache.CacheFactory;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Export workbook util
@@ -65,10 +65,10 @@ public final class ExcelUtil {
         Integer[] columnWith = CacheFactory.findColumnWidth(dataCls);
         HeaderProps[] hps = CacheFactory.findHeaderProps(dataCls);
         CellProps[] cps = CacheFactory.findCellProps(dataCls);
-
+        List<String> formulaValues=CacheFactory.findFormulaValues(dataCls);
         // create header row, create data rows
         createHeaderRow(sheet, headerValues, hps, workbook);
-        createDataRows(sheet, data, cellType, cps, workbook);
+        createDataRows(sheet, data, cellType, cps, workbook,formulaValues);
         setColumnWidth(sheet, columnWith);
     }
 
@@ -85,7 +85,7 @@ public final class ExcelUtil {
         }
     }
 
-    private static void createDataRows(Sheet sheet, List<List<Object>> data, CellType[] cellType, CellProps[] cps, Workbook workbook) {
+    private static void createDataRows(Sheet sheet, List<List<Object>> data, CellType[] cellType, CellProps[] cps, Workbook workbook,List<String> formulaValues) {
         for (int i = 0; i < data.size(); i++) {
             // 0 row is header, data row from 1.
             Row row = sheet.createRow(i + 1);
@@ -113,6 +113,10 @@ public final class ExcelUtil {
                 hcs.setWrapText(true);
                 processCellStyle(hcs, cps[j]);
                 cell.setCellStyle(hcs);
+                //设置公式
+                if (StringUtils.isNotBlank(formulaValues.get(j))) {
+                    cell.setCellFormula(formulaValues.get(j).replace("?",(i+2)+""));
+                }
             }
         }
     }

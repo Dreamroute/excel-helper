@@ -27,13 +27,13 @@ import com.github.dreamroute.excel.helper.exception.ExcelHelperException;
 
 /**
  * util class
- * 
- * @author 342252328@qq.com
  *
+ * @author 342252328@qq.com
  */
 public final class ClassAssistant {
 
-    private ClassAssistant() {}
+    private ClassAssistant() {
+    }
 
     public static String getSheetName(Class<?> cls) {
         String sheetName = ClassUtils.getSimpleName(cls);
@@ -184,7 +184,20 @@ public final class ClassAssistant {
                 }
             }
         }
+
         return headerInfo;
     }
+
+    public static List<String> getFormulaValues(Class<?> cls) {
+        List<Field> fields = CacheFactory.findFields(cls);
+        List<String> formulaValues = new ArrayList<>();
+        for (int i = 0; i < fields.size(); i++) {
+            formulaValues.add(fields.get(i).getAnnotation(Column.class).formula());
+        }
+        return formulaValues;
+    }
+
+    ;
+
 
 }
