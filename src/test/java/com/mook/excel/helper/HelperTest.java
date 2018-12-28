@@ -37,7 +37,7 @@ public class HelperTest {
         List<User> userList = new ArrayList<>();
         Set<User> userSet = new HashSet<>();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0, len = 5; i < len; i++) {
             User user = new User();
             user.setId(100L + i);
             user.setLongTest(15L);
@@ -76,18 +76,18 @@ public class HelperTest {
         workbook.write(out);
         out.close();
 
-        String path2 = type == ExcelType.XLS ? "d:/2.xls" : "d:/2.xlsx";
-        ExcelHelper.exportFile(type, userList, path2);
-
-        String path3 = type == ExcelType.XLS ? "d:/3.xls" : "d:/3.xlsx";
-        ExcelHelper.exportFile(type, userList, new File(path3));
-        byte[] bs = ExcelHelper.exportByteArray(type, userList);
-
-        String path4 = type == ExcelType.XLS ? "d:/4.xls" : "d:/4.xlsx";
-        File file4 = new File(path4);
-        OutputStream os = new FileOutputStream(file4);
-        os.write(bs);
-        os.close();
+//        String path2 = type == ExcelType.XLS ? "d:/2.xls" : "d:/2.xlsx";
+//        ExcelHelper.exportFile(type, userList, path2);
+//
+//        String path3 = type == ExcelType.XLS ? "d:/3.xls" : "d:/3.xlsx";
+//        ExcelHelper.exportFile(type, userList, new File(path3));
+//        byte[] bs = ExcelHelper.exportByteArray(type, userList);
+//
+//        String path4 = type == ExcelType.XLS ? "d:/4.xls" : "d:/4.xlsx";
+//        File file4 = new File(path4);
+//        OutputStream os = new FileOutputStream(file4);
+//        os.write(bs);
+//        os.close();
         System.out.println("OK");
     }
 
@@ -122,7 +122,7 @@ public class HelperTest {
     @Test
     public void sortListTest() {
         List<Demo> demoList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0, len = 10; i < len; i++) {
             Demo demo = new Demo();
             demo.name = "w.dehai";
             demo.height = new BigDecimal("1.80342");

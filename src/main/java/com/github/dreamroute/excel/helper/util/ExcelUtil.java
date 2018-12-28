@@ -45,9 +45,9 @@ public final class ExcelUtil {
 
     private static Workbook createWorkbook(ExcelType type, Collection<?>... sheets) {
         Workbook workbook = type == ExcelType.XLS ? new HSSFWorkbook() : new SXSSFWorkbook();
-        for (Collection<?> sheet : sheets) {
-            if (CollectionUtils.isNotEmpty(sheet)) {
-                createSheet(workbook, sheet);
+        for (Collection<?> sheetData : sheets) {
+            if (CollectionUtils.isNotEmpty(sheetData)) {
+                createSheet(workbook, sheetData);
             }
         }
         return workbook;
