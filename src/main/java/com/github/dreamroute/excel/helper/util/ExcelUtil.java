@@ -1,24 +1,25 @@
 package com.github.dreamroute.excel.helper.util;
 
-import com.github.dreamroute.excel.helper.annotation.BaseProps;
-import com.github.dreamroute.excel.helper.annotation.CellProps;
-import com.github.dreamroute.excel.helper.annotation.HeaderProps;
-import com.github.dreamroute.excel.helper.cache.CacheFactory;
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
-import java.util.Collection;
-import java.util.List;
+import com.github.dreamroute.excel.helper.annotation.BaseProps;
+import com.github.dreamroute.excel.helper.annotation.HeaderProps;
+import com.github.dreamroute.excel.helper.cache.CacheFactory;
 
 /**
  * Export workbook util
@@ -27,9 +28,11 @@ import java.util.List;
  *
  */
 public final class ExcelUtil {
-
+    
     private ExcelUtil() {}
-
+    
+    private static CellStyle cellStyle;
+    
     /**
      * export as a {@link Workbook}, maybe include one or more sheet.
      * 
@@ -37,20 +40,29 @@ public final class ExcelUtil {
      * @return return a {@link Workbook}
      */
     public static Workbook create(ExcelType type, Collection<?>... sheets) {
-        if (ArrayUtils.isEmpty(sheets)) {
-            return type == ExcelType.XLS ? new HSSFWorkbook() : new SXSSFWorkbook();
+        Workbook workBook;
+        if (type == ExcelType.XLS) {
+            workBook = new HSSFWorkbook();
+        } else {
+            workBook = new SXSSFWorkbook();
         }
-        return createWorkbook(type, sheets);
+        
+        /**cell style统一设置，否则会出现创建cellStyle过多框架不支持问题**/
+        cellStyle = workBook.createCellStyle();
+        cellStyle.setWrapText(true);
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        
+        createWorkbook(workBook, sheets);
+        return workBook;
     }
 
-    private static Workbook createWorkbook(ExcelType type, Collection<?>... sheets) {
-        Workbook workbook = type == ExcelType.XLS ? new HSSFWorkbook() : new SXSSFWorkbook();
+    private static void createWorkbook(Workbook workBook, Collection<?>... sheets) {
         for (Collection<?> sheetData : sheets) {
             if (CollectionUtils.isNotEmpty(sheetData)) {
-                createSheet(workbook, sheetData);
+                createSheet(workBook, sheetData);
             }
         }
-        return workbook;
     }
 
     private static void createSheet(Workbook workbook, Collection<?> sheetData) {
@@ -64,28 +76,28 @@ public final class ExcelUtil {
         CellType[] cellType = CacheFactory.findCellType(dataCls);
         Integer[] columnWith = CacheFactory.findColumnWidth(dataCls);
         HeaderProps[] hps = CacheFactory.findHeaderProps(dataCls);
-        CellProps[] cps = CacheFactory.findCellProps(dataCls);
+//        CellProps[] cps = CacheFactory.findCellProps(dataCls);
         List<String> formulaValues=CacheFactory.findFormulaValues(dataCls);
         // create header row, create data rows
-        createHeaderRow(sheet, headerValues, hps, workbook);
-        createDataRows(sheet, data, cellType, cps, workbook,formulaValues);
+        createHeader(sheet, headerValues, hps, workbook);
+        createData(sheet, data, cellType, workbook,formulaValues);
         setColumnWidth(sheet, columnWith);
     }
 
-    private static void createHeaderRow(Sheet sheet, List<String> headerValues, HeaderProps[] hps, Workbook workbook) {
+    private static void createHeader(Sheet sheet, List<String> headerValues, HeaderProps[] hps, Workbook workbook) {
         Row row = sheet.createRow(0);
         for (int i = 0; i < headerValues.size(); i++) {
             Cell cell = row.createCell(i);
             cell.setCellValue(headerValues.get(i));
 
             // cell style
-            CellStyle hcs = workbook.createCellStyle();
-            processCellStyle(hcs, hps[i]);
-            cell.setCellStyle(hcs);
+            CellStyle cellStyle = workbook.createCellStyle();
+            processCellStyle(cellStyle, hps[i]);
+            cell.setCellStyle(cellStyle);
         }
     }
 
-    private static void createDataRows(Sheet sheet, List<List<Object>> data, CellType[] cellType, CellProps[] cps, Workbook workbook,List<String> formulaValues) {
+    private static void createData(Sheet sheet, List<List<Object>> data, CellType[] cellType, Workbook workbook,List<String> formulaValues) {
         for (int i = 0; i < data.size(); i++) {
             // 0 row is header, data row from 1.
             Row row = sheet.createRow(i + 1);
@@ -109,10 +121,7 @@ public final class ExcelUtil {
                 }
 
                 // cell style
-                CellStyle hcs = workbook.createCellStyle();
-                hcs.setWrapText(true);
-                processCellStyle(hcs, cps[j]);
-                cell.setCellStyle(hcs);
+                cell.setCellStyle(cellStyle);
                 //设置公式
                 if (StringUtils.isNotBlank(formulaValues.get(j))) {
                     cell.setCellFormula(formulaValues.get(j).replace("?",(i+2)+""));
@@ -124,12 +133,12 @@ public final class ExcelUtil {
     /**
      * process style, @Header and @Cell common props.
      * 
-     * @param hcs
+     * @param cs
      * @param baseProps
      */
-    private static void processCellStyle(CellStyle hcs, BaseProps baseProps) {
-        hcs.setAlignment(baseProps.getHorizontal());
-        hcs.setVerticalAlignment(baseProps.getVertical());
+    private static void processCellStyle(CellStyle cs, BaseProps baseProps) {
+        cs.setAlignment(baseProps.getHorizontal());
+        cs.setVerticalAlignment(baseProps.getVertical());
     }
 
     private static void setColumnWidth(Sheet sheet, Integer[] columnWith) {

@@ -32,8 +32,7 @@ import com.github.dreamroute.excel.helper.exception.ExcelHelperException;
  */
 public final class ClassAssistant {
 
-    private ClassAssistant() {
-    }
+    private ClassAssistant() {}
 
     public static String getSheetName(Class<?> cls) {
         String sheetName = ClassUtils.getSimpleName(cls);
@@ -198,6 +197,5 @@ public final class ClassAssistant {
     }
 
     ;
-
 
 }

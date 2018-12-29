@@ -37,7 +37,7 @@ public class HelperTest {
         List<User> userList = new ArrayList<>();
         Set<User> userSet = new HashSet<>();
 
-        for (int i = 0, len = 5; i < len; i++) {
+        for (int i = 0, len = 100000; i < len; i++) {
             User user = new User();
             user.setId(100L + i);
             user.setLongTest(15L);
