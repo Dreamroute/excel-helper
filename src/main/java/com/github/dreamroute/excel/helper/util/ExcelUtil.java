@@ -48,10 +48,12 @@ public final class ExcelUtil {
         }
         
         /**cell style统一设置，否则会出现创建cellStyle过多框架不支持问题**/
-        cellStyle = workBook.createCellStyle();
-        cellStyle.setWrapText(true);
-        cellStyle.setAlignment(HorizontalAlignment.CENTER);
-        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        if (cellStyle == null) {
+            cellStyle = workBook.createCellStyle();
+            cellStyle.setWrapText(true);
+            cellStyle.setAlignment(HorizontalAlignment.CENTER);
+            cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        }
         
         createWorkbook(workBook, sheets);
         return workBook;

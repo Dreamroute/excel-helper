@@ -76,18 +76,18 @@ public class HelperTest {
         workbook.write(out);
         out.close();
 
-//        String path2 = type == ExcelType.XLS ? "d:/2.xls" : "d:/2.xlsx";
-//        ExcelHelper.exportFile(type, userList, path2);
-//
-//        String path3 = type == ExcelType.XLS ? "d:/3.xls" : "d:/3.xlsx";
-//        ExcelHelper.exportFile(type, userList, new File(path3));
-//        byte[] bs = ExcelHelper.exportByteArray(type, userList);
-//
-//        String path4 = type == ExcelType.XLS ? "d:/4.xls" : "d:/4.xlsx";
-//        File file4 = new File(path4);
-//        OutputStream os = new FileOutputStream(file4);
-//        os.write(bs);
-//        os.close();
+        String path2 = type == ExcelType.XLS ? "d:/2.xls" : "d:/2.xlsx";
+        ExcelHelper.exportFile(type, userList, path2);
+
+        String path3 = type == ExcelType.XLS ? "d:/3.xls" : "d:/3.xlsx";
+        ExcelHelper.exportFile(type, userList, new File(path3));
+        byte[] bs = ExcelHelper.exportByteArray(type, userList);
+
+        String path4 = type == ExcelType.XLS ? "d:/4.xls" : "d:/4.xlsx";
+        File file4 = new File(path4);
+        OutputStream os = new FileOutputStream(file4);
+        os.write(bs);
+        os.close();
         System.out.println("OK");
     }
 
