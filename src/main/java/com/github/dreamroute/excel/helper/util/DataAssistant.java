@@ -136,6 +136,8 @@ public class DataAssistant {
             value = Boolean.valueOf(cv);
         } else if (Objects.equals(type, BigDecimal.class)) {
             value = new BigDecimal(cv);
+        } else if (Objects.equals(type, String.class)) {
+            value = cv;
         }
         return value;
     }
