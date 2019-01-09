@@ -37,7 +37,7 @@ public class HelperTest {
         List<User> userList = new ArrayList<>();
         Set<User> userSet = new HashSet<>();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0, len = 100000; i < len; i++) {
             User user = new User();
             user.setId(100L + i);
             user.setLongTest(15L);
@@ -122,7 +122,7 @@ public class HelperTest {
     @Test
     public void sortListTest() {
         List<Demo> demoList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0, len = 10; i < len; i++) {
             Demo demo = new Demo();
             demo.name = "w.dehai";
             demo.height = new BigDecimal("1.80342");
