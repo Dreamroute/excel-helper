@@ -104,10 +104,14 @@ public class DataAssistant {
     }
 
     private static Object getCellValue(Cell cell, CellType cellType, Field field) {
+        CellType ct = cell.getCellType();
         Object cellValue = null;
         Class<?> type = field.getType();
         // 由于通过cell.getCellTypeEnum()获取的类型和实体定义的类型可能不一致，所以这里以实体类型为准而不能以cell.getCellTypeEnum()为准，进行强转，否则调用field.set()时候报类型错误
         if (cellType == CellType.STRING) {
+            if (ct != CellType.STRING) {
+                cell.setCellType(CellType.STRING);
+            }
             cellValue = getCellValue(cell.getStringCellValue(), type);
         } else if (cellType == CellType.NUMERIC) {
             cellValue = getCellValue(cell.getNumericCellValue(), type);
@@ -140,6 +144,10 @@ public class DataAssistant {
             value = cv;
         }
         return value;
+    }
+    
+    public static void main(String[] args) {
+        new BigDecimal("").intValue();
     }
 
     public static Map<Integer, HeaderInfo> proceeHeaderInfo(Iterator<Row> rows, Class<?> cls) {

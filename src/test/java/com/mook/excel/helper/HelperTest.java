@@ -22,6 +22,7 @@ import com.github.dreamroute.excel.helper.ExcelHelper;
 import com.github.dreamroute.excel.helper.annotation.Column;
 import com.github.dreamroute.excel.helper.annotation.Sheet;
 import com.github.dreamroute.excel.helper.util.ExcelType;
+import com.mook.excel.helper.beans.BiddingSteelPropertyDTO;
 import com.mook.excel.helper.beans.User;
 
 /**
@@ -37,7 +38,7 @@ public class HelperTest {
         List<User> userList = new ArrayList<>();
         Set<User> userSet = new HashSet<>();
 
-        for (int i = 0, len = 100000; i < len; i++) {
+        for (int i = 0, len = 100; i < len; i++) {
             User user = new User();
             user.setId(100L + i);
             user.setLongTest(15L);
@@ -117,6 +118,14 @@ public class HelperTest {
         ExcelType type = ExcelType.XLSX;
         List<User> users = ExcelHelper.importFromPath(type, path, User.class);
         System.err.println(users);
+    }
+    
+    @Test
+    public void importTest2() {
+        String path = "d:/钢材招标模板.xlsx";
+        ExcelType type = ExcelType.XLSX;
+        List<BiddingSteelPropertyDTO> steelList = ExcelHelper.importFromPath(type, path, BiddingSteelPropertyDTO.class);
+        System.err.println(steelList);
     }
 
     @Test
