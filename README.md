@@ -108,3 +108,5 @@
 > 1. 1.9.1-RELEASE: 优化1.9-RELEASE版本，1.9-RELEASE版本无法通过公司私服进行下载，只能通过中央库下载；
 > 1. 1.9.2-RELEASE: 增加带公式导出功能；
 > 1. 1.9.3-RELEASE: 统一处理cell style，解决导出大量数据时内存溢出问题；
+> 1. 1.9.4-RELEASE: 解决cell type与实际cell type不一致问题；
+> 1. 1.9.5-RELEASE: 解决导出日期无法进行筛选问题；

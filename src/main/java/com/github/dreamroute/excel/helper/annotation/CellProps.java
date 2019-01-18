@@ -7,14 +7,35 @@ package com.github.dreamroute.excel.helper.annotation;
  */
 public class CellProps extends BaseProps {
 
-    private String dateFormat;
+    private String originalDateFormate;
+    private String targetDateFormate;
 
-    public String getDateFormat() {
-        return dateFormat;
+    /**
+     * @return the originalDateFormate
+     */
+    public String getOriginalDateFormate() {
+        return originalDateFormate;
     }
 
-    public void setDateFormat(String dateFormat) {
-        this.dateFormat = dateFormat;
+    /**
+     * @param originalDateFormate the originalDateFormate to set
+     */
+    public void setOriginalDateFormate(String originalDateFormate) {
+        this.originalDateFormate = originalDateFormate;
+    }
+
+    /**
+     * @return the targetDateFormate
+     */
+    public String getTargetDateFormate() {
+        return targetDateFormate;
+    }
+
+    /**
+     * @param targetDateFormate the targetDateFormate to set
+     */
+    public void setTargetDateFormate(String targetDateFormate) {
+        this.targetDateFormate = targetDateFormate;
     }
 
 }

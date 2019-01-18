@@ -4,6 +4,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,6 +20,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import com.github.dreamroute.excel.helper.annotation.Column;
+import com.github.dreamroute.excel.helper.annotation.DateColumn;
 import com.github.dreamroute.excel.helper.cache.CacheFactory;
 import com.github.dreamroute.excel.helper.exception.ExcelHelperException;
 
@@ -27,7 +30,7 @@ import com.github.dreamroute.excel.helper.exception.ExcelHelperException;
  *
  */
 public class DataAssistant {
-
+    
     private DataAssistant() {}
 
     public static List<List<Object>> createData(Collection<?> sheetData) {
@@ -53,9 +56,18 @@ public class DataAssistant {
                         } else if (ct == CellType.BOOLEAN) {
                             value = false;
                         }
+                    } else {
+                        // 处理日期类型
+                        if (field.isAnnotationPresent(DateColumn.class)) {
+                            DateColumn dc = field.getAnnotation(DateColumn.class);
+                            String originalDateFormate = dc.originalDateFormate();
+                            String date = (String) value;
+                            value = new SimpleDateFormat(originalDateFormate).parse(date);
+                        }
+                        
                     }
                     rowData.add(value);
-                } catch (IllegalArgumentException | IllegalAccessException e) {
+                } catch (IllegalArgumentException | IllegalAccessException | ParseException e) {
                     throw new ExcelHelperException(e);
                 }
             }

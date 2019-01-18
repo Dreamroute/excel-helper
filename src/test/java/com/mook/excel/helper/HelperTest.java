@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,7 +40,7 @@ public class HelperTest {
         List<User> userList = new ArrayList<>();
         Set<User> userSet = new HashSet<>();
 
-        for (int i = 0, len = 100; i < len; i++) {
+        for (int i = 0, len = 10; i < len; i++) {
             User user = new User();
             user.setId(100L + i);
             user.setLongTest(15L);
@@ -64,7 +66,7 @@ public class HelperTest {
             user.setBooleanTestUpper(Boolean.FALSE);
             user.setChinese(true);
 
-            user.setCreateTime("2018-07-25 14:32:28");
+            user.setCreateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(new Date().getTime() + i * 1000)));
 
             userList.add(user);
             userSet.add(user);
