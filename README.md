@@ -94,19 +94,3 @@
     > 1. @Column：定义列的相关属性；
     > 1. @Header：定义Header，也就是首行属性；
     > 1. @Cell：定义数据行属性；
-
-### 3. 更新日志：
-
-> 1. 1.0-RELEASE: 支持基础导出功能(仅支持xls导出，也就是excel-2003)；
-> 1. 1.1-RELEASE: 优化一些细节；
-> 1. 1.2-RELEASE: 支持xlsx(excel-2007)导出；
-> 1. 1.3-RELEASE: 支持xls和xlsx的导入功能；
-> 1. 1.4-RELEASE: 支持BigDecimal格式导入；
-> 1. 1.7-RELEASE: 处理个别小bug；
-> 1. 1.8-RELEASE: 优化一些小地方；
-> 1. 1.9-RELEASE: 内容含有\r\n可以实现自动换行；
-> 1. 1.9.1-RELEASE: 优化1.9-RELEASE版本，1.9-RELEASE版本无法通过公司私服进行下载，只能通过中央库下载；
-> 1. 1.9.2-RELEASE: 增加带公式导出功能；
-> 1. 1.9.3-RELEASE: 统一处理cell style，解决导出大量数据时内存溢出问题；
-> 1. 1.9.4-RELEASE: 解决cell type与实际cell type不一致问题；
-> 1. 1.9.5-RELEASE: 解决导出日期无法进行筛选问题；
