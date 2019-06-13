@@ -1,6 +1,7 @@
 package com.github.dreamroute.excel.helper.util;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -9,15 +10,14 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
-import com.github.dreamroute.excel.helper.annotation.BaseProps;
+import com.github.dreamroute.excel.helper.annotation.CellProps;
 import com.github.dreamroute.excel.helper.annotation.HeaderProps;
 import com.github.dreamroute.excel.helper.cache.CacheFactory;
 
@@ -28,11 +28,9 @@ import com.github.dreamroute.excel.helper.cache.CacheFactory;
  *
  */
 public final class ExcelUtil {
-    
+
     private ExcelUtil() {}
-    
-    private static CellStyle cellStyle;
-    
+
     /**
      * export as a {@link Workbook}, maybe include one or more sheet.
      * 
@@ -46,15 +44,7 @@ public final class ExcelUtil {
         } else {
             workBook = new SXSSFWorkbook();
         }
-        
-        /**cell style统一设置，否则会出现创建cellStyle过多框架不支持问题**/
-        if (cellStyle == null) {
-            cellStyle = workBook.createCellStyle();
-            cellStyle.setWrapText(true);
-            cellStyle.setAlignment(HorizontalAlignment.CENTER);
-            cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-        }
-        
+
         createWorkbook(workBook, sheets);
         return workBook;
     }
@@ -78,28 +68,61 @@ public final class ExcelUtil {
         CellType[] cellType = CacheFactory.findCellType(dataCls);
         Integer[] columnWith = CacheFactory.findColumnWidth(dataCls);
         HeaderProps[] hps = CacheFactory.findHeaderProps(dataCls);
-//        CellProps[] cps = CacheFactory.findCellProps(dataCls);
-        List<String> formulaValues=CacheFactory.findFormulaValues(dataCls);
+        CellProps[] cps = CacheFactory.findCellProps(dataCls);
+        CellStyle[] css = createDataCellStyle(workbook, cps);
+        List<String> formulas = CacheFactory.findFormulaValues(dataCls);
         // create header row, create data rows
         createHeader(sheet, headerValues, hps, workbook);
-        createData(sheet, data, cellType, workbook,formulaValues);
+        createData(sheet, data, cellType, css, formulas);
         setColumnWidth(sheet, columnWith);
+    }
+
+    /**
+     * 根据列对应的CellProps创建对应的CellStyle数组，因为如果每个cell都创建一个CellStyle，那么导出大量数据时候会出现内存崩溃， 所以每一列对应一个CellStyle
+     * 
+     * @param cps <code>CellProps</code>
+     * 
+     */
+    private static CellStyle[] createDataCellStyle(Workbook workbook, CellProps[] cps) {
+        CellStyle[] css = null;
+        if (cps != null && cps.length > 0) {
+            css = new CellStyle[cps.length];
+            for (int i = 0, len = css.length; i < len; i++) {
+                CellProps cp = cps[i];
+                CellStyle cs = workbook.createCellStyle();
+                cs.setAlignment(cp.getHorizontal());
+                cs.setVerticalAlignment(cp.getVertical());
+                cs.setWrapText(true);
+
+                String targetDateFormate = cp.getTargetDateFormate();
+                if (targetDateFormate != null && targetDateFormate.trim().length() > 0) {
+                    DataFormat format = workbook.createDataFormat();
+                    cs.setDataFormat(format.getFormat(targetDateFormate));
+                }
+
+                css[i] = cs;
+            }
+        }
+
+        return css;
     }
 
     private static void createHeader(Sheet sheet, List<String> headerValues, HeaderProps[] hps, Workbook workbook) {
         Row row = sheet.createRow(0);
         for (int i = 0; i < headerValues.size(); i++) {
             Cell cell = row.createCell(i);
+            // Header CellType must be CellType.STRING.
+            cell.setCellType(CellType.STRING);
             cell.setCellValue(headerValues.get(i));
 
             // cell style
             CellStyle cellStyle = workbook.createCellStyle();
-            processCellStyle(cellStyle, hps[i]);
+            processHeaderCellStyle(cellStyle, hps[i]);
             cell.setCellStyle(cellStyle);
         }
     }
 
-    private static void createData(Sheet sheet, List<List<Object>> data, CellType[] cellType, Workbook workbook,List<String> formulaValues) {
+    private static void createData(Sheet sheet, List<List<Object>> data, CellType[] cellType, CellStyle[] css, List<String> formulaValues) {
         for (int i = 0; i < data.size(); i++) {
             // 0 row is header, data row from 1.
             Row row = sheet.createRow(i + 1);
@@ -107,6 +130,7 @@ public final class ExcelUtil {
             for (int j = 0; j < rowData.size(); j++) {
                 Cell cell = row.createCell(j);
                 cell.setCellType(cellType[j]);
+                cell.setCellStyle(css[j]);
                 if (cellType[j] == CellType.NUMERIC) {
                     String v = rowData.get(j).toString();
                     try {
@@ -119,14 +143,19 @@ public final class ExcelUtil {
                 } else if (cellType[j] == CellType.BOOLEAN) {
                     cell.setCellValue(Boolean.parseBoolean(rowData.get(j).toString()));
                 } else {
-                    cell.setCellValue(rowData.get(j).toString());
+                    // 单独处理日期类型
+                    Object d = rowData.get(j);
+                    if (d instanceof Date) {
+                        Date dt = (Date) d;
+                        cell.setCellValue(dt);
+                    } else {
+                        cell.setCellValue(rowData.get(j).toString());
+                    }
                 }
 
-                // cell style
-                cell.setCellStyle(cellStyle);
-                //设置公式
+                // 设置公式
                 if (StringUtils.isNotBlank(formulaValues.get(j))) {
-                    cell.setCellFormula(formulaValues.get(j).replace("?",(i+2)+""));
+                    cell.setCellFormula(formulaValues.get(j).replace("?", (i + 2) + ""));
                 }
             }
         }
@@ -138,9 +167,9 @@ public final class ExcelUtil {
      * @param cs
      * @param baseProps
      */
-    private static void processCellStyle(CellStyle cs, BaseProps baseProps) {
-        cs.setAlignment(baseProps.getHorizontal());
-        cs.setVerticalAlignment(baseProps.getVertical());
+    private static void processHeaderCellStyle(CellStyle cs, HeaderProps headerProps) {
+        cs.setAlignment(headerProps.getHorizontal());
+        cs.setVerticalAlignment(headerProps.getVertical());
     }
 
     private static void setColumnWidth(Sheet sheet, Integer[] columnWith) {

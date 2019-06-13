@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.dreamroute</groupId>
 	<artifactId>excel-helper</artifactId>
-	<version>1.9.4-RELEASE</version>
+	<version>1.9.5-RELEASE</version>
 
 	<name>excel-helper</name>
 	<url>https://github.com/Dreamroute/excel-helper</url>
@@ -85,6 +85,20 @@
 						<configuration>
 							<additionalparam>-Xdoclint:none</additionalparam>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>

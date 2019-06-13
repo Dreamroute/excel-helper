@@ -54,5 +54,5 @@ public @interface Column {
      * @return return column formula
      */
     String formula() default "";
-
+    
 }
