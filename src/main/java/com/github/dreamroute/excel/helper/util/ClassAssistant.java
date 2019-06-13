@@ -18,6 +18,7 @@ import org.apache.poi.ss.usermodel.Row;
 import com.github.dreamroute.excel.helper.annotation.Cell;
 import com.github.dreamroute.excel.helper.annotation.CellProps;
 import com.github.dreamroute.excel.helper.annotation.Column;
+import com.github.dreamroute.excel.helper.annotation.DateColumn;
 import com.github.dreamroute.excel.helper.annotation.Header;
 import com.github.dreamroute.excel.helper.annotation.HeaderProps;
 import com.github.dreamroute.excel.helper.annotation.PropsAnno;
@@ -135,15 +136,15 @@ public final class ClassAssistant {
         HeaderProps[] hps = new HeaderProps[fields.size()];
         for (int i = 0; i < fields.size(); i++) {
             Header anno = fields.get(i).getAnnotation(Header.class);
-            HeaderProps hp = new HeaderProps();
             try {
                 anno = anno == null ? PropsAnno.class.getDeclaredField("props").getAnnotation(Header.class) : anno;
-                hp.setHorizontal(anno.horizontal());
-                hp.setVertical(anno.vertical());
-                hps[i] = hp;
             } catch (NoSuchFieldException | SecurityException e) {
                 throw new ExcelHelperException(e);
             }
+            HeaderProps hp = new HeaderProps();
+            hp.setHorizontal(anno.horizontal());
+            hp.setVertical(anno.vertical());
+            hps[i] = hp;
         }
         return hps;
     }
@@ -152,12 +153,20 @@ public final class ClassAssistant {
         List<Field> fields = CacheFactory.findFields(cls);
         CellProps[] hps = new CellProps[fields.size()];
         for (int i = 0; i < fields.size(); i++) {
-            Cell anno = fields.get(i).getAnnotation(Cell.class);
+            Field field = fields.get(i);
+            Cell anno = field.getAnnotation(Cell.class);
             CellProps cp = new CellProps();
             try {
                 anno = anno == null ? PropsAnno.class.getDeclaredField("props").getAnnotation(Cell.class) : anno;
                 cp.setHorizontal(anno.horizontal());
                 cp.setVertical(anno.vertical());
+                
+                if (field.isAnnotationPresent(DateColumn.class)) {
+                    DateColumn dc = field.getAnnotation(DateColumn.class);
+                    cp.setOriginalDateFormate(dc.originalDateFormate());
+                    cp.setTargetDateFormate(dc.targetDateFormate());
+                }
+                
                 hps[i] = cp;
             } catch (NoSuchFieldException | SecurityException e) {
                 throw new ExcelHelperException(e);

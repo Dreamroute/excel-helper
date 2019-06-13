@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.dreamroute</groupId>
 	<artifactId>excel-helper</artifactId>
-	<version>1.9.4-RELEASE</version>
+	<version>1.9.5-RELEASE</version>
 
 	<name>excel-helper</name>
 	<url>https://github.com/Dreamroute/excel-helper</url>
@@ -102,11 +102,22 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.8</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
 	<properties>
-		<poi.version>3.17</poi.version>
+		<poi.version>4.0.1</poi.version>
 	</properties>
 
 	<dependencies>
