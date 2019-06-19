@@ -1,5 +1,15 @@
 package com.github.dreamroute.excel.helper.util;
 
+import com.github.dreamroute.excel.helper.annotation.Column;
+import com.github.dreamroute.excel.helper.annotation.DateColumn;
+import com.github.dreamroute.excel.helper.cache.CacheFactory;
+import com.github.dreamroute.excel.helper.exception.ExcelHelperException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -14,27 +24,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-
-import com.github.dreamroute.excel.helper.annotation.Column;
-import com.github.dreamroute.excel.helper.annotation.DateColumn;
-import com.github.dreamroute.excel.helper.cache.CacheFactory;
-import com.github.dreamroute.excel.helper.exception.ExcelHelperException;
-import org.apache.poi.util.StringUtil;
-
 /**
  * @author 342252328@qq.com
  */
 public class DataAssistant {
-
-    /**
-     * 错误常量值
-     */
-    static final String ERROR_CONSTANTS = "这是一条错误数据";
 
     private DataAssistant() {
     }
@@ -90,7 +83,7 @@ public class DataAssistant {
     private static <T> BaseResponse<T> createDateFromSheet(Iterator<Row> rows, Class<T> cls) {
         Map<Integer, HeaderInfo> headerInfoMap = proceeHeaderInfo(rows, cls);
         List<T> data = new ArrayList<>();
-        StringBuffer errorMessage=new StringBuffer();
+        StringBuffer errorMessage = new StringBuffer();
         //行数
         int lineNumber = 2;
         while (rows.hasNext()) {
