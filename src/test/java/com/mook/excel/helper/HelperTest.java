@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.github.dreamroute.excel.helper.util.BaseResponse;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -118,16 +119,18 @@ public class HelperTest {
     public void importTest() {
         String path = "d:/1.xlsx";
         ExcelType type = ExcelType.XLSX;
-        List<User> users = ExcelHelper.importFromPath(type, path, User.class);
-        System.err.println(users);
+        BaseResponse<User> response = ExcelHelper.importFromPath(type, path, User.class);
+        List<User> users = response.getData();
+        System.err.println(response.getMsg());
     }
     
     @Test
     public void importTest2() {
-        String path = "d:/钢材招标模板.xlsx";
+        String path = "d:/招标模板测试.xlsx";
         ExcelType type = ExcelType.XLSX;
-        List<BiddingSteelPropertyDTO> steelList = ExcelHelper.importFromPath(type, path, BiddingSteelPropertyDTO.class);
-        System.err.println(steelList);
+        BaseResponse<BiddingSteelPropertyDTO> response = ExcelHelper.importFromPath(type, path, BiddingSteelPropertyDTO.class);
+        List<BiddingSteelPropertyDTO> steelList = response.getData();
+        System.err.println(response.getMsg());
     }
 
     @Test

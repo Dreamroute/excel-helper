@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.github.dreamroute.excel.helper.util.BaseResponse;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -98,9 +99,9 @@ public class ExcelHelper {
      * @param type {@link ExcelType}
      * @param path the file path
      * @param cls target Class<T>
-     * @return return a {@link List}
+     * @return return a {@link BaseResponse}
      */
-    public static <T> List<T> importFromPath(ExcelType type, String path, Class<T> cls) {
+    public static <T> BaseResponse<T> importFromPath(ExcelType type, String path, Class<T> cls) {
         File importFile = new File(path);
         if (!importFile.exists()) {
             throw new ExcelHelperException("the file " + path + " does not exist.");
@@ -114,9 +115,9 @@ public class ExcelHelper {
      * @param type {@link ExcelType}
      * @param importFile the file path
      * @param cls target Class<T>
-     * @return return a {@link List}
+     * @return return a {@link BaseResponse}
      */
-    public static <T> List<T> importFromFile(ExcelType type, File importFile, Class<T> cls) {
+    public static <T> BaseResponse<T> importFromFile(ExcelType type, File importFile, Class<T> cls) {
         if (!importFile.exists()) {
             throw new ExcelHelperException("the file " + importFile.getName() + " does not exist.");
         }
@@ -135,11 +136,11 @@ public class ExcelHelper {
      * @param type {@link ExcelType}
      * @param byteArr byte array to import.
      * @param cls target Class<T>
-     * @return return a {@link List}
+     * @return return a {@link BaseResponse}
      */
-    public static <T> List<T> importFromByteArray(ExcelType type, byte[] byteArr, Class<T> cls) {
+    public static <T> BaseResponse<T> importFromByteArray(ExcelType type, byte[] byteArr, Class<T> cls) {
         if (ArrayUtils.isEmpty(byteArr)) {
-            return new ArrayList<>();
+            return new BaseResponse<>(-1,"空数据",null);
         }
         InputStream in = new ByteArrayInputStream(byteArr);
         return importFromInputStream(type, in, cls);
@@ -151,10 +152,10 @@ public class ExcelHelper {
      * @param type {@link ExcelType}
      * @param inputStream {@link InputStream}
      * @param cls target Class<T>
-     * @return return a {@link List}
+     * @return return a {@link BaseResponse}
      */
-    public static <T> List<T> importFromInputStream(ExcelType type, InputStream inputStream, Class<T> cls) {
-        List<T> data = new ArrayList<>();
+    public static <T> BaseResponse<T> importFromInputStream(ExcelType type, InputStream inputStream, Class<T> cls) {
+        BaseResponse<T> data ;
         try (Workbook workbook = type == ExcelType.XLS ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream)) {
             Sheet sheet = workbook.getSheetAt(0);
             data = DataAssistant.createDataFromSheet(sheet, cls);
