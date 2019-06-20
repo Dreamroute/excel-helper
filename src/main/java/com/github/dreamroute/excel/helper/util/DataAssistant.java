@@ -12,7 +12,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -95,12 +94,7 @@ public class DataAssistant {
             } catch (NoSuchMethodException | SecurityException e) {
                 throw new ExcelHelperException("Domain: " + cls.getSimpleName() + " has no default constructor.");
             }
-            T domain;
-            try {
-                domain = c.newInstance();
-            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
-                throw new ExcelHelperException(e1);
-            }
+            T domain = null;
             //列数
             int columnNumber = 1;
             while (cells.hasNext()) {
@@ -109,13 +103,20 @@ public class DataAssistant {
                 Field field = headerInfo.getField();
                 try {
                     Object cellValue = getCellValue(cell, headerInfo.getCellType(), field);
-                    field.set(domain, cellValue);
+                    //判断单元格是否有值，如果有值再进行下一步判断
+                    if (null != cellValue) {
+                        //判断保存结果的对象是否为空，如果为空则创建一个信息的对象，然后再插入值
+                        if (null == domain) {
+                            domain = c.newInstance();
+                        }
+                        field.set(domain, cellValue);
+                    }
                 } catch (Exception e) {
                     errorMessage.append("第").append(lineNumber).append("行的第").append(columnNumber).append("列数据错误;");
                 }
                 columnNumber++;
             }
-            if (!isAllFieldNull(domain)) {
+            if (null != domain) {
                 data.add(domain);
             }
             lineNumber++;
@@ -170,34 +171,6 @@ public class DataAssistant {
             }
         }
         return value;
-    }
-
-    /**
-     *     判断该对象是否: 返回ture表示所有属性为null  返回false表示不是所有属性都是null
-     */
-    public static boolean isAllFieldNull(Object obj){
-        // 得到类对象
-        Class stuCla = obj.getClass();
-        //得到属性集合
-        Field[] fs = stuCla.getDeclaredFields();
-        boolean flag = true;
-        try {
-            //遍历属性
-            for (Field f : fs) {
-                // 设置属性是可以访问的(私有的也可以)
-                f.setAccessible(true);
-                // 得到此属性的值
-                Object val = f.get(obj);
-                if(val!=null) {
-                    //只要有1个属性不为空,那么就不是所有的属性值都为空
-                    flag = false;
-                    break;
-                }
-            }
-        }catch (Exception e) {
-            flag=false;
-        }
-        return flag;
     }
 
     public static void main(String[] args) {
