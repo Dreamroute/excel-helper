@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.github.dreamroute.excel.helper.util.BaseResponse;
+import org.apache.commons.lang3.time.StopWatch;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -24,8 +24,8 @@ import org.junit.Test;
 import com.github.dreamroute.excel.helper.ExcelHelper;
 import com.github.dreamroute.excel.helper.annotation.Column;
 import com.github.dreamroute.excel.helper.annotation.Sheet;
+import com.github.dreamroute.excel.helper.util.BaseResponse;
 import com.github.dreamroute.excel.helper.util.ExcelType;
-import com.mook.excel.helper.beans.BiddingSteelPropertyDTO;
 import com.mook.excel.helper.beans.User;
 
 /**
@@ -34,65 +34,85 @@ import com.mook.excel.helper.beans.User;
 public class HelperTest {
 
     @Test
-    public void baseTest() throws Exception {
-
-        ExcelType type = ExcelType.XLSX;
-
-        List<User> userList = new ArrayList<>();
-        Set<User> userSet = new HashSet<>();
-
-        for (int i = 0, len = 10; i < len; i++) {
-            User user = new User();
-            user.setId(100L + i);
-            user.setLongTest(15L);
-
-            user.setIntegerTest(new Integer(2 + i));
-
-            user.setName("w.dehai" + i);
-
-            user.setCharacterTest(new Character('A'));
-            user.setCtest('a');
-
-            user.setShortTestUpper(new Short("6"));
-            user.setShortTestLower((short) 66);
-
-            user.setFloatTestUpper(new Float(1.23));
-            user.setFloatTestLower(3.14f);
-
-            user.setDoubleTestUpper(new Double("333"));
-            user.setDoubleTestLower(12.222);
-
-            user.setAge(300000000);
-
-            user.setBooleanTestUpper(Boolean.FALSE);
-            user.setChinese(true);
-
-            user.setCreateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(new Date().getTime() + i * 1000)));
-
-            userList.add(user);
-            userSet.add(user);
+    public void baseTest() {
+        
+        try {
+            ExcelType type = ExcelType.XLSX;
+            
+            List<User> userList = new ArrayList<>();
+            Set<User> userSet = new HashSet<>();
+            
+            for (int i = 0, len = 10000; i < len; i++) {
+                User user = new User();
+                user.setId(100L + i);
+                user.setLongTest(15L);
+                
+                user.setIntegerTest(new Integer(2 + i));
+                
+                user.setName("w.dehai" + i);
+                
+                user.setCharacterTest(new Character('A'));
+                user.setCtest('a');
+                
+                user.setShortTestUpper(new Short("6"));
+                user.setShortTestLower((short) 66);
+                
+                user.setFloatTestUpper(new Float(1.23));
+                user.setFloatTestLower(3.14f);
+                
+                user.setDoubleTestUpper(new Double("333"));
+                user.setDoubleTestLower(12.222);
+                
+                user.setAge(300000000);
+                
+                user.setBooleanTestUpper(Boolean.FALSE);
+                user.setChinese(true);
+                
+                user.setCreateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(new Date().getTime() + i * 1000)));
+                
+                userList.add(user);
+                userSet.add(user);
+            }
+            
+            StopWatch watch = new StopWatch();
+            watch.start();
+            // 在windows平台测试，如果是mac需要修改成mac类型的路径
+            Workbook workbook = ExcelHelper.exportWorkbook(type, userList);
+            String path1 = type == ExcelType.XLS ? "d:/1.xls" : "d:/1.xlsx";
+            File outFile = new File(path1);
+            OutputStream out = new FileOutputStream(outFile);
+            workbook.write(out);
+            out.close();
+            watch.stop();
+            System.err.println(watch.getTime());
+            
+            watch.reset();
+            watch.start();
+            String path2 = type == ExcelType.XLS ? "d:/2.xls" : "d:/2.xlsx";
+            ExcelHelper.exportFile(type, userList, path2);
+            watch.stop();
+            System.err.println(watch.getTime());
+            
+            watch.reset();
+            watch.start();
+            String path3 = type == ExcelType.XLS ? "d:/3.xls" : "d:/3.xlsx";
+            ExcelHelper.exportFile(type, userList, new File(path3));
+            System.err.println(watch.getTime());
+            
+            watch.reset();
+            watch.start();
+            String path4 = type == ExcelType.XLS ? "d:/4.xls" : "d:/4.xlsx";
+            File file4 = new File(path4);
+            OutputStream os = new FileOutputStream(file4);
+            byte[] bs = ExcelHelper.exportByteArray(type, userList);
+            os.write(bs);
+            os.close();
+            System.err.println(watch.getTime());
+            System.out.println("OK");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        Workbook workbook = ExcelHelper.exportWorkbook(type, userList);
-        String path1 = type == ExcelType.XLS ? "d:/1.xls" : "d:/1.xlsx";
-        File outFile = new File(path1);
-        OutputStream out = new FileOutputStream(outFile);
-        workbook.write(out);
-        out.close();
-
-        String path2 = type == ExcelType.XLS ? "d:/2.xls" : "d:/2.xlsx";
-        ExcelHelper.exportFile(type, userList, path2);
-
-        String path3 = type == ExcelType.XLS ? "d:/3.xls" : "d:/3.xlsx";
-        ExcelHelper.exportFile(type, userList, new File(path3));
-        byte[] bs = ExcelHelper.exportByteArray(type, userList);
-
-        String path4 = type == ExcelType.XLS ? "d:/4.xls" : "d:/4.xlsx";
-        File file4 = new File(path4);
-        OutputStream os = new FileOutputStream(file4);
-        os.write(bs);
-        os.close();
-        System.out.println("OK");
     }
 
     @Test
@@ -121,17 +141,9 @@ public class HelperTest {
         ExcelType type = ExcelType.XLSX;
         BaseResponse<User> response = ExcelHelper.importFromPath(type, path, User.class);
         List<User> users = response.getData();
-        System.err.println(response.getMsg());
+        System.err.println(users);
     }
     
-    @Test
-    public void importTest2() {
-        String path = "d:/招标模板测试.xlsx";
-        ExcelType type = ExcelType.XLSX;
-        BaseResponse<BiddingSteelPropertyDTO> response = ExcelHelper.importFromPath(type, path, BiddingSteelPropertyDTO.class);
-        List<BiddingSteelPropertyDTO> steelList = response.getData();
-        System.err.println(response.getMsg());
-    }
 
     @Test
     public void sortListTest() {

@@ -181,8 +181,8 @@ public final class ExcelUtil {
             }
 
             sheet.autoSizeColumn(i);
-            // 1.3 times
-            int width = columnWith[i] > 0 ? columnWith[i] : sheet.getColumnWidth(i) * 13 / 10;
+            // with = with + 200
+            int width = columnWith[i] > 0 ? columnWith[i] : sheet.getColumnWidth(i) + 200;
             sheet.setColumnWidth(i, width);
         }
     }

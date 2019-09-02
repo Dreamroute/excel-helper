@@ -205,6 +205,4 @@ public final class ClassAssistant {
         return formulaValues;
     }
 
-    ;
-
 }
