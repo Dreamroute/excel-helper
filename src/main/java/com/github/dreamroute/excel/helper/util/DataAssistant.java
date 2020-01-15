@@ -1,28 +1,22 @@
 package com.github.dreamroute.excel.helper.util;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
+import com.github.dreamroute.excel.helper.annotation.Column;
+import com.github.dreamroute.excel.helper.annotation.DateColumn;
+import com.github.dreamroute.excel.helper.cache.CacheFactory;
+import com.github.dreamroute.excel.helper.constant.DatePattern;
+import com.github.dreamroute.excel.helper.exception.ExcelHelperException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
-import com.github.dreamroute.excel.helper.annotation.Column;
-import com.github.dreamroute.excel.helper.annotation.DateColumn;
-import com.github.dreamroute.excel.helper.cache.CacheFactory;
-import com.github.dreamroute.excel.helper.exception.ExcelHelperException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author 342252328@qq.com
@@ -136,9 +130,26 @@ public class DataAssistant {
         // 由于通过cell.getCellTypeEnum()获取的类型和实体定义的类型可能不一致，所以这里以实体类型为准而不能以cell.getCellTypeEnum()为准，进行强转，否则调用field.set()时候报类型错误
         if (cellType == CellType.STRING) {
             if (ct != CellType.STRING) {
-                cell.setCellType(CellType.STRING);
+                if(DateUtil.isCellDateFormatted(cell)){
+                    // 如果是Date类型则，转化为Data格式
+                    // data格式是带时分秒的：2013-7-10 0:00:00
+                    // cellvalue = cell.getDateCellValue().toLocaleString();
+                    // data格式是不带带时分秒的：2013-7-10
+                    Date date = cell.getDateCellValue();
+                    cellValue = DateUtil.format(date, DatePattern.NORM_DATE_FORMAT);
+                }else if(ct == CellType.NUMERIC){
+                    // 如果是纯数字,处理科学计数法和小数
+                    double num = cell.getNumericCellValue();
+                    if(num % 1 == 0){
+                        cellValue = NumericUtil.decimalFormat("0",num);
+                    }else{
+                        cellValue = Double.toString(num);
+                    }
+                }else{
+                    cell.setCellType(CellType.STRING);
+                    cellValue = getCellValue(cell.getStringCellValue(), type);
+                }
             }
-            cellValue = getCellValue(cell.getStringCellValue(), type);
         } else if (cellType == CellType.NUMERIC) {
             cellValue = getCellValue(cell.getNumericCellValue(), type);
         } else if (cellType == CellType.BOOLEAN) {
