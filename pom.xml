@@ -119,6 +119,7 @@
     <properties>
         <poi.version>4.0.1</poi.version>
 		<lombok.version>1.18.12</lombok.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
