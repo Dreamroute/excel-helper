@@ -193,6 +193,11 @@ public final class ClassAssistant {
             }
         }
 
+        // 检查表头与实体对象是否能够一一对应
+        if (!Objects.equals(fields.size(), headerInfo.size())) {
+            throw new ExcelHelperException("你上传的Excel文件的列与目标对象的列存在差异");
+        }
+
         return headerInfo;
     }
 
