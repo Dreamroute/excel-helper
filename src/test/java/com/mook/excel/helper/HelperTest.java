@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import lombok.Data;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -157,29 +158,13 @@ public class HelperTest {
         ExcelHelper.exportFile(ExcelType.XLS, demoList, "d:/DemoList.xls");
     }
 
+    @Data
     @Sheet(name = "DemoList")
     static class Demo {
         @Column(name = "姓名")
         private String name;
         @Column(name = "身高", cellType = CellType.NUMERIC)
         private BigDecimal height;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public BigDecimal getHeight() {
-            return height;
-        }
-
-        public void setHeight(BigDecimal height) {
-            this.height = height;
-        }
-
     }
 
 }

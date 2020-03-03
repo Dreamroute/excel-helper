@@ -119,7 +119,7 @@ public class ExcelHelper {
         if (!importFile.exists()) {
             throw new ExcelHelperException("the file " + importFile.getName() + " does not exist.");
         }
-        InputStream in = null;
+        InputStream in;
         try {
             in = new FileInputStream(importFile);
         } catch (FileNotFoundException e) {

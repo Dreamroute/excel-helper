@@ -14,5 +14,5 @@ public enum ExcelType {
     /**
      * 2007
      */
-    XLSX;
+    XLSX
 }
