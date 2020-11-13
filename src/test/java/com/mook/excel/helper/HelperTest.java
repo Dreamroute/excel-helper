@@ -1,16 +1,11 @@
 package com.mook.excel.helper;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.github.dreamroute.excel.helper.ExcelHelper;
+import com.github.dreamroute.excel.helper.annotation.Column;
+import com.github.dreamroute.excel.helper.annotation.Sheet;
+import com.github.dreamroute.excel.helper.util.BaseResponse;
+import com.github.dreamroute.excel.helper.util.ExcelType;
+import com.mook.excel.helper.beans.User;
 import lombok.Data;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -22,12 +17,16 @@ import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
 
-import com.github.dreamroute.excel.helper.ExcelHelper;
-import com.github.dreamroute.excel.helper.annotation.Column;
-import com.github.dreamroute.excel.helper.annotation.Sheet;
-import com.github.dreamroute.excel.helper.util.BaseResponse;
-import com.github.dreamroute.excel.helper.util.ExcelType;
-import com.mook.excel.helper.beans.User;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author 342252328@qq.com
@@ -36,14 +35,14 @@ public class HelperTest {
 
     @Test
     public void baseTest() {
-        
+
         try {
             ExcelType type = ExcelType.XLSX;
             
             List<User> userList = new ArrayList<>();
             Set<User> userSet = new HashSet<>();
             
-            for (int i = 0, len = 10000; i < len; i++) {
+            for (int i = 0, len = 10; i < len; i++) {
                 User user = new User();
                 user.setId(100L + i);
                 user.setLongTest(15L);

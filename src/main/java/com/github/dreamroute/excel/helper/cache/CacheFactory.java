@@ -1,20 +1,18 @@
 package com.github.dreamroute.excel.helper.cache;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-
 import com.github.dreamroute.excel.helper.annotation.CellProps;
 import com.github.dreamroute.excel.helper.annotation.HeaderProps;
 import com.github.dreamroute.excel.helper.util.ClassAssistant;
 import com.github.dreamroute.excel.helper.util.HeaderInfo;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * use to cache pojo's props
@@ -37,57 +35,27 @@ public class CacheFactory {
     private static final ConcurrentHashMap<Class<?>, List<String>> FORMULA_VALUES = new ConcurrentHashMap<>();
 
     public static String findSheetName(Class<?> cls) {
-        String sheetName = SHEET_NAME_MAP.get(cls);
-        if (StringUtils.isBlank(sheetName)) {
-            sheetName = ClassAssistant.getSheetName(cls);
-            SHEET_NAME_MAP.put(cls, sheetName);
-        }
-        return sheetName;
-    }
-
-    public static List<Field> findFields(Class<?> cls) {
-        List<Field> fields = FIELDS_MAP.get(cls);
-        if (CollectionUtils.isEmpty(fields)) {
-            fields = ClassAssistant.getAllFields(cls);
-            FIELDS_MAP.put(cls, fields);
-        }
-        return fields;
+        return SHEET_NAME_MAP.computeIfAbsent(cls, ClassAssistant::getSheetName);
     }
 
     public static List<String> findHeaderValues(Class<?> cls) {
-        List<String> headerValues = HEADER_VALUES.get(cls);
-        if (CollectionUtils.isEmpty(headerValues)) {
-            headerValues = ClassAssistant.getHeaderValues(cls);
-            HEADER_VALUES.put(cls, headerValues);
-        }
-        return headerValues;
+        return HEADER_VALUES.computeIfAbsent(cls, ClassAssistant::getHeaderValues);
     }
 
-    public static Integer[] findColumnWidth(Class<?> cls) {
-        Integer[] columnWidth = COLUMN_WIDTH.get(cls);
-        if (columnWidth == null || columnWidth.length == 0) {
-            columnWidth = ClassAssistant.getColumnWidth(cls);
-            COLUMN_WIDTH.put(cls, columnWidth);
-        }
-        return columnWidth;
+    public static List<Field> findFields(Class<?> cls) {
+        return FIELDS_MAP.computeIfAbsent(cls, ClassAssistant::getAllFields);
     }
 
     public static CellType[] findCellType(Class<?> cls) {
-        CellType[] cellType = CELL_TYPE.get(cls);
-        if (cellType == null || cellType.length == 0) {
-            cellType = ClassAssistant.getCellType(cls);
-            CELL_TYPE.put(cls, cellType);
-        }
-        return cellType;
+        return CELL_TYPE.computeIfAbsent(cls, ClassAssistant::getCellType);
+    }
+
+    public static Integer[] findColumnWidth(Class<?> cls) {
+        return COLUMN_WIDTH.computeIfAbsent(cls, ClassAssistant::getColumnWidth);
     }
 
     public static HeaderProps[] findHeaderProps(Class<?> cls) {
-        HeaderProps[] hps = HEADER_PROPS.get(cls);
-        if (hps == null || hps.length == 0) {
-            hps = ClassAssistant.getHeaderProps(cls);
-            HEADER_PROPS.put(cls, hps);
-        }
-        return hps;
+        return HEADER_PROPS.computeIfAbsent(cls, ClassAssistant::getHeaderProps);
     }
 
     public static CellProps[] findCellProps(Class<?> cls) {

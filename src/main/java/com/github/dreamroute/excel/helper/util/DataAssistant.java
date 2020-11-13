@@ -1,5 +1,15 @@
 package com.github.dreamroute.excel.helper.util;
 
+import com.github.dreamroute.excel.helper.annotation.Column;
+import com.github.dreamroute.excel.helper.annotation.DateColumn;
+import com.github.dreamroute.excel.helper.cache.CacheFactory;
+import com.github.dreamroute.excel.helper.exception.ExcelHelperException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -13,17 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-
-import com.github.dreamroute.excel.helper.annotation.Column;
-import com.github.dreamroute.excel.helper.annotation.DateColumn;
-import com.github.dreamroute.excel.helper.cache.CacheFactory;
-import com.github.dreamroute.excel.helper.exception.ExcelHelperException;
-
 /**
  * @author 342252328@qq.com
  */
@@ -32,11 +31,10 @@ public class DataAssistant {
     private DataAssistant() {
     }
 
-    public static List<List<Object>> createData(Collection<?> sheetData) {
+    public static List<List<Object>> createData(Collection<?> sheetData, Class<?> dataCls) {
 
         List<List<Object>> result = new ArrayList<>();
 
-        Class<?> dataCls = sheetData.iterator().next().getClass();
         List<Field> fields = CacheFactory.findFields(dataCls);
         Iterator<?> dataIterator = sheetData.iterator();
         while (dataIterator.hasNext()) {
@@ -48,12 +46,12 @@ public class DataAssistant {
                     // when cell is null, pre process it, avoid NPE.
                     if (Objects.isNull(value)) {
                         CellType ct = field.getAnnotation(Column.class).cellType();
-                        if (ct == CellType.STRING) {
-                            value = "";
-                        } else if (ct == CellType.NUMERIC) {
+                        if (ct == CellType.NUMERIC) {
                             value = 0;
                         } else if (ct == CellType.BOOLEAN) {
                             value = false;
+                        } else {
+                            value = "";
                         }
                     } else {
                         // 处理日期类型
@@ -63,7 +61,6 @@ public class DataAssistant {
                             String date = (String) value;
                             value = new SimpleDateFormat(originalDateFormate).parse(date);
                         }
-
                     }
                     rowData.add(value);
                 } catch (IllegalArgumentException | IllegalAccessException | ParseException e) {

@@ -25,10 +25,9 @@ import com.github.dreamroute.excel.helper.util.ExcelUtil;
 
 /**
  * the root operation class, you'll use it to create or export excel files/{@link Workbook}
- * 
+ *
  * @author 342252328@qq.com
  * @since JDK 1.7
- *
  */
 public class ExcelHelper {
 
@@ -39,7 +38,7 @@ public class ExcelHelper {
      * export as {@link Workbook}.
      * <p>
      * if you do not want to export by ExcelHelper, you can only create a workbook, then operate the workbook by yourself.
-     * 
+     *
      * @param type {@link ExcelType}
      * @param sheets your bussiness data.
      * @return return {@link Workbook}
@@ -50,7 +49,7 @@ public class ExcelHelper {
 
     /**
      * export as a file.
-     * 
+     *
      * @param type {@link ExcelType}
      * @param sheets your bussiness data.
      * @param path file path
@@ -61,7 +60,7 @@ public class ExcelHelper {
 
     /**
      * export as a file.
-     * 
+     *
      * @param type {@link ExcelType}
      * @param sheets sheets your bussiness data.
      * @param newFile which file you'll write to.
@@ -76,7 +75,7 @@ public class ExcelHelper {
 
     /**
      * export to byte array.
-     * 
+     *
      * @param type {@link ExcelType}
      * @param sheets sheets sheets your bussiness data.
      * @return return a byte array with data.
@@ -93,7 +92,7 @@ public class ExcelHelper {
 
     /**
      * import from path.
-     * 
+     *
      * @param type {@link ExcelType}
      * @param path the file path
      * @param cls target Class<T>
@@ -109,7 +108,7 @@ public class ExcelHelper {
 
     /**
      * import from file.
-     * 
+     *
      * @param type {@link ExcelType}
      * @param importFile the file path
      * @param cls target Class<T>
@@ -130,7 +129,7 @@ public class ExcelHelper {
 
     /**
      * import from ByteArray
-     * 
+     *
      * @param type {@link ExcelType}
      * @param byteArr byte array to import.
      * @param cls target Class<T>
@@ -138,7 +137,7 @@ public class ExcelHelper {
      */
     public static <T> BaseResponse<T> importFromByteArray(ExcelType type, byte[] byteArr, Class<T> cls) {
         if (ArrayUtils.isEmpty(byteArr)) {
-            return new BaseResponse<>(-1,"空数据",null);
+            return new BaseResponse<>(-1, "空数据", null);
         }
         InputStream in = new ByteArrayInputStream(byteArr);
         return importFromInputStream(type, in, cls);
@@ -146,14 +145,14 @@ public class ExcelHelper {
 
     /**
      * import from {@link InputStream}
-     * 
+     *
      * @param type {@link ExcelType}
      * @param inputStream {@link InputStream}
      * @param cls target Class<T>
      * @return return a {@link BaseResponse}
      */
     public static <T> BaseResponse<T> importFromInputStream(ExcelType type, InputStream inputStream, Class<T> cls) {
-        BaseResponse<T> data ;
+        BaseResponse<T> data;
         try (Workbook workbook = type == ExcelType.XLS ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream)) {
             Sheet sheet = workbook.getSheetAt(0);
             data = DataAssistant.createDataFromSheet(sheet, cls);

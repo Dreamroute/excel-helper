@@ -6,13 +6,22 @@ import com.github.dreamroute.excel.helper.cache.CacheFactory;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+
+import static com.github.dreamroute.excel.helper.cache.CacheFactory.findHeaderValues;
+import static com.github.dreamroute.excel.helper.cache.CacheFactory.findSheetName;
 
 /**
  * Export workbook util
@@ -51,21 +60,23 @@ public final class ExcelUtil {
     }
 
     private static void createSheet(Workbook workbook, Collection<?> sheetData) {
-        String sheetName = getSheetName(sheetData);
-        Sheet sheet = workbook.createSheet(sheetName);
         Class<?> dataCls = sheetData.iterator().next().getClass();
+        String sheetName = findSheetName(dataCls);
+        Sheet sheet = workbook.createSheet(sheetName);
 
         // excel content (header + data)
-        List<String> headerValues = CacheFactory.findHeaderValues(dataCls);
-        List<List<Object>> data = DataAssistant.createData(sheetData);
+        HeaderProps[] headerProps = CacheFactory.findHeaderProps(dataCls);
+        List<String> headerValues = findHeaderValues(dataCls);
+
+        List<List<Object>> data = DataAssistant.createData(sheetData, dataCls);
         CellType[] cellType = CacheFactory.findCellType(dataCls);
         Integer[] columnWith = CacheFactory.findColumnWidth(dataCls);
-        HeaderProps[] hps = CacheFactory.findHeaderProps(dataCls);
-        CellProps[] cps = CacheFactory.findCellProps(dataCls);
-        CellStyle[] css = createDataCellStyle(workbook, cps);
+        CellProps[] cellProps = CacheFactory.findCellProps(dataCls);
+        CellStyle[] css = createDataCellStyle(workbook, cellProps);
         List<String> formulas = CacheFactory.findFormulaValues(dataCls);
+
         // create header row, create data rows
-        createHeader(sheet, headerValues, hps, workbook);
+        createHeader(sheet, headerValues, headerProps, workbook);
         createData(sheet, data, cellType, css, formulas);
         setColumnWidth(sheet, columnWith);
     }
@@ -175,11 +186,6 @@ public final class ExcelUtil {
             int width = columnWith[i] > 0 ? columnWith[i] : sheet.getColumnWidth(i) + 200;
             sheet.setColumnWidth(i, width);
         }
-    }
-
-    private static String getSheetName(Collection<?> sheetData) {
-        Class<?> dataClass = sheetData.iterator().next().getClass();
-        return CacheFactory.findSheetName(dataClass);
     }
 
 }
