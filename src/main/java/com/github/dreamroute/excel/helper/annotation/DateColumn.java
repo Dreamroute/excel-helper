@@ -19,7 +19,7 @@ public @interface DateColumn {
     /**
      * 原始日期格式
      */
-    String originalDateFormate();
+    String originalDateFormate() default "timestamp";
     
     /***
      * 目标日期格式

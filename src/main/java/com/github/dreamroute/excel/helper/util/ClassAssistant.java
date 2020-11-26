@@ -150,7 +150,7 @@ public final class ClassAssistant {
 
     public static CellProps[] getCellProps(Class<?> cls) {
         List<Field> fields = CacheFactory.findFields(cls);
-        CellProps[] hps = new CellProps[fields.size()];
+        CellProps[] cps = new CellProps[fields.size()];
         for (int i = 0; i < fields.size(); i++) {
             Field field = fields.get(i);
             Cell anno = field.getAnnotation(Cell.class);
@@ -166,12 +166,12 @@ public final class ClassAssistant {
                     cp.setTargetDateFormate(dc.targetDateFormate());
                 }
                 
-                hps[i] = cp;
+                cps[i] = cp;
             } catch (NoSuchFieldException | SecurityException e) {
                 throw new ExcelHelperException(e);
             }
         }
-        return hps;
+        return cps;
     }
 
     public static Map<Integer, HeaderInfo> getHeaderInfo(Class<?> cls, Row header) {

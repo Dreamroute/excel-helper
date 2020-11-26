@@ -69,9 +69,12 @@ public class HelperTest {
                 user.setChinese(true);
                 
                 user.setCreateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(new Date().getTime() + i * 1000)));
+
+                user.setBirthday(System.currentTimeMillis() + "");
                 
                 userList.add(user);
                 userSet.add(user);
+
             }
             
             StopWatch watch = new StopWatch();
