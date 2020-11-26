@@ -169,7 +169,7 @@ public class ExcelHelper {
         try {
             fileName = URLEncoder.encode(fileName, "UTF-8");
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
-            response.setHeader("Content-Disposition", "attachment;filename*=UTF-8" + fileName);
+            response.setHeader("Content-Disposition", "attachment;filename*=UTF-8''" + fileName);
             response.setHeader("Content-Length", String.valueOf(data.length));
             response.getOutputStream().write(data);
             response.flushBuffer();
