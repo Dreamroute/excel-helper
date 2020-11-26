@@ -1,5 +1,17 @@
 package com.github.dreamroute.excel.helper;
 
+import com.github.dreamroute.excel.helper.exception.ExcelHelperException;
+import com.github.dreamroute.excel.helper.util.BaseResponse;
+import com.github.dreamroute.excel.helper.util.DataAssistant;
+import com.github.dreamroute.excel.helper.util.ExcelType;
+import com.github.dreamroute.excel.helper.util.ExcelUtil;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -9,19 +21,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.Collection;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import com.github.dreamroute.excel.helper.exception.ExcelHelperException;
-import com.github.dreamroute.excel.helper.util.BaseResponse;
-import com.github.dreamroute.excel.helper.util.DataAssistant;
-import com.github.dreamroute.excel.helper.util.ExcelType;
-import com.github.dreamroute.excel.helper.util.ExcelUtil;
+import static com.github.dreamroute.excel.helper.util.ExcelType.XLSX;
 
 /**
  * the root operation class, you'll use it to create or export excel files/{@link Workbook}
@@ -160,6 +163,24 @@ public class ExcelHelper {
             throw new ExcelHelperException(e);
         }
         return data;
+    }
+
+    public static void download(byte[] data, String fileName, HttpServletResponse response) {
+        try {
+            fileName = URLEncoder.encode(fileName, "UTF-8");
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
+            response.setHeader("Content-Disposition", "attachment;filename*=UTF-8" + fileName);
+            response.setHeader("Content-Length", String.valueOf(data.length));
+            response.getOutputStream().write(data);
+            response.flushBuffer();
+        } catch (Exception e) {
+            // ignore.
+        }
+    }
+
+    public static void download(Collection<?> data, String fileName, HttpServletResponse response) {
+        byte[] excel = ExcelHelper.exportByteArray(XLSX, data);
+        download(excel, fileName, response);
     }
 
 }
