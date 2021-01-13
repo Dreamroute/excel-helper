@@ -57,8 +57,8 @@ public class ExcelHelper {
      * @param sheets your bussiness data.
      * @param path file path
      */
-    public static void exportFile(ExcelType type, Collection<?> sheets, String path) {
-        exportFile(type, sheets, new File(path));
+    public static void exportFile(ExcelType type, String path, Collection<?>... sheets) {
+        exportFile(type, new File(path), sheets);
     }
 
     /**
@@ -68,7 +68,7 @@ public class ExcelHelper {
      * @param sheets sheets your bussiness data.
      * @param newFile which file you'll write to.
      */
-    public static void exportFile(ExcelType type, Collection<?> sheets, File newFile) {
+    public static void exportFile(ExcelType type, File newFile, Collection<?>... sheets) {
         try (OutputStream out = new FileOutputStream(newFile)) {
             exportWorkbook(type, sheets).write(out);
         } catch (Exception e) {
@@ -83,7 +83,7 @@ public class ExcelHelper {
      * @param sheets sheets sheets your bussiness data.
      * @return return a byte array with data.
      */
-    public static byte[] exportByteArray(ExcelType type, Collection<?> sheets) {
+    public static byte[] exportByteArray(ExcelType type, Collection<?>... sheets) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
             exportWorkbook(type, sheets).write(out);

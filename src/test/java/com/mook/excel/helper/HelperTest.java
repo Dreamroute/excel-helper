@@ -2,7 +2,6 @@ package com.mook.excel.helper;
 
 import com.github.dreamroute.excel.helper.ExcelHelper;
 import com.github.dreamroute.excel.helper.annotation.Column;
-import com.github.dreamroute.excel.helper.annotation.DateColumn;
 import com.github.dreamroute.excel.helper.annotation.Sheet;
 import com.github.dreamroute.excel.helper.util.BaseResponse;
 import com.github.dreamroute.excel.helper.util.ExcelType;
@@ -95,14 +94,14 @@ public class HelperTest {
             watch.reset();
             watch.start();
             String path2 = type == ExcelType.XLS ? "d:/2.xls" : "d:/2.xlsx";
-            ExcelHelper.exportFile(type, userList, path2);
+            ExcelHelper.exportFile(type, path2, userList);
             watch.stop();
             System.err.println(watch.getTime());
             
             watch.reset();
             watch.start();
             String path3 = type == ExcelType.XLS ? "d:/3.xls" : "d:/3.xlsx";
-            ExcelHelper.exportFile(type, userList, new File(path3));
+            ExcelHelper.exportFile(type, new File(path3), userList);
             System.err.println(watch.getTime());
             
             watch.reset();
@@ -160,7 +159,7 @@ public class HelperTest {
             demo.height = new BigDecimal("1.80342");
             demoList.add(demo);
         }
-        ExcelHelper.exportFile(ExcelType.XLS, demoList, "d:/DemoList.xls");
+        ExcelHelper.exportFile(ExcelType.XLS, "d:/DemoList.xls", demoList);
     }
 
     @Data
@@ -178,7 +177,6 @@ public class HelperTest {
         @Column(name = "姓名")
         private String name;
         @Column(name = "时间")
-        @DateColumn(targetDateFormate = "yyyy-MM-dd MM:hh:ss")
         private long time;
     }
 
@@ -190,7 +188,15 @@ public class HelperTest {
         List<Datedemo> ds = new ArrayList<>();
         ds.add(dd);
 
-        ExcelHelper.exportFile(ExcelType.XLSX, ds, "d:/ss.xlsx");
+        List<Demo> demoList = new ArrayList<>();
+        for (int i = 0, len = 10; i < len; i++) {
+            Demo demo = new Demo();
+            demo.name = "w.dehai";
+            demo.height = new BigDecimal("1.80342");
+            demoList.add(demo);
+        }
+
+        ExcelHelper.exportFile(ExcelType.XLSX, "d:/ss.xlsx", ds, demoList);
     }
 
 }
