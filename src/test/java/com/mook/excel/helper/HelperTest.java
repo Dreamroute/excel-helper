@@ -2,6 +2,7 @@ package com.mook.excel.helper;
 
 import com.github.dreamroute.excel.helper.ExcelHelper;
 import com.github.dreamroute.excel.helper.annotation.Column;
+import com.github.dreamroute.excel.helper.annotation.DateColumn;
 import com.github.dreamroute.excel.helper.annotation.Sheet;
 import com.github.dreamroute.excel.helper.util.BaseResponse;
 import com.github.dreamroute.excel.helper.util.ExcelType;
@@ -22,6 +23,8 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -167,6 +170,27 @@ public class HelperTest {
         private String name;
         @Column(name = "身高", cellType = CellType.NUMERIC)
         private BigDecimal height;
+    }
+
+    @Data
+    @Sheet(name = "dateDemo")
+    static class Datedemo {
+        @Column(name = "姓名")
+        private String name;
+        @Column(name = "时间")
+        @DateColumn(targetDateFormate = "yyyy-MM-dd MM:hh:ss")
+        private long time;
+    }
+
+    @Test
+    public void dateDemoTest() {
+        Datedemo dd = new Datedemo();
+        dd.setName("w.dehai");
+        dd.setTime(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
+        List<Datedemo> ds = new ArrayList<>();
+        ds.add(dd);
+
+        ExcelHelper.exportFile(ExcelType.XLSX, ds, "d:/ss.xlsx");
     }
 
 }
