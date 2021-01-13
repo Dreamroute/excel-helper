@@ -1,9 +1,9 @@
 package com.mook.excel.helper.beans;
 
-import java.io.Serializable;
-
 import com.github.dreamroute.excel.helper.annotation.Column;
 import com.github.dreamroute.excel.helper.annotation.DateColumn;
+
+import java.io.Serializable;
 
 /**
  * 

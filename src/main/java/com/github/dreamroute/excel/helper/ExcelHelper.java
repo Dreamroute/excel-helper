@@ -212,8 +212,8 @@ public class ExcelHelper {
 
     public static void download(String fileName, HttpServletResponse response, ExcelType type, Collection<?>... sheets) {
         byte[] excel = ExcelHelper.exportByteArray(type, sheets);
-        fileName = type == XLSX ? "xlsx" : "xls";
-        download(excel, fileName, response);
+        String suffix = type == XLSX ? "xlsx" : "xls";
+        download(excel, fileName + "." + suffix, response);
     }
 
 }

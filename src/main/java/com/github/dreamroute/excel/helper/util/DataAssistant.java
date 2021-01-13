@@ -60,8 +60,8 @@ public class DataAssistant {
                             DateColumn dc = field.getAnnotation(DateColumn.class);
                             // 现在只支持timestamp转其他格式
                             if (Objects.equals("timestamp", dc.originalDateFormate())) {
-                                Timestamp from = Timestamp.from(Instant.ofEpochMilli(Long.valueOf((String) value)));
-                                value = from.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                                Timestamp from = Timestamp.from(Instant.ofEpochMilli((long) value));
+                                value = from.toLocalDateTime().format(DateTimeFormatter.ofPattern(dc.targetDateFormate()));
                             }
                         }
                     }

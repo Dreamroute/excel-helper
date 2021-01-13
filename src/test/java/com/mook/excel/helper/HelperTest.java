@@ -2,6 +2,7 @@ package com.mook.excel.helper;
 
 import com.github.dreamroute.excel.helper.ExcelHelper;
 import com.github.dreamroute.excel.helper.annotation.Column;
+import com.github.dreamroute.excel.helper.annotation.DateColumn;
 import com.github.dreamroute.excel.helper.annotation.Sheet;
 import com.github.dreamroute.excel.helper.util.BaseResponse;
 import com.github.dreamroute.excel.helper.util.ExcelType;
@@ -21,9 +22,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -177,6 +181,7 @@ public class HelperTest {
         @Column(name = "姓名")
         private String name;
         @Column(name = "时间")
+        @DateColumn
         private long time;
     }
 
@@ -185,18 +190,22 @@ public class HelperTest {
         Datedemo dd = new Datedemo();
         dd.setName("w.dehai");
         dd.setTime(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
+
+        Datedemo d2 = new Datedemo();
+        dd.setTime(new Date().getTime());
         List<Datedemo> ds = new ArrayList<>();
         ds.add(dd);
+        ds.add(d2);
 
-        List<Demo> demoList = new ArrayList<>();
-        for (int i = 0, len = 10; i < len; i++) {
-            Demo demo = new Demo();
-            demo.name = "w.dehai";
-            demo.height = new BigDecimal("1.80342");
-            demoList.add(demo);
-        }
+        ExcelHelper.exportFile(ExcelType.XLSX, "d:/ss.xlsx", ds);
+    }
 
-        ExcelHelper.exportFile(ExcelType.XLSX, "d:/ss.xlsx", ds, demoList);
+    @Test
+    public void mm() {
+        long value = 1610553088;
+        Timestamp from = Timestamp.from(Instant.ofEpochMilli(Long.valueOf(value)));
+        String format = from.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        System.err.println(format);
     }
 
 }

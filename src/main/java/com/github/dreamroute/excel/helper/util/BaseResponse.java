@@ -6,8 +6,7 @@ import java.util.List;
 /**
  * 返回内容包装类
  *
- * @author: niechen
- * @date: 2019/6/19
+ * @author niechen.2019/6/19
  **/
 public class BaseResponse<T> implements Serializable {
     private static final long serialVersionUID = -6585432370633841612L;

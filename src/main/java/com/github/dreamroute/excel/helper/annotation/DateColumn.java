@@ -23,6 +23,6 @@ public @interface DateColumn {
      *
      * import fomat when meet {@link DateColumn}
      */
-    String targetDateFormate() default "yyyy/MM/dd HH:mm:ss";
+    String targetDateFormate() default "yyyy-MM-dd HH:mm:ss";
 
 }
