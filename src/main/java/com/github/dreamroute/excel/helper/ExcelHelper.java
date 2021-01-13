@@ -165,6 +165,13 @@ public class ExcelHelper {
         return data;
     }
 
+    /**
+     * Spring MVC 下载
+     *
+     * @param data 数据
+     * @param fileName 文件名
+     * @param response response
+     */
     public static void download(byte[] data, String fileName, HttpServletResponse response) {
         try {
             fileName = URLEncoder.encode(fileName, "UTF-8");
@@ -178,6 +185,13 @@ public class ExcelHelper {
         }
     }
 
+    /**
+     * Spring MVC 下载
+     *
+     * @param data 数据
+     * @param fileName 文件名
+     * @param response response
+     */
     public static void download(Collection<?> data, String fileName, HttpServletResponse response) {
         byte[] excel = ExcelHelper.exportByteArray(XLSX, data);
         download(excel, fileName, response);
