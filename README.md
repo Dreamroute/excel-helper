@@ -22,28 +22,17 @@
 1. 定义实体类
 
     ```
+   @Data
     @Sheet(name = "DemoList")
     public class Demo {
         @Column(name = "姓名")
         private String name;
         @Column(name = "身高", cellType = CellType.NUMERIC)
         private BigDecimal height;
-    
-        public String getName() {
-            return name;
-        }
-    
-        public void setName(String name) {
-            this.name = name;
-        }
-    
-        public BigDecimal getHeight() {
-            return height;
-        }
-    
-        public void setHeight(BigDecimal height) {
-            this.height = height;
-        }
+        @Column(name = "时间")
+        // 支持日期类型转换，默认是将timestamp转换成'yyyy-MM-dd HH:mm:ss'类型
+        @DateColumn
+        private long time;
     }
     ```
     
