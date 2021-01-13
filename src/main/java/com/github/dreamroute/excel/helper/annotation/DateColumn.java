@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.github.dreamroute.excel.helper.annotation;
 
 import java.lang.annotation.ElementType;
