@@ -202,12 +202,17 @@ public class ExcelHelper {
     /**
      * Spring MVC 下载
      *
-     * @param data 数据
+     * @param sheets 数据，将多个Collection的数据分别写成多个sheet放入同一个文件
      * @param fileName 文件名
      * @param response response
      */
-    public static void download(Collection<?> data, String fileName, HttpServletResponse response) {
-        byte[] excel = ExcelHelper.exportByteArray(XLSX, data);
+    public static void download(String fileName, HttpServletResponse response, Collection<?>... sheets) {
+        download(fileName, response, XLSX, sheets);
+    }
+
+    public static void download(String fileName, HttpServletResponse response, ExcelType type, Collection<?>... sheets) {
+        byte[] excel = ExcelHelper.exportByteArray(type, sheets);
+        fileName = type == XLSX ? "xlsx" : "xls";
         download(excel, fileName, response);
     }
 
