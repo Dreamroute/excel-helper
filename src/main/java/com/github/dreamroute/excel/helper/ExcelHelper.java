@@ -30,16 +30,14 @@ import static com.github.dreamroute.excel.helper.util.ExcelType.XLSX;
  * the root operation class, you'll use it to create or export excel files/{@link Workbook}
  *
  * @author 342252328@qq.com
- * @since JDK 1.7
+ * @since JDK 1.8
  */
 public class ExcelHelper {
 
     private ExcelHelper() {}
 
     /**
-     * <p>
      * export as {@link Workbook}.
-     * <p>
      * if you do not want to export by ExcelHelper, you can only create a workbook, then operate the workbook by yourself.
      *
      * @param type {@link ExcelType}
@@ -48,6 +46,10 @@ public class ExcelHelper {
      */
     public static Workbook exportWorkbook(ExcelType type, Collection<?>... sheets) {
         return ExcelUtil.create(type, sheets);
+    }
+
+    public static Workbook exportWorkbook(Collection<?>... sheets) {
+        return exportWorkbook(XLSX, sheets);
     }
 
     /**
@@ -59,6 +61,10 @@ public class ExcelHelper {
      */
     public static void exportFile(ExcelType type, String path, Collection<?>... sheets) {
         exportFile(type, new File(path), sheets);
+    }
+
+    public static void exportFile(String path, Collection<?>... sheets) {
+        exportFile(XLSX, path, sheets);
     }
 
     /**
@@ -74,6 +80,14 @@ public class ExcelHelper {
         } catch (Exception e) {
             throw new ExcelHelperException("write to file faild." + e, e);
         }
+    }
+
+    public static void exportFile(File newFile, Collection<?>... sheets) {
+        exportFile(XLSX, newFile, sheets);
+    }
+
+    public static byte[] exportByteArray(Collection<?>... sheets) {
+        return exportByteArray(XLSX, sheets);
     }
 
     /**
