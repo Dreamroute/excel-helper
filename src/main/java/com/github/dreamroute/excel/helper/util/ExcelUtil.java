@@ -184,7 +184,11 @@ public final class ExcelUtil {
             sheet.autoSizeColumn(i);
             // with = with + 200
             int width = columnWith[i] > 0 ? columnWith[i] : sheet.getColumnWidth(i) + 200;
-            sheet.setColumnWidth(i, width);
+            if(width<255*256){
+                sheet.setColumnWidth(i, Math.max(width, 3000));
+            }else{
+                sheet.setColumnWidth(i,6000 );
+            }
         }
     }
 
