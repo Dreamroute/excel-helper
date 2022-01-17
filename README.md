@@ -36,7 +36,7 @@
     }
     ```
     
-1. 导出
+2. 导出
 
     ```
     @Test
@@ -52,7 +52,7 @@
     }
     ```
 
-1. 导入
+3. 导入
 
     ```
     @Test
@@ -63,21 +63,25 @@
         System.err.println(users);
     }
     ```
+4. 文件下载，直接在`Controller层使用download`方法进行文件下载
+```
+ExcelHelper.download(文件名, response, 数据);
+```
 
-1. 导出一共有3类：
+6. 导出一共有3类：
 
     > 1. ExcelHelper.exportFile()
     > 1. ExcelHelper.exportByteArray()
     > 1. ExcelHelper.exportWorkbook()
 
-1. 导入一共有4类：
+7. 导入一共有4类：
 
     > 1. ExcelHelper.importFromPath
     > 1. ExcelHelper.importFromFile
     > 1. ExcelHelper.importFromByteArray
     > 1. ExcelHelper.importFromInputStream
 
-1. 相关注解说明：
+8. 相关注解说明：
 
     > 1. @Sheet：导出时候为sheet名称；
     > 1. @Column：定义列的相关属性；
