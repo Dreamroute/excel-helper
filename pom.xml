@@ -137,7 +137,7 @@
     </build>
 
     <properties>
-        <poi.version>5.0.0</poi.version>
+        <poi.version>5.4.0</poi.version>
         <servlet.version>4.0.1</servlet.version>
 		<lombok.version>1.18.22</lombok.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
